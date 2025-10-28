@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Викторина о святом Дмитрии Солунском</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                        url('https://shop.iconostas.ru/upload/iblock/574/5746aaaeff4f04b61365cc95a371ed7b.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 15px;
+            min-height: 100vh;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .quiz-container {
+            background-color: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            -webkit-box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: 700;
+            line-height: 1.3;
+            text-shadow: none;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            display: none;
+            -webkit-transform: translateY(20px);
+        }
+
+        .question.active {
+            opacity: 1;
+            transform: translateY(0);
+            -webkit-transform: translateY(0);
+            display: block;
+            animation: slideIn 0.4s ease;
+            -webkit-animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+                -webkit-transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1em;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 16px;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95em;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            min-height: 54px;
+            display: flex;
+            align-items: center;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .option:active {
+            background-color: #e9ecef;
+            transform: scale(0.98);
+            -webkit-transform: scale(0.98);
+        }
+
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            animation: correctAnimation 0.5s ease;
+            -webkit-animation: correctAnimation 0.5s ease;
+        }
+
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        @keyframes correctAnimation {
+            0% {
+                transform: scale(1);
+                -webkit-transform: scale(1);
+                background-color: #f8f9fa;
+            }
+            50% {
+                transform: scale(1.02);
+                -webkit-transform: scale(1.02);
+                background-color: #d4edda;
+            }
+            100% {
+                transform: scale(1);
+                -webkit-transform: scale(1);
+                background-color: #d4edda;
+            }
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateX(-20px);
+            -webkit-transform: translateX(-20px);
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+            min-height: 54px;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+        }
+
+        .nav-btn.show {
+            opacity: 1;
+            transform: translateX(0);
+            -webkit-transform: translateX(0);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+            -webkit-transform: scale(0.95);
+        }
+
+        .nav-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            -webkit-transform: none;
+        }
+
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            transition: width 0.4s ease;
+            -webkit-transition: width 0.4s ease;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: gold;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleFloat 1.2s ease-out forwards;
+            -webkit-animation: sparkleFloat 1.2s ease-out forwards;
+        }
+
+        .energy-ring {
+            position: absolute;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: energyPulse 0.8s ease-out forwards;
+            -webkit-animation: energyPulse 0.8s ease-out forwards;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #ff5722;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleExplode 0.8s ease-out forwards;
+            -webkit-animation: particleExplode 0.8s ease-out forwards;
+        }
+
+        @keyframes sparkleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                -webkit-transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                -webkit-transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes energyPulse {
+            0% {
+                width: 0px;
+                height: 0px;
+                border-color: #ffeb3b;
+                opacity: 1;
+                transform: translate(-50%, -50%);
+                -webkit-transform: translate(-50%, -50%);
+            }
+            100% {
+                width: 100px;
+                height: 100px;
+                border-color: transparent;
+                opacity: 0;
+                transform: translate(-50%, -50%);
+                -webkit-transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes particleExplode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                -webkit-transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--px), var(--py)) scale(0);
+                -webkit-transform: translate(var(--px), var(--py)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 16px;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .restart-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            display: none;
+            position: relative;
+            overflow: hidden;
+            min-height: 54px;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+        }
+
+        .restart-btn:active {
+            transform: scale(0.95);
+            -webkit-transform: scale(0.95);
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .welcome-screen h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .start-btn {
+            padding: 18px 35px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+            min-height: 58px;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+        }
+
+        .start-btn:active {
+            transform: scale(0.98);
+            -webkit-transform: scale(0.98);
+        }
+
+        .celebration-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .quiz-container {
+                padding: 15px;
+                max-height: 90vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            .question {
+                padding: 14px;
+            }
+
+            .option {
+                padding: 14px;
+                min-height: 50px;
+            }
+
+            .nav-btn {
+                padding: 14px 16px;
+                min-height: 50px;
+            }
+
+            .start-btn {
+                padding: 16px 25px;
+                min-height: 54px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .quiz-container {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 1.2em;
+            }
+
+            .question-text {
+                font-size: 0.9em;
+            }
+
+            .option {
+                font-size: 0.9em;
+                padding: 12px;
+            }
+        }
+
+        .ios-fix {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="celebration-container" id="celebrationContainer"></div>
+
+    <div class="quiz-container ios-fix">
+        <div class="welcome-screen" id="welcomeScreen">
+            <h2>Добро пожаловать в викторину!</h2>
+            <h1>Святой Дмитрий Солунский</h1>
+            <p>Проверьте свои знания о жизни и деяниях великого святого</p>
+            <p>Всего вопросов: 10</p>
+            <button class="start-btn" id="startBtn">Начать викторину</button>
+        </div>
+
+        <div class="progress" id="progressContainer" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div id="progressText">Вопрос 1 из 10</div>
+        </div>
+
+        <div id="quiz" style="display: none;"></div>
+
+        <div class="navigation" id="navigation" style="display: none;">
+            <button class="nav-btn" id="prevBtn" disabled>← Назад</button>
+            <button class="nav-btn" id="nextBtn">Далее →</button>
+        </div>
+
+        <div class="score" id="score"></div>
+        <button class="restart-btn" id="restartBtn">Начать заново</button>
+    </div>
+
+    <script>
+        // Добавляем полифиллы для iOS
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
+                                         window.mozRequestAnimationFrame ||
+                                         function(callback) { return setTimeout(callback, 1000/60); };
+        }
+
+        const correctAnswers = {
+            q1: 'б', q2: 'в', q3: 'в', q4: 'в', q5: 'а',
+            q6: 'в', q7: 'б', q8: 'в', q9: 'б', q10: 'а'
+        };
+
+        const questions = [
+            {
+                id: 'q1',
+                text: '1. Где родился святой Дмитрий Солунский?',
+                options: [
+                    { id: 'а', text: 'Рим' },
+                    { id: 'б', text: 'Фессалоники (Солунь)' },
+                    { id: 'в', text: 'Афины' },
+                    { id: 'г', text: 'Константинополь' }
+                ]
+            },
+            {
+                id: 'q2',
+                text: '2. В каком звании служил Дмитрий Солунский римскому императору?',
+                options: [
+                    { id: 'а', text: 'Центурион' },
+                    { id: 'б', text: 'Легат' },
+                    { id: 'в', text: 'Проконсул' },
+                    { id: 'г', text: 'Трибун' }
+                ]
+            },
+            {
+                id: 'q3',
+                text: '3. Какую веру тайно исповедовал Дмитрий Солунский?',
+                options: [
+                    { id: 'а', text: 'Иудаизм' },
+                    { id: 'б', text: 'Манихейство' },
+                    { id: 'в', text: 'Христианство' },
+                    { id: 'г', text: 'Зороастризм' }
+                ]
+            },
+            {
+                id: 'q4',
+                text: '4. Какое чудо, связанное с Дмитрием Солунским, произошло во время правления императора Юстиниана I?',
+                options: [
+                    { id: 'а', text: 'Воскрешение умершего' },
+                    { id: 'б', text: 'Изгнание злого духа' },
+                    { id: 'в', text: 'Исцеление от чумы' },
+                    { id: 'г', text: 'Явление иконы Богородицы' }
+                ]
+            },
+            {
+                id: 'q5',
+                text: '5. Что, по преданию, источалось из мощей святого Дмитрия Солунского?',
+                options: [
+                    { id: 'а', text: 'Миро' },
+                    { id: 'б', text: 'Кровь' },
+                    { id: 'в', text: 'Елей' },
+                    { id: 'г', text: 'Святая вода' }
+                ]
+            },
+            {
+                id: 'q6',
+                text: '6. В честь какого события был основан город Дмитров, получивший имя в честь святого Дмитрия Солунского?',
+                options: [
+                    { id: 'а', text: 'Победы в битве' },
+                    { id: 'б', text: 'Крещения Руси' },
+                    { id: 'в', text: 'Рождения сына у князя' },
+                    { id: 'г', text: 'Завершения строительства собора' }
+                ]
+            },
+            {
+                id: 'q7',
+                text: '7. Какой год считается годом основания Дмитрова? (Это год рождения князя, в честь которого назван город.)',
+                options: [
+                    { id: 'а', text: '1147' },
+                    { id: 'б', text: '1154' },
+                    { id: 'в', text: '1180' },
+                    { id: 'г', text: '1237' }
+                ]
+            },
+            {
+                id: 'q8',
+                text: '8. Как часто в Дмитрове проводятся крестные ходы с чудотворной иконой святого Дмитрия Солунского?',
+                options: [
+                    { id: 'а', text: 'Ежедневно' },
+                    { id: 'б', text: 'Еженедельно' },
+                    { id: 'в', text: 'Ежегодно' },
+                    { id: 'г', text: 'Никогда' }
+                ]
+            },
+            {
+                id: 'q9',
+                text: '9. Какой известный русский иконописец написал икону "Дмитрий Солунский", которая находится в Третьяковской галерее?',
+                options: [
+                    { id: 'а', text: 'Андрей Рублев' },
+                    { id: 'б', text: 'Феофан Грек' },
+                    { id: 'в', text: 'Дионисий' },
+                    { id: 'г', text: 'Симон Ушаков' }
+                ]
+            },
+            {
+                id: 'q10',
+                text: '10. Какой вид искусства, помимо иконописи, посвящен жизни и деяниям святого Дмитрия Солунского?',
+                options: [
+                    { id: 'а', text: 'Скульптура' },
+                    { id: 'б', text: 'Литература' },
+                    { id: 'в', text: 'Музыка' },
+                    { id: 'г', text: 'Театр' }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = {};
+
+        // Используем touch события для iOS
+        document.getElementById('startBtn').addEventListener('click', startQuiz);
+        document.getElementById('startBtn').addEventListener('touchend', function(e) {
+            e.preventDefault();
+            startQuiz();
+        });
+
+        function startQuiz() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('navigation').style.display = 'flex';
+
+            generateQuiz();
+            showQuestion(currentQuestion);
+            updateProgress();
+            createButtonEffect(document.getElementById('startBtn'), 'energy');
+        }
+
+        function generateQuiz() {
+            const quizContainer = document.getElementById('quiz');
+            quizContainer.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question ios-fix';
+                questionDiv.id = `question-${index}`;
+
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = question.text;
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+
+                question.options.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option ios-fix';
+                    optionDiv.textContent = `${option.id}) ${option.text}`;
+                    optionDiv.setAttribute('data-question', question.id);
+                    optionDiv.setAttribute('data-answer', option.id);
+
+                    // Добавляем оба обработчика для iOS
+                    optionDiv.addEventListener('click', () => handleAnswer(optionDiv, question.id, option.id));
+                    optionDiv.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        handleAnswer(optionDiv, question.id, option.id);
+                    });
+
+                    optionsDiv.appendChild(optionDiv);
+                });
+
+                questionDiv.appendChild(questionText);
+                questionDiv.appendChild(optionsDiv);
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question').forEach(q => {
+                q.classList.remove('active');
+            });
+
+            const questionElement = document.getElementById(`question-${index}`);
+            if (questionElement) {
+                questionElement.classList.add('active');
+            }
+
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Завершить' : 'Далее →';
+            nextBtn.disabled = !userAnswers[questions[currentQuestion]?.id];
+
+            setTimeout(() => {
+                prevBtn.classList.add('show');
+                nextBtn.classList.add('show');
+            }, 200);
+        }
+
+        function handleAnswer(option, questionId, answer) {
+            userAnswers[questionId] = answer;
+
+            const correctAnswer = correctAnswers[questionId];
+            const options = document.querySelectorAll(`[data-question="${questionId}"]`);
+
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt.getAttribute('data-answer') === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (opt.getAttribute('data-answer') === answer && answer !== correctAnswer) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            if (answer === correctAnswer) {
+                createButtonEffect(option, 'sparkle');
+                createButtonEffect(option, 'energy');
+                setTimeout(() => {
+                    createButtonEffect(document.getElementById('nextBtn'), 'particle');
+                }, 300);
+            }
+
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function createButtonEffect(button, effectType) {
+            const rect = button.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const container = document.getElementById('celebrationContainer');
+
+            switch(effectType) {
+                case 'sparkle':
+                    createSparkleEffect(container, centerX, centerY);
+                    break;
+                case 'energy':
+                    createEnergyRing(container, centerX, centerY);
+                    break;
+                case 'particle':
+                    createParticleExplosion(container, centerX, centerY);
+                    break;
+            }
+        }
+
+        function createSparkleEffect(container, x, y) {
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle ios-fix';
+
+                    const angle = (i / 6) * Math.PI * 2;
+                    const distance = 30 + Math.random() * 20;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+
+                    sparkle.style.setProperty('--tx', `${tx}px`);
+                    sparkle.style.setProperty('--ty', `${ty}px`);
+                    sparkle.style.left = x + 'px';
+                    sparkle.style.top = y + 'px';
+                    sparkle.style.background = `hsl(${Math.random() * 60 + 30}, 100%, 50%)`;
+
+                    container.appendChild(sparkle);
+
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            sparkle.parentNode.removeChild(sparkle);
+                        }
+                    }, 1200);
+                }, i * 100);
+            }
+        }
+
+        function createEnergyRing(container, x, y) {
+            const ring = document.createElement('div');
+            ring.className = 'energy-ring ios-fix';
+            ring.style.left = x + 'px';
+            ring.style.top = y + 'px';
+            ring.style.borderColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+
+            container.appendChild(ring);
+            setTimeout(() => {
+                if (ring.parentNode) {
+                    ring.parentNode.removeChild(ring);
+                }
+            }, 800);
+        }
+
+        function createParticleExplosion(container, x, y) {
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle ios-fix';
+
+                    const angle = (i / 8) * Math.PI * 2;
+                    const distance = 25 + Math.random() * 15;
+                    const px = Math.cos(angle) * distance;
+                    const py = Math.sin(angle) * distance;
+
+                    particle.style.setProperty('--px', `${px}px`);
+                    particle.style.setProperty('--py', `${py}px`);
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+
+                    container.appendChild(particle);
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 800);
+                }, i * 50);
+            }
+        }
+
+        function updateProgress() {
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `Вопрос ${currentQuestion + 1} из ${questions.length}`;
+        }
+
+        // Добавляем обработчики для навигационных кнопок
+        ['click', 'touchend'].forEach(eventType => {
+            document.getElementById('prevBtn').addEventListener(eventType, function(e) {
+                if (eventType === 'touchend') e.preventDefault();
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+
+            document.getElementById('nextBtn').addEventListener(eventType, function(e) {
+                if (eventType === 'touchend') e.preventDefault();
+                createButtonEffect(document.getElementById('nextBtn'), 'energy');
+
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                    document.getElementById('nextBtn').disabled = true;
+                } else {
+                    setTimeout(() => showResults(), 400);
+                }
+            });
+
+            document.getElementById('restartBtn').addEventListener(eventType, function(e) {
+                if (eventType === 'touchend') e.preventDefault();
+                createButtonEffect(this, 'energy');
+
+                setTimeout(() => {
+                    currentQuestion = 0;
+                    userAnswers = {};
+
+                    document.getElementById('score').style.display = 'none';
+                    this.style.display = 'none';
+
+                    startQuiz();
+                }, 400);
+            });
+        });
+
+        function showResults() {
+            let score = 0;
+            questions.forEach(question => {
+                if (userAnswers[question.id] === correctAnswers[question.id]) {
+                    score++;
+                }
+            });
+
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('navigation').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'none';
+
+            const scoreElement = document.getElementById('score');
+            const restartBtn = document.getElementById('restartBtn');
+
+            scoreElement.textContent = `Поздравляем! Вы набрали ${score} из ${questions.length} баллов!`;
+            scoreElement.style.display = 'block';
+            restartBtn.style.display = 'block';
+
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => {
+                    createButtonEffect(scoreElement, 'sparkle');
+                    createButtonEffect(restartBtn, 'particle');
+                }, i * 300);
+            }
+        }
+    </script>
+</body>
+</html>
