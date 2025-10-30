@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Викторина о святом Дмитрии Солунском</title>
     <style>
         * {
@@ -67,12 +67,14 @@
 
         .patron-subtitle {
             text-align: center;
-            color: #3498db;
+            color: #2c3e50;
             margin-bottom: 15px;
-            font-size: 1.1em;
-            font-weight: 600;
-            font-style: italic;
-        }
+            font-size: 1.5em;
+            font-weight: 700;
+            line-height: 1.3;
+            text-shadow: none;
+            font-style: normal;
+}
 
         .question {
             margin-bottom: 20px;
@@ -414,6 +416,86 @@
             z-index: 1000;
         }
 
+        /* Стили для формы регистрации */
+        .registration-form {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        /* Стили для таблицы лидеров */
+        .leaderboard {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .leaderboard h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .leaderboard-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .leaderboard-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .leaderboard-table tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .medal {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .gold { color: gold; }
+        .silver { color: silver; }
+        .bronze { color: #cd7f32; }
+
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -453,6 +535,12 @@
             .start-btn {
                 padding: 16px 25px;
                 min-height: 54px;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 8px 5px;
+                font-size: 0.9em;
             }
         }
 
@@ -495,6 +583,22 @@
             <div class="patron-subtitle">Покровитель города Дмитров</div>
             <p>Проверьте свои знания о жизни и деяниях великого святого</p>
             <p>Всего вопросов: 10</p>
+            
+            <div class="registration-form">
+                <div class="form-group">
+                    <label for="userName">Фамилия:</label>
+                    <input type="text" id="lastName" placeholder="Введите вашу фамилию" required>
+                </div>
+                <div class="form-group">
+                    <label for="userName">Имя:</label>
+                    <input type="text" id="firstName" placeholder="Введите ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <label for="userName">Отчество:</label>
+                    <input type="text" id="middleName" placeholder="Введите ваше отчество">
+                </div>
+            </div>
+            
             <button class="start-btn" id="startBtn">Начать викторину</button>
         </div>
 
@@ -514,6 +618,23 @@
 
         <div class="score" id="score"></div>
         <button class="restart-btn" id="restartBtn">Начать заново</button>
+        
+        <div class="leaderboard" id="leaderboard">
+            <h3>Таблица лидеров</h3>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Место</th>
+                        <th>ФИО</th>
+                        <th>Баллы</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <!-- Данные будут заполнены через JavaScript -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -634,6 +755,105 @@
 
         let currentQuestion = 0;
         let userAnswers = {};
+        let userData = {
+            lastName: '',
+            firstName: '',
+            middleName: '',
+            ip: ''
+        };
+
+        // Получаем IP пользователя
+        function getUserIP() {
+            return new Promise((resolve) => {
+                // Пытаемся получить IP через сторонний сервис
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        resolve(data.ip);
+                    })
+                    .catch(() => {
+                        // Если не удалось, используем локальный IP или заглушку
+                        resolve('local-' + Math.random().toString(36).substr(2, 9));
+                    });
+            });
+        }
+
+        // Сохраняем результат в localStorage
+        function saveResult(score) {
+            const results = getResults();
+            const userIP = userData.ip;
+            const fullName = `${userData.lastName} ${userData.firstName} ${userData.middleName}`.trim();
+            const date = new Date().toLocaleDateString('ru-RU');
+            
+            // Проверяем, есть ли уже результат для этого IP
+            const existingIndex = results.findIndex(result => result.ip === userIP);
+            
+            if (existingIndex !== -1) {
+                // Обновляем существующий результат, если новый лучше
+                if (score > results[existingIndex].score) {
+                    results[existingIndex] = {
+                        fullName: fullName,
+                        score: score,
+                        ip: userIP,
+                        date: date
+                    };
+                }
+            } else {
+                // Добавляем новый результат
+                results.push({
+                    fullName: fullName,
+                    score: score,
+                    ip: userIP,
+                    date: date
+                });
+            }
+            
+            // Сортируем по убыванию баллов и сохраняем только топ-10
+            results.sort((a, b) => b.score - a.score);
+            const topResults = results.slice(0, 10);
+            
+            localStorage.setItem('quizResults', JSON.stringify(topResults));
+            return topResults;
+        }
+
+        // Получаем результаты из localStorage
+        function getResults() {
+            const stored = localStorage.getItem('quizResults');
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        // Отображаем таблицу лидеров
+        function showLeaderboard() {
+            const results = getResults();
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            const leaderboard = document.getElementById('leaderboard');
+            
+            leaderboardBody.innerHTML = '';
+            
+            if (results.length === 0) {
+                leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Пока нет результатов</td></tr>';
+            } else {
+                results.forEach((result, index) => {
+                    const row = document.createElement('tr');
+                    
+                    let medal = '';
+                    if (index === 0) medal = '<span class="medal gold">🥇</span>';
+                    else if (index === 1) medal = '<span class="medal silver">🥈</span>';
+                    else if (index === 2) medal = '<span class="medal bronze">🥉</span>';
+                    
+                    row.innerHTML = `
+                        <td>${medal} ${index + 1}</td>
+                        <td>${result.fullName}</td>
+                        <td>${result.score}/10</td>
+                        <td>${result.date}</td>
+                    `;
+                    
+                    leaderboardBody.appendChild(row);
+                });
+            }
+            
+            leaderboard.style.display = 'block';
+        }
 
         // Используем touch события для iOS
         document.getElementById('startBtn').addEventListener('click', startQuiz);
@@ -642,7 +862,21 @@
             startQuiz();
         });
 
-        function startQuiz() {
+        async function startQuiz() {
+            const lastName = document.getElementById('lastName').value.trim();
+            const firstName = document.getElementById('firstName').value.trim();
+            const middleName = document.getElementById('middleName').value.trim();
+            
+            if (!lastName || !firstName) {
+                alert('Пожалуйста, заполните обязательные поля: Фамилия и Имя');
+                return;
+            }
+            
+            userData.lastName = lastName;
+            userData.firstName = firstName;
+            userData.middleName = middleName;
+            userData.ip = await getUserIP();
+
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('progressContainer').style.display = 'block';
             document.getElementById('quiz').style.display = 'block';
@@ -880,6 +1114,7 @@
 
                     document.getElementById('score').style.display = 'none';
                     this.style.display = 'none';
+                    document.getElementById('leaderboard').style.display = 'none';
 
                     startQuiz();
                 }, 400);
@@ -894,6 +1129,9 @@
                 }
             });
 
+            // Сохраняем результат
+            saveResult(score);
+
             document.getElementById('quiz').style.display = 'none';
             document.getElementById('navigation').style.display = 'none';
             document.getElementById('progressContainer').style.display = 'none';
@@ -904,6 +1142,9 @@
             scoreElement.textContent = `Поздравляем! Вы набрали ${score} из ${questions.length} баллов!`;
             scoreElement.style.display = 'block';
             restartBtn.style.display = 'block';
+
+            // Показываем таблицу лидеров
+            showLeaderboard();
 
             for (let i = 0; i < 2; i++) {
                 setTimeout(() => {
