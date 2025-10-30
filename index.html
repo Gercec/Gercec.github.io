@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Викторина о святом Дмитрии Солунском</title>
     <style>
         * {
@@ -74,7 +74,7 @@
             line-height: 1.3;
             text-shadow: none;
             font-style: normal;
-}
+        }
 
         .question {
             margin-bottom: 20px;
@@ -496,6 +496,35 @@
         .silver { color: silver; }
         .bronze { color: #cd7f32; }
 
+        .loading {
+            text-align: center;
+            padding: 10px;
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .error {
+            text-align: center;
+            padding: 10px;
+            color: #e74c3c;
+            font-weight: 600;
+            background-color: #f8d7da;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .success {
+            text-align: center;
+            padding: 10px;
+            color: #27ae60;
+            font-weight: 600;
+            background-color: #d4edda;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -586,15 +615,15 @@
             
             <div class="registration-form">
                 <div class="form-group">
-                    <label for="userName">Фамилия:</label>
+                    <label for="lastName">Фамилия:</label>
                     <input type="text" id="lastName" placeholder="Введите вашу фамилию" required>
                 </div>
                 <div class="form-group">
-                    <label for="userName">Имя:</label>
+                    <label for="firstName">Имя:</label>
                     <input type="text" id="firstName" placeholder="Введите ваше имя" required>
                 </div>
                 <div class="form-group">
-                    <label for="userName">Отчество:</label>
+                    <label for="middleName">Отчество:</label>
                     <input type="text" id="middleName" placeholder="Введите ваше отчество">
                 </div>
             </div>
@@ -620,14 +649,15 @@
         <button class="restart-btn" id="restartBtn">Начать заново</button>
         
         <div class="leaderboard" id="leaderboard">
-            <h3>Таблица лидеров</h3>
+            <h3>Общий рейтинг участников</h3>
+            <div class="loading" id="leaderboardLoading">Загрузка рейтинга...</div>
+            <div class="error" id="leaderboardError"></div>
             <table class="leaderboard-table">
                 <thead>
                     <tr>
                         <th>Место</th>
                         <th>ФИО</th>
                         <th>Баллы</th>
-                        <th>Дата</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody">
@@ -638,6 +668,14 @@
     </div>
 
     <script>
+        // Конфигурация GitHub с вашими данными
+        const GITHUB_CONFIG = {
+            owner: 'Gercec',
+            repo: 'Gercec.github.io', 
+            filePath: 'top.txt',
+            token: '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'
+        };
+
         // Добавляем полифиллы для iOS
         if (!window.requestAnimationFrame) {
             window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
@@ -758,101 +796,108 @@
         let userData = {
             lastName: '',
             firstName: '',
-            middleName: '',
-            ip: ''
+            middleName: ''
         };
 
-        // Получаем IP пользователя
-        function getUserIP() {
-            return new Promise((resolve) => {
-                // Пытаемся получить IP через сторонний сервис
-                fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => {
-                        resolve(data.ip);
-                    })
-                    .catch(() => {
-                        // Если не удалось, используем локальный IP или заглушку
-                        resolve('local-' + Math.random().toString(36).substr(2, 9));
-                    });
-            });
-        }
-
-        // Сохраняем результат в localStorage
-        function saveResult(score) {
-            const results = getResults();
-            const userIP = userData.ip;
-            const fullName = `${userData.lastName} ${userData.firstName} ${userData.middleName}`.trim();
-            const date = new Date().toLocaleDateString('ru-RU');
-            
-            // Проверяем, есть ли уже результат для этого IP
-            const existingIndex = results.findIndex(result => result.ip === userIP);
-            
-            if (existingIndex !== -1) {
-                // Обновляем существующий результат, если новый лучше
-                if (score > results[existingIndex].score) {
-                    results[existingIndex] = {
-                        fullName: fullName,
-                        score: score,
-                        ip: userIP,
-                        date: date
-                    };
+        // Функции для работы с GitHub
+        async function getLeaderboardFromGitHub() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.filePath}`);
+                
+                if (response.status === 404) {
+                    // Файл не существует, возвращаем пустой массив
+                    return [];
                 }
-            } else {
+                
+                if (!response.ok) {
+                    throw new Error(`Ошибка GitHub API: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const content = atob(data.content);
+                
+                // Разбиваем на строки и фильтруем пустые
+                return content.split('\n').filter(line => line.trim() !== '');
+            } catch (error) {
+                console.error('Ошибка при загрузке рейтинга:', error);
+                throw error;
+            }
+        }
+
+        async function saveToGitHub(score) {
+            try {
+                // Получаем текущий рейтинг
+                let currentLeaderboard;
+                try {
+                    currentLeaderboard = await getLeaderboardFromGitHub();
+                } catch (error) {
+                    // Если файла нет, создаем пустой массив
+                    currentLeaderboard = [];
+                }
+                
+                // Форматируем ФИО: Иванов И.И.
+                const formattedName = formatName(userData.lastName, userData.firstName, userData.middleName);
+                const newEntry = `${formattedName} - ${score} баллов`;
+                
                 // Добавляем новый результат
-                results.push({
-                    fullName: fullName,
-                    score: score,
-                    ip: userIP,
-                    date: date
+                currentLeaderboard.push(newEntry);
+                
+                // Ограничиваем количество записей (топ-50)
+                const limitedLeaderboard = currentLeaderboard.slice(0, 50);
+                
+                // Формируем содержимое файла
+                const content = limitedLeaderboard.join('\n');
+                
+                // Получаем SHA текущего файла (если существует)
+                let sha = null;
+                try {
+                    const fileInfo = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.filePath}`);
+                    if (fileInfo.ok) {
+                        const fileData = await fileInfo.json();
+                        sha = fileData.sha;
+                    }
+                } catch (error) {
+                    // Файл не существует, это нормально
+                }
+                
+                // Сохраняем на GitHub
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.filePath}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_CONFIG.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Обновление рейтинга: ${formattedName} - ${score} баллов`,
+                        content: btoa(unescape(encodeURIComponent(content))),
+                        sha: sha
+                    })
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`Ошибка GitHub API: ${response.status}`);
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Ошибка при сохранении в GitHub:', error);
+                throw error;
             }
-            
-            // Сортируем по убыванию баллов и сохраняем только топ-10
-            results.sort((a, b) => b.score - a.score);
-            const topResults = results.slice(0, 10);
-            
-            localStorage.setItem('quizResults', JSON.stringify(topResults));
-            return topResults;
         }
 
-        // Получаем результаты из localStorage
-        function getResults() {
-            const stored = localStorage.getItem('quizResults');
-            return stored ? JSON.parse(stored) : [];
-        }
-
-        // Отображаем таблицу лидеров
-        function showLeaderboard() {
-            const results = getResults();
-            const leaderboardBody = document.getElementById('leaderboardBody');
-            const leaderboard = document.getElementById('leaderboard');
+        function formatName(lastName, firstName, middleName) {
+            // Форматируем ФИО: Иванов И.И.
+            let result = lastName;
             
-            leaderboardBody.innerHTML = '';
-            
-            if (results.length === 0) {
-                leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Пока нет результатов</td></tr>';
-            } else {
-                results.forEach((result, index) => {
-                    const row = document.createElement('tr');
-                    
-                    let medal = '';
-                    if (index === 0) medal = '<span class="medal gold">🥇</span>';
-                    else if (index === 1) medal = '<span class="medal silver">🥈</span>';
-                    else if (index === 2) medal = '<span class="medal bronze">🥉</span>';
-                    
-                    row.innerHTML = `
-                        <td>${medal} ${index + 1}</td>
-                        <td>${result.fullName}</td>
-                        <td>${result.score}/10</td>
-                        <td>${result.date}</td>
-                    `;
-                    
-                    leaderboardBody.appendChild(row);
-                });
+            if (firstName) {
+                result += ' ' + firstName.charAt(0) + '.';
             }
             
-            leaderboard.style.display = 'block';
+            if (middleName) {
+                result += '' + middleName.charAt(0) + '.';
+            }
+            
+            return result;
         }
 
         // Используем touch события для iOS
@@ -875,7 +920,6 @@
             userData.lastName = lastName;
             userData.firstName = firstName;
             userData.middleName = middleName;
-            userData.ip = await getUserIP();
 
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('progressContainer').style.display = 'block';
@@ -1121,16 +1165,13 @@
             });
         });
 
-        function showResults() {
+        async function showResults() {
             let score = 0;
             questions.forEach(question => {
                 if (userAnswers[question.id] === correctAnswers[question.id]) {
                     score++;
                 }
             });
-
-            // Сохраняем результат
-            saveResult(score);
 
             document.getElementById('quiz').style.display = 'none';
             document.getElementById('navigation').style.display = 'none';
@@ -1143,8 +1184,16 @@
             scoreElement.style.display = 'block';
             restartBtn.style.display = 'block';
 
-            // Показываем таблицу лидеров
-            showLeaderboard();
+            // Пытаемся сохранить результат в GitHub
+            try {
+                await saveToGitHub(score);
+                // Обновляем таблицу лидеров после сохранения
+                await showLeaderboard();
+            } catch (error) {
+                console.error('Ошибка сохранения:', error);
+                // Все равно показываем результаты, даже если не удалось сохранить
+                await showLeaderboard();
+            }
 
             for (let i = 0; i < 2; i++) {
                 setTimeout(() => {
@@ -1153,6 +1202,54 @@
                 }, i * 300);
             }
         }
+
+        async function showLeaderboard() {
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            const loadingElement = document.getElementById('leaderboardLoading');
+            const errorElement = document.getElementById('leaderboardError');
+            const leaderboard = document.getElementById('leaderboard');
+            
+            leaderboardBody.innerHTML = '';
+            errorElement.style.display = 'none';
+            loadingElement.style.display = 'block';
+            leaderboard.style.display = 'block';
+            
+            try {
+                const results = await getLeaderboardFromGitHub();
+                loadingElement.style.display = 'none';
+                
+                if (results.length === 0) {
+                    leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Пока нет результатов</td></tr>';
+                } else {
+                    results.forEach((result, index) => {
+                        const row = document.createElement('tr');
+                        
+                        let medal = '';
+                        if (index === 0) medal = '<span class="medal gold">🥇</span>';
+                        else if (index === 1) medal = '<span class="medal silver">🥈</span>';
+                        else if (index === 2) medal = '<span class="medal bronze">🥉</span>';
+                        
+                        row.innerHTML = `
+                            <td>${medal} ${index + 1}</td>
+                            <td>${result.split(' - ')[0]}</td>
+                            <td>${result.split(' - ')[1]}</td>
+                        `;
+                        
+                        leaderboardBody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                loadingElement.style.display = 'none';
+                errorElement.textContent = 'Ошибка при загрузке рейтинга. Проверьте настройки GitHub.';
+                errorElement.style.display = 'block';
+                leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Не удалось загрузить рейтинг</td></tr>';
+            }
+        }
+
+        // Показываем таблицу лидеров при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            showLeaderboard();
+        });
     </script>
 </body>
 </html>
