@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Печорин - Герой нашего времени | Интерактивный портрет</title>
+    <title>Печорин - Герой нашего времени</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
@@ -532,6 +532,34 @@
             margin-top: 3rem;
         }
         
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .gif-container {
+            margin: 1rem 0;
+            max-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer-gif {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+        
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -790,6 +818,10 @@
             .stat-item {
                 min-width: 100%;
             }
+            
+            .gif-container {
+                max-width: 250px;
+            }
         }
     </style>
 </head>
@@ -1035,10 +1067,14 @@
     </main>
     
     <footer>
-        <div class="container">
-            <p>Интерактивный портрет литературного героя Григория Печорина</p>
-            <p>Все изображения используются в образовательных целях</p>
-            <p>© 2023 | Создано с помощью HTML, CSS и JavaScript</p>
+        <div class="container footer-content">
+            <div class="gif-container">
+                <img src="https://media1.tenor.com/m/6OyI3cIkHhcAAAAd/pocoyo-fw-motion.gif" alt="Pocoyo Motion GIF" class="footer-gif">
+            </div>
+            <div class="footer-text">
+                <p>Образовательный проект по литературе | Изучаем классику через современные технологии</p>
+                <p style="margin-top: 0.5rem; font-size: 0.8rem;">Сайт создан для изучения творчества М.Ю. Лермонтова и его героя Печорина</p>
+            </div>
         </div>
     </footer>
     
