@@ -80,7 +80,7 @@
             gap: 15px;
         }
         
-        .theme-toggle, .quiz-toggle {
+        .theme-toggle {
             background-color: var(--secondary-color);
             color: var(--primary-color);
             border: none;
@@ -95,7 +95,7 @@
             transition: var(--transition);
         }
         
-        .theme-toggle:hover, .quiz-toggle:hover {
+        .theme-toggle:hover, .quiz-toggle-main:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
@@ -456,6 +456,74 @@
             color: var(--primary-color);
         }
         
+        .quiz-section {
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .quiz-container {
+            background-color: var(--card-color);
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .quiz-toggle-main {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 auto;
+            transition: var(--transition);
+        }
+        
+        .quiz-description {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .quiz-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
         footer {
             background-color: var(--primary-color);
             color: var(--background-color);
@@ -713,6 +781,15 @@
                 max-width: 100%;
                 flex: 1 1 auto;
             }
+            
+            .quiz-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stat-item {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -726,9 +803,6 @@
             <div class="controls">
                 <button class="theme-toggle" id="themeToggle">
                     <i class="fas fa-moon"></i> Тема
-                </button>
-                <button class="quiz-toggle" id="quizToggle">
-                    <i class="fas fa-question-circle"></i> Викторина
                 </button>
             </div>
         </div>
@@ -932,7 +1006,41 @@
                 </div>
             </div>
         </section>
+        
+        <section class="quiz-section">
+            <div class="quiz-container">
+                <h2 class="section-title">Проверьте свои знания</h2>
+                <p class="quiz-description">Теперь, когда вы изучили характер, цитаты и жизненный путь Печорина, проверьте, насколько хорошо вы понимаете этого сложного героя. Викторина содержит 8 вопросов разной сложности.</p>
+                
+                <button class="quiz-toggle-main" id="quizToggleMain">
+                    <i class="fas fa-question-circle"></i> Начать викторину о Печорине
+                </button>
+                
+                <div class="quiz-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">вопросов</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">уровня сложности</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">познавательно</div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+    
+    <footer>
+        <div class="container">
+            <p>Интерактивный портрет литературного героя Григория Печорина</p>
+            <p>Все изображения используются в образовательных целях</p>
+            <p>© 2023 | Создано с помощью HTML, CSS и JavaScript</p>
+        </div>
+    </footer>
     
     <div class="modal" id="imageModal">
         <div class="modal-content">
@@ -1093,7 +1201,7 @@
         ];
         
         const themeToggle = document.getElementById('themeToggle');
-        const quizToggle = document.getElementById('quizToggle');
+        const quizToggleMain = document.getElementById('quizToggleMain');
         const imageModal = document.getElementById('imageModal');
         const quizModal = document.getElementById('quizModal');
         const modalClose = document.getElementById('modalClose');
@@ -1140,7 +1248,7 @@
         
         function setupEventListeners() {
             themeToggle.addEventListener('click', toggleTheme);
-            quizToggle.addEventListener('click', openQuiz);
+            quizToggleMain.addEventListener('click', openQuiz);
             modalClose.addEventListener('click', () => closeModal(imageModal));
             quizClose.addEventListener('click', () => closeModal(quizModal));
             
