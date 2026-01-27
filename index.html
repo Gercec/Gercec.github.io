@@ -464,7 +464,6 @@
             margin-top: 3rem;
         }
         
-        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -532,7 +531,6 @@
             z-index: 10;
         }
         
-        /* Викторина */
         .quiz-modal {
             display: none;
         }
@@ -944,7 +942,6 @@
         </div>
     </footer>
     
-    <!-- Модальное окно для изображений -->
     <div class="modal" id="imageModal">
         <div class="modal-content">
             <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
@@ -956,18 +953,15 @@
         </div>
     </div>
     
-    <!-- Модальное окно для викторины -->
     <div class="modal quiz-modal" id="quizModal">
         <div class="modal-content">
             <button class="modal-close" id="quizClose"><i class="fas fa-times"></i></button>
             <div class="quiz-content" id="quizContent">
-                <!-- Контент викторины будет сгенерирован JavaScript -->
             </div>
         </div>
     </div>
     
     <script>
-        // Данные для модальных окон с изображениями (с обновленными описаниями)
         const imageData = [
             {
                 id: 1,
@@ -996,7 +990,6 @@
             }
         ];
         
-        // Цитаты Печорина
         const quotes = [
             {
                 text: "Я был готов любить весь мир — меня никто не понял: и я выучился ненавидеть. Моя бесцветная молодость протекала в борьбе с собой и светом; лучшие мои чувства, боясь насмешки, я хоронил в глубине сердца: они там и умерли.",
@@ -1024,36 +1017,89 @@
             }
         ];
         
-        // Вопросы для викторины
         const quizQuestions = [
             {
-                question: "Какой военный чин имел Печорин?",
-                options: ["Прапорщик", "Поручик", "Штабс-капитан", "Капитан"],
-                correct: 2
-            },
-            {
-                question: "Как звали черкесскую княжну, которую полюбил Печорин?",
-                options: ["Мери", "Бэла", "Вера", "Дарина"],
+                question: "Что символизирует кавказская природа в романе по отношению к Печорину?",
+                options: [
+                    "Место его духовного возрождения",
+                    "Контраст с его внутренней опустошенностью",
+                    "Символ его военных побед",
+                    "Место для романтических приключений"
+                ],
                 correct: 1
             },
             {
-                question: "С кем из героев Печорин стрелялся на дуэли?",
-                options: ["С Максимом Максимычем", "С доктором Вернером", "С Грушницким", "С Вуличем"],
+                question: "Какой из этих поступков НЕ характерен для Печорина?",
+                options: [
+                    "Искренняя самопожертвенная любовь",
+                    "Холодный самоанализ своих мотивов",
+                    "Эксперименты над чувствами других",
+                    "Создание конфликтных ситуаций из скуки"
+                ],
+                correct: 0
+            },
+            {
+                question: "Как воспринимает Печорин понятие 'судьба' или 'фатум'?",
+                options: [
+                    "Как предопределение, которому нельзя противиться",
+                    "Как вызов, который нужно принимать",
+                    "Как оправдание собственным поступкам",
+                    "Как игру, в которую интересно играть"
+                ],
+                correct: 3
+            },
+            {
+                question: "Что является главным мотивом поступков Печорина?",
+                options: [
+                    "Стремление к славе и признанию",
+                    "Поиск смысла жизни",
+                    "Борьба со скукой и поиск острых ощущений",
+                    "Желание помочь другим людям"
+                ],
                 correct: 2
             },
             {
-                question: "Как называется первая повесть в романе «Герой нашего времени»?",
-                options: ["«Княжна Мери»", "«Бэла»", "«Максим Максимыч»", "«Фаталист»"],
+                question: "Какую роль в романе играет дневник Печорина?",
+                options: [
+                    "Доказательство его безумия",
+                    "Средство для самооправдания",
+                    "Ключ к пониманию его внутреннего мира",
+                    "Литературный прием для заполнения сюжета"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что общего у Печорина с другими 'лишними людьми' русской литературы?",
+                options: [
+                    "Богатство и аристократическое происхождение",
+                    "Неспособность найти свое место в жизни",
+                    "Служба на Кавказе",
+                    "Трагическая смерть в молодости"
+                ],
                 correct: 1
             },
             {
-                question: "Как умер Печорин?",
-                options: ["Погиб на дуэли", "Умер от болезни", "Погиб в дороге из Персии", "Утонул в море"],
+                question: "Как относится Печорин к женщинам?",
+                options: [
+                    "Как к равным партнерам",
+                    "Как к объектам для психологических экспериментов",
+                    "Как к возможным спасительницам от скуки",
+                    "Как к помехе своей свободе"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что стало причиной смерти Печорина?",
+                options: [
+                    "Дуэль с достойным противником",
+                    "Болезнь во время путешествия",
+                    "Несчастный случай при невыясненных обстоятельствах",
+                    "Самоубийство из-за разочарования в жизни"
+                ],
                 correct: 2
             }
         ];
         
-        // Элементы DOM
         const themeToggle = document.getElementById('themeToggle');
         const quizToggle = document.getElementById('quizToggle');
         const imageModal = document.getElementById('imageModal');
@@ -1070,7 +1116,6 @@
         const prevQuoteBtn = document.getElementById('prevQuote');
         const nextQuoteBtn = document.getElementById('nextQuote');
         
-        // Переменные состояния
         let currentQuoteIndex = 0;
         let currentTheme = 'light';
         let quizState = {
@@ -1079,22 +1124,13 @@
             userAnswers: []
         };
         
-        // Инициализация страницы
         document.addEventListener('DOMContentLoaded', function() {
-            // Анимация появления элементов
             animateElements();
-            
-            // Установка обработчиков событий
             setupEventListeners();
-            
-            // Загрузка первой цитаты
             updateQuote();
-            
-            // Инициализация викторины
             initQuiz();
         });
         
-        // Анимация появления элементов
         function animateElements() {
             const elements = document.querySelectorAll('.collage-item, .trait-item, .timeline-item');
             
@@ -1110,19 +1146,12 @@
             });
         }
         
-        // Настройка обработчиков событий
         function setupEventListeners() {
-            // Переключение темы
             themeToggle.addEventListener('click', toggleTheme);
-            
-            // Открытие викторины
             quizToggle.addEventListener('click', openQuiz);
-            
-            // Закрытие модальных окон
             modalClose.addEventListener('click', () => closeModal(imageModal));
             quizClose.addEventListener('click', () => closeModal(quizModal));
             
-            // Закрытие модальных окон при клике вне контента
             imageModal.addEventListener('click', (e) => {
                 if (e.target === imageModal) closeModal(imageModal);
             });
@@ -1131,7 +1160,6 @@
                 if (e.target === quizModal) closeModal(quizModal);
             });
             
-            // Открытие модального окна с изображением
             collageItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const modalId = parseInt(item.getAttribute('data-modal'));
@@ -1139,7 +1167,6 @@
                 });
             });
             
-            // Раскрытие/скрытие черт характера
             traitItems.forEach(item => {
                 const toggleBtn = item.querySelector('.trait-toggle');
                 toggleBtn.addEventListener('click', (e) => {
@@ -1157,12 +1184,10 @@
                 });
             });
             
-            // Навигация по цитатам
             prevQuoteBtn.addEventListener('click', showPrevQuote);
             nextQuoteBtn.addEventListener('click', showNextQuote);
         }
         
-        // Переключение темы
         function toggleTheme() {
             const body = document.body;
             const icon = themeToggle.querySelector('i');
@@ -1182,12 +1207,10 @@
             }
         }
         
-        // Открытие модального окна с изображением
         function openImageModal(id) {
             const data = imageData.find(item => item.id === id);
             if (!data) return;
             
-            // Определяем URL изображения
             let imageUrl = '';
             switch(id) {
                 case 1: imageUrl = 'https://github.com/Gercec/Gercec.github.io/raw/main/img/3x3.png'; break;
@@ -1205,31 +1228,26 @@
             document.body.style.overflow = 'hidden';
         }
         
-        // Закрытие модального окна
         function closeModal(modal) {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
         
-        // Обновление цитаты
         function updateQuote() {
             quoteText.textContent = quotes[currentQuoteIndex].text;
             quoteAuthor.textContent = quotes[currentQuoteIndex].author;
         }
         
-        // Показать предыдущую цитату
         function showPrevQuote() {
             currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
             updateQuote();
         }
         
-        // Показать следующую цитату
         function showNextQuote() {
             currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
             updateQuote();
         }
         
-        // Инициализация викторины
         function initQuiz() {
             quizState = {
                 currentQuestion: 0,
@@ -1238,14 +1256,12 @@
             };
         }
         
-        // Открытие викторины
         function openQuiz() {
             renderQuizQuestion();
             quizModal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
         
-        // Отображение вопроса викторины
         function renderQuizQuestion() {
             const quizContent = document.getElementById('quizContent');
             const question = quizQuestions[quizState.currentQuestion];
@@ -1263,11 +1279,11 @@
             const progress = ((quizState.currentQuestion + 1) / quizQuestions.length) * 100;
             
             quizContent.innerHTML = `
-                <h2 class="quiz-title">Викторина о Печорине</h2>
+                <h2 class="quiz-title">Викторина: Насколько вы понимаете Печорина?</h2>
                 <div class="progress-bar">
                     <div class="progress" style="width: ${progress}%"></div>
                 </div>
-                <div class="quiz-question">${question.question}</div>
+                <div class="quiz-question">Вопрос ${quizState.currentQuestion + 1} из ${quizQuestions.length}: ${question.question}</div>
                 <div class="quiz-options">${optionsHTML}</div>
                 <div class="quiz-nav">
                     <button class="quiz-btn" id="prevQuizBtn" ${quizState.currentQuestion === 0 ? 'disabled' : ''}>
@@ -1279,23 +1295,19 @@
                 </div>
             `;
             
-            // Обработчики для опций викторины
             document.querySelectorAll('.quiz-option').forEach(option => {
                 option.addEventListener('click', () => selectQuizOption(parseInt(option.getAttribute('data-index'))));
             });
             
-            // Обработчики для кнопок навигации
             document.getElementById('prevQuizBtn').addEventListener('click', showPrevQuizQuestion);
             document.getElementById('nextQuizBtn').addEventListener('click', showNextQuizQuestion);
         }
         
-        // Выбор опции в викторине
         function selectQuizOption(optionIndex) {
             quizState.userAnswers[quizState.currentQuestion] = optionIndex;
             renderQuizQuestion();
         }
         
-        // Показать предыдущий вопрос викторины
         function showPrevQuizQuestion() {
             if (quizState.currentQuestion > 0) {
                 quizState.currentQuestion--;
@@ -1303,7 +1315,6 @@
             }
         }
         
-        // Показать следующий вопрос викторины или завершить викторину
         function showNextQuizQuestion() {
             if (quizState.currentQuestion < quizQuestions.length - 1) {
                 quizState.currentQuestion++;
@@ -1313,9 +1324,7 @@
             }
         }
         
-        // Завершение викторины и показ результатов
         function finishQuiz() {
-            // Подсчет результатов
             let score = 0;
             quizQuestions.forEach((question, index) => {
                 if (quizState.userAnswers[index] === question.correct) {
@@ -1329,14 +1338,20 @@
             const percentage = Math.round((score / quizQuestions.length) * 100);
             
             let message = '';
-            if (percentage >= 80) {
-                message = 'Отлично! Вы настоящий знаток творчества Лермонтова и характера Печорина!';
-            } else if (percentage >= 60) {
-                message = 'Хорошо! Вы хорошо знакомы с романом "Герой нашего времени".';
-            } else if (percentage >= 40) {
-                message = 'Неплохо! Вы знаете основные моменты, связанные с Печориным.';
+            let level = '';
+            
+            if (percentage >= 90) {
+                message = 'Превосходно! Вы понимаете Печорина почти как сам Лермонтов!';
+                level = 'Знаток психологии Печорина';
+            } else if (percentage >= 70) {
+                message = 'Отлично! Вы хорошо разбираетесь в характере Печорина и мотивах его поступков.';
+                level = 'Понимающий читатель';
+            } else if (percentage >= 50) {
+                message = 'Хорошо! Вы знакомы с основными чертами характера Печорина.';
+                level = 'Знакомый с героем';
             } else {
-                message = 'Попробуйте перечитать роман "Герой нашего времени" и пройти викторину снова!';
+                message = 'Попробуйте еще раз внимательнее изучить характер Печорина на этой странице!';
+                level = 'Начинающий исследователь';
             }
             
             quizContent.innerHTML = `
@@ -1344,6 +1359,9 @@
                     <h2 class="result-title">Результаты викторины</h2>
                     <div class="result-score">${score}/${quizQuestions.length}</div>
                     <div class="result-message">${message}</div>
+                    <div style="font-size: 1.3rem; color: var(--secondary-color); font-weight: 600; margin: 1rem 0;">
+                        Ваш уровень: ${level}
+                    </div>
                     
                     <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Правильные ответы:</h3>
                     ${quizQuestions.map((question, index) => {
@@ -1367,7 +1385,6 @@
             document.getElementById('restartQuizBtn').addEventListener('click', restartQuiz);
         }
         
-        // Перезапуск викторины
         function restartQuiz() {
             initQuiz();
             renderQuizQuestion();
