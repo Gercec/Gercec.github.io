@@ -3,1871 +3,705 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Герой нашего времени • Тесты</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <title>Судебная система РФ | Гид по карьере</title>
+    <!-- Шрифты и иконки -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        :root {
-            --primary: #4a6fa5;
-            --primary-dark: #385d8a;
-            --secondary: #6d9dc5;
-            --accent: #ff7e5f;
-            --light: #f8f9fa;
-            --gray: #e9ecef;
-            --dark: #343a40;
-            --text: #495057;
-            --text-light: #6c757d;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            color: var(--text);
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f0f5fd 0%, #e9f0f7 100%);
+            color: #0a1f33;
+            line-height: 1.5;
+            padding: 2rem 1rem;
             min-height: 100vh;
         }
-        
-        .container {
-            max-width: 1400px;
+
+        .page {
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 48px;
+            box-shadow: 0 30px 60px -25px rgba(0, 30, 70, 0.3);
+            padding: 2.5rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
         }
-        
-        /* Header */
-        header {
-            text-align: center;
-            padding: 60px 20px 50px;
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 300px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
-            z-index: -1;
-        }
-        
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        h1 {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 3.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: white;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        h1 span {
-            display: block;
-            font-size: 1.8rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.9);
-            margin-top: 10px;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.85);
-            max-width: 700px;
-            margin: 0 auto 25px;
-            font-weight: 300;
-            line-height: 1.8;
-        }
-        
-        .author {
-            display: inline-block;
-            padding: 12px 25px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            font-size: 1.1rem;
-            color: white;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Controls */
-        .controls {
+
+        /* Шапка с гербом */
+        .header {
             display: flex;
-            justify-content: center;
-            margin-bottom: 60px;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(31, 90, 150, 0.2);
+            flex-wrap: wrap;
         }
-        
-        .control-btn {
-            padding: 18px 40px;
+
+        .header-logo {
+            background: #0a2540;
+            color: white;
+            width: 90px;
+            height: 90px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 15px 25px -10px #0a2540;
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0a2540, #1f4a7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+        }
+
+        .header-title .sub {
+            font-size: 1.2rem;
+            color: #2d4b6e;
+            background: rgba(255,255,255,0.5);
+            display: inline-block;
+            padding: 0.4rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .header-date {
             background: white;
-            border: none;
-            color: var(--primary);
-            border-radius: var(--radius);
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            color: #1f4973;
+        }
+
+        /* Навигация по темам */
+        .nav-circles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 2.5rem;
+        }
+
+        .nav-item {
+            background: white;
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
             font-weight: 600;
+            font-size: 1.1rem;
+            color: #0a2540;
+            box-shadow: 0 8px 18px -8px rgba(0,40,80,0.15);
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: 0.2s;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
+            text-decoration: none;
         }
-        
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+
+        .nav-item i {
+            font-size: 1.3rem;
+            color: #1f5a96;
         }
-        
-        .control-btn:hover {
-            color: white;
+
+        .nav-item:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
+            background: #f0f7ff;
+            box-shadow: 0 15px 25px -10px #1f5a9633;
         }
-        
-        .control-btn:hover::before {
-            opacity: 1;
+
+        .nav-item.active {
+            background: #0a2540;
+            color: white;
         }
-        
-        .control-btn i {
-            transition: var(--transition);
+
+        .nav-item.active i {
+            color: white;
         }
-        
-        .control-btn:hover i {
-            transform: rotate(180deg);
-        }
-        
-        /* Cards Grid */
-        .quizzes-grid {
+
+        /* Сетка карточек */
+        .topics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 80px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
         }
-        
-        .quiz-card {
+
+        .topic-card {
             background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            border: 1px solid var(--gray);
-            transition: var(--transition);
-            height: 100%;
+            border-radius: 36px;
+            padding: 2rem;
+            box-shadow: 0 15px 30px -12px rgba(0, 35, 70, 0.12);
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: 0.2s;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px -15px #1f5a9640;
+        }
+
+        .topic-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #e9f2fc, #d6e6ff);
+            border-radius: 30px;
             display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        
-        .quiz-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--secondary);
-        }
-        
-        .quiz-header {
-            padding: 25px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .quiz-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: rotate(45deg);
-        }
-        
-        .quiz-icon {
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: #0a2540;
             font-size: 2.2rem;
-            color: white;
-            margin-bottom: 15px;
-            opacity: 0.9;
-            background: rgba(255, 255, 255, 0.15);
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            backdrop-filter: blur(5px);
         }
-        
-        .quiz-title {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 1.7rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: white;
+
+        .topic-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: #0f2d4a;
+            border-left: 8px solid #1f5a96;
+            padding-left: 1rem;
         }
-        
-        .quiz-subtitle {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 300;
+
+        .topic-content {
+            color: #1f3e5c;
+            font-size: 1.05rem;
         }
-        
-        .quiz-number {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-weight: 600;
-            color: white;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 6px 12px;
+
+        .topic-content p {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Развертки */
+        .dropdown {
+            background: #f4faff;
             border-radius: 20px;
-            backdrop-filter: blur(5px);
+            margin: 1rem 0 0.5rem 0;
+            border: 1px solid #d6e4f5;
         }
-        
-        .quiz-content {
-            padding: 25px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            background: white;
-        }
-        
-        .quiz-description {
-            margin-bottom: 25px;
-            color: var(--text-light);
-            line-height: 1.7;
-            flex-grow: 1;
-            font-size: 0.95rem;
-        }
-        
-        .quiz-stats {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--gray);
-            padding-top: 20px;
-        }
-        
-        .quiz-stats span {
+
+        .dropdown-header {
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            border-radius: 20px;
+            transition: 0.2s;
         }
-        
-        .start-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 20px;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
+
+        .dropdown-header:hover {
+            background: #e5effa;
         }
-        
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+
+        .dropdown-header i {
+            transition: transform 0.2s;
+            color: #1f5a96;
         }
-        
-        .start-btn:hover {
-            color: white;
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-        
-        .start-btn:hover::before {
-            opacity: 1;
-        }
-        
-        .start-btn i {
-            transition: var(--transition);
-        }
-        
-        .start-btn:hover i {
-            transform: translateX(5px);
-        }
-        
-        /* Modal */
-        .quiz-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            overflow-y: auto;
-            backdrop-filter: blur(5px);
-        }
-        
-        .modal-content {
-            background: white;
-            margin: 40px auto;
-            width: 90%;
-            max-width: 800px;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            position: relative;
-            animation: modalAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        @keyframes modalAppear {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        
-        .modal-header {
-            padding: 30px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .modal-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            opacity: 0.3;
-        }
-        
-        .modal-header h2 {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin: 0;
-            padding-right: 40px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .close-modal {
-            position: relative;
-            cursor: pointer;
-            color: white;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: var(--transition);
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            border: none;
-            flex-shrink: 0;
-            font-size: 1.5rem;
-            z-index: 1;
-        }
-        
-        .close-modal:hover {
-            background: rgba(255, 255, 255, 0.3);
+
+        .dropdown-header.active i {
             transform: rotate(90deg);
         }
-        
-        .question-container {
-            padding: 40px 35px;
-            min-height: 400px;
+
+        .dropdown-content {
+            padding: 0 1.2rem 1.2rem 3rem;
+            display: none;
+            color: #2d4b6e;
         }
-        
-        .question {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 1.6rem;
-            margin-bottom: 35px;
-            color: var(--dark);
-            font-weight: 600;
-            line-height: 1.5;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--gray);
+
+        .dropdown-content.show {
+            display: block;
         }
-        
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 40px;
+
+        /* Классы - кликабельные с окрашиванием */
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
         }
-        
-        .option {
-            padding: 18px 25px;
-            background: white;
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .option::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 5px;
-            background: var(--primary);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .option:hover {
-            border-color: var(--primary);
-            background: rgba(74, 111, 165, 0.05);
-            transform: translateX(5px);
-        }
-        
-        .option:hover::before {
-            opacity: 1;
-        }
-        
-        .option.selected {
-            border-color: var(--primary);
-            background: rgba(74, 111, 165, 0.1);
-            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.1);
-        }
-        
-        .option.selected::before {
-            opacity: 1;
-        }
-        
-        .option.correct {
-            border-color: #28a745;
-            background: rgba(40, 167, 69, 0.1);
-        }
-        
-        .option.correct::before {
-            background: #28a745;
-        }
-        
-        .option.incorrect {
-            border-color: #dc3545;
-            background: rgba(220, 53, 69, 0.1);
-        }
-        
-        .option.incorrect::before {
-            background: #dc3545;
-        }
-        
-        .option-letter {
+
+        .class-item {
+            background: #e9f2fc;
+            border-radius: 30px;
+            padding: 1rem 0.5rem;
+            text-align: center;
             font-weight: 700;
-            margin-right: 20px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            min-width: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(74, 111, 165, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            color: #0a2540;
+            border: 1px solid #b9d4f0;
+            cursor: pointer;
+            transition: 0.2s;
         }
-        
-        .navigation {
+
+        .class-item:hover {
+            background: #d4e3fc;
+            transform: scale(1.02);
+        }
+
+        .class-item.selected {
+            background: #0a2540;
+            color: white;
+            border-color: #0a2540;
+        }
+
+        .class-info {
+            background: #f0f7ff;
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin-top: 1.2rem;
+            border-left: 4px solid #1f5a96;
+            min-height: 70px;
+            line-height: 1.5;
+        }
+
+        .badge {
+            background: #ddebff;
+            color: #0f3d6a;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+
+        .salary-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 25px 35px;
-            border-top: 2px solid var(--gray);
-            background: white;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e3ebf5;
+            font-weight: 500;
         }
-        
-        .btn {
-            padding: 14px 28px;
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: var(--transition);
-            min-width: 150px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+
+        .salary-value {
+            font-weight: 700;
+            color: #003c78;
         }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+
+        .pension-highlight {
+            background: #e4f0fa;
+            border-radius: 24px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            border-left: 6px solid #1f5a96;
         }
-        
-        .btn:hover {
-            color: white;
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-        
-        .btn:hover::before {
-            opacity: 1;
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn:disabled:hover::before {
-            opacity: 0;
-        }
-        
-        .btn:disabled:hover {
-            color: var(--primary);
-            border-color: var(--gray);
-        }
-        
-        .question-counter {
-            color: var(--primary);
-            font-size: 1.1rem;
-            font-weight: 600;
-            background: rgba(74, 111, 165, 0.1);
-            padding: 10px 20px;
+
+        .step-box {
+            background: #f4faff;
             border-radius: 20px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
-        
-        .results {
-            padding: 60px 40px;
-            text-align: center;
-        }
-        
-        .results h2 {
-            font-family: 'Source Serif Pro', serif;
-            color: var(--dark);
-            margin-bottom: 30px;
-            font-size: 2rem;
-            font-weight: 600;
-        }
-        
-        .score-circle {
-            width: 180px;
-            height: 180px;
-            margin: 30px auto;
-            position: relative;
+
+        .step-num {
+            width: 45px;
+            height: 45px;
+            background: #0a2540;
+            color: white;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        
-        .score-circle svg {
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg);
-        }
-        
-        .score-circle circle {
-            fill: none;
-            stroke-width: 8;
-            stroke-linecap: round;
-            transform: translate(10px, 10px);
-        }
-        
-        .circle-bg {
-            stroke: var(--gray);
-        }
-        
-        .circle-progress {
-            stroke: var(--primary);
-            stroke-dasharray: 440;
-            stroke-dashoffset: 440;
-            transition: stroke-dashoffset 1s ease;
-        }
-        
-        .score-number {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
             font-weight: 700;
-            color: var(--primary);
+            font-size: 1.2rem;
         }
-        
-        .score-text {
-            font-size: 1.3rem;
-            color: var(--text-light);
-            margin-bottom: 40px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.7;
+
+        .facts {
+            background: linear-gradient(145deg, #f6faff, #ffffff);
+            border-radius: 36px;
+            padding: 2rem;
+            margin: 2.5rem 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            border: 1px solid rgba(31,90,150,0.1);
         }
-        
-        .restart-btn {
-            padding: 18px 45px;
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
+
+        .fact-item {
+            text-align: center;
         }
-        
-        .restart-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+
+        .fact-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0a2540;
+            line-height: 1.2;
         }
-        
-        .restart-btn:hover {
-            color: white;
-            border-color: transparent;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(74, 111, 165, 0.2);
+
+        .fact-label {
+            color: #446688;
+            font-size: 0.95rem;
         }
-        
-        .restart-btn:hover::before {
-            opacity: 1;
+
+        .footer-note {
+            margin-top: 3rem;
+            padding: 1.8rem;
+            text-align: center;
+            background: #e5effa;
+            border-radius: 40px;
+            color: #1f4973;
+            font-size: 0.95rem;
+            border: 1px solid white;
         }
-        
-        .restart-btn i {
-            transition: var(--transition);
-        }
-        
-        .restart-btn:hover i {
-            transform: rotate(180deg);
-        }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .quizzes-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            h1 span {
-                font-size: 1.5rem;
-            }
-            
-            .quizzes-grid {
+
+        @media (max-width: 800px) {
+            .topics-grid {
                 grid-template-columns: 1fr;
-                gap: 25px;
             }
-            
-            .controls {
-                padding: 0 20px;
+            .facts {
+                grid-template-columns: 1fr 1fr;
             }
-            
-            .control-btn {
-                width: 100%;
-                max-width: 300px;
+            .classes-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
-            
-            .modal-content {
-                width: 95%;
-                margin: 20px auto;
-            }
-            
-            .modal-header {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 20px;
-            }
-            
-            .modal-header h2 {
-                padding-right: 0;
-                margin-bottom: 15px;
-                font-size: 1.6rem;
-            }
-            
-            .close-modal {
-                align-self: flex-end;
-            }
-            
-            .navigation {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .question-container {
-                padding: 25px 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 20px 15px;
-            }
-            
-            h1 {
+            .header h1 {
                 font-size: 2rem;
-            }
-            
-            .option {
-                padding: 15px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <h1>Герой нашего времени<br><span>Литературные тесты</span></h1>
-                <p class="subtitle">Исследуйте классический роман Михаила Лермонтова через интерактивные тесты по разным аспектам произведения</p>
-                <div class="author">Михаил Юрьевич Лермонтов • 1839—1840</div>
-            </div>
-        </header>
-        
-        <main>
-            <div class="controls">
-                <button class="control-btn" id="randomBtn">
-                    <i class="fas fa-random"></i> Случайный тест
-                </button>
-            </div>
-            
-            <div class="quizzes-grid" id="quizzesGrid">
-                <!-- Карточки будут сгенерированы JavaScript -->
-            </div>
-        </main>
+<div class="page">
+
+    <!-- Шапка с гербом -->
+    <div class="header">
+        <div class="header-logo">
+            <i class="fas fa-gavel"></i>
+        </div>
+        <div class="header-title">
+            <h1>Судебная система Российской Федерации</h1>
+            <div class="sub">Карьера, зарплаты, пенсия, квалификация</div>
+        </div>
+        <div class="header-date">
+            <i class="far fa-calendar-alt"></i> 2026
+        </div>
     </div>
-    
-    <!-- Модальное окно с тестом -->
-    <div id="quizModal" class="quiz-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="quizTitle">Тест: Загрузка...</h2>
-                <button class="close-modal" id="closeModal">&times;</button>
-            </div>
-            
-            <div id="questionContainer" class="question-container">
-                <!-- Вопросы будут вставлены JavaScript -->
-            </div>
-            
-            <div class="navigation">
-                <button class="btn" id="prevBtn" disabled>Назад</button>
-                <div class="question-counter">
-                    Вопрос <span id="currentQuestion">1</span> из <span id="totalQuestions">10</span>
+
+    <!-- Навигация -->
+    <div class="nav-circles">
+        <a href="#career" class="nav-item"><i class="fas fa-ladder"></i> Служебная лестница</a>
+        <a href="#classes" class="nav-item"><i class="fas fa-star"></i> Квалификационные классы</a>
+        <a href="#salary" class="nav-item"><i class="fas fa-ruble-sign"></i> Зарплаты</a>
+        <a href="#pension" class="nav-item"><i class="fas fa-umbrella-beach"></i> Выход на пенсию</a>
+        <a href="#howto" class="nav-item"><i class="fas fa-door-open"></i> Как попасть</a>
+    </div>
+
+    <!-- Сетка тем -->
+    <div class="topics-grid">
+        <!-- 1. Служебная лестница -->
+        <div class="topic-card" id="career">
+            <div class="topic-icon"><i class="fas fa-ladder"></i></div>
+            <div class="topic-title">Служебная лестница</div>
+            <div class="topic-content">
+                <p><strong>Нажмите, чтобы развернуть подробности:</strong></p>
+                
+                <div class="dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(this)">
+                        <i class="fas fa-chevron-right"></i> <strong>Секретарь / помощник судьи</strong>
+                    </div>
+                    <div class="dropdown-content">
+                        <p><i class="fas fa-user-graduate"></i> <strong>Секретарь суда:</strong> ведёт протокол, извещает участников, оформляет документы. Можно работать со средним профессиональным или высшим образованием.</p>
+                        <p><i class="fas fa-user-tie"></i> <strong>Помощник судьи:</strong> готовит проекты решений, изучает законы. Нужно высшее юридическое образование.</p>
+                        <div class="badge">Зарплата: 40–85 тыс. ₽</div>
+                    </div>
                 </div>
-                <button class="btn" id="nextBtn">Далее</button>
+
+                <div class="dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(this)">
+                        <i class="fas fa-chevron-right"></i> <strong>Мировой судья</strong>
+                    </div>
+                    <div class="dropdown-content">
+                        <p><i class="fas fa-scale-balanced"></i> Рассматривает небольшие дела — например, разводы, мелкие кражи, административные нарушения.</p>
+                        <p><strong>Требования:</strong> возраст от 25 лет, стаж работы юристом не меньше 5 лет, нужно сдать экзамен и получить рекомендацию.</p>
+                        <p><strong>Назначение:</strong> первый раз на 3 или 5 лет, потом можно стать судьёй без ограничения срока.</p>
+                        <div class="badge">Зарплата: 130–160 тыс. ₽</div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(this)">
+                        <i class="fas fa-chevron-right"></i> <strong>Судья районного суда</strong>
+                    </div>
+                    <div class="dropdown-content">
+                        <p><i class="fas fa-building"></i> Это основное звено — здесь рассматривают большинство гражданских и уголовных дел.</p>
+                        <p><strong>Требования:</strong> от 25 лет, стаж не меньше 5 лет.</p>
+                        <p><strong>Назначение:</strong> бессрочно, но можно работать только до 70 лет.</p>
+                        <div class="badge">Зарплата: 150–220 тыс. ₽</div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(this)">
+                        <i class="fas fa-chevron-right"></i> <strong>Судья областного суда</strong>
+                    </div>
+                    <div class="dropdown-content">
+                        <p><i class="fas fa-gavel"></i> Проверяет решения районных судов (апелляция, кассация) и рассматривает сложные дела.</p>
+                        <p><strong>Требования:</strong> обычно нужно быть старше 30 лет и иметь стаж от 7 лет.</p>
+                        <div class="badge">Зарплата: 220–300 тыс. ₽</div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(this)">
+                        <i class="fas fa-chevron-right"></i> <strong>Судья Верховного Суда РФ</strong>
+                    </div>
+                    <div class="dropdown-content">
+                        <p><i class="fas fa-crown"></i> Самая высокая судебная инстанция. Судьи Верховного суда дают разъяснения и пересматривают дела в порядке надзора.</p>
+                        <p><strong>Требования:</strong> возраст от 35 лет, стаж не меньше 10 лет.</p>
+                        <p><strong>Назначение:</strong> Советом Федерации по представлению Президента.</p>
+                        <div class="badge">Зарплата: 450–700 тыс. ₽</div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(this)">
+                        <i class="fas fa-chevron-right"></i> <strong>Председатель суда / заместитель</strong>
+                    </div>
+                    <div class="dropdown-content">
+                        <p><i class="fas fa-users-cog"></i> Руководит работой суда, распределяет дела между судьями, занимается административными вопросами.</p>
+                        <p><strong>Назначение:</strong> на 6 лет.</p>
+                        <p><strong>Доплата:</strong> за руководство добавляют 10–30% к зарплате.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Квалификационные классы -->
+        <div class="topic-card" id="classes">
+            <div class="topic-icon"><i class="fas fa-star"></i></div>
+            <div class="topic-title">Квалификационные классы</div>
+            <div class="topic-content">
+                <p>Квалификационные классы — это что-то вроде разрядов или званий для судей. Чем выше класс, тем больше уважения и тем выше зарплата. Всего есть 9 классов — от 9-го (самый младший) до 1-го (высший).</p>
+                
+                <div class="classes-grid">
+                    <div class="class-item" onclick="selectClass(9, this)">9 класс</div>
+                    <div class="class-item" onclick="selectClass(8, this)">8 класс</div>
+                    <div class="class-item" onclick="selectClass(7, this)">7 класс</div>
+                    <div class="class-item" onclick="selectClass(6, this)">6 класс</div>
+                    <div class="class-item" onclick="selectClass(5, this)">5 класс</div>
+                    <div class="class-item" onclick="selectClass(4, this)">4 класс</div>
+                    <div class="class-item" onclick="selectClass(3, this)">3 класс</div>
+                    <div class="class-item" onclick="selectClass(2, this)">2 класс</div>
+                    <div class="class-item" onclick="selectClass(1, this)">1 класс (высший)</div>
+                </div>
+
+                <div id="classInfoBox" class="class-info">
+                    👆 Нажмите на любой класс, чтобы прочитать про него подробнее
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Как получают классы</p>
+                    <p>Класс присваивают примерно раз в 2–3 года. Решение принимает квалификационная коллегия судей — они смотрят на стаж, на то, как судья работает, нет ли у него жалоб. Когда судью повышают в должности (например, из районного суда переводят в областной), ему тоже могут дать следующий класс.</p>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Как класс влияет на зарплату</p>
+                    <p>За каждый класс судье доплачивают. Чем выше класс, тем больше доплата — примерно от 15% до 30% от оклада. Самую большую надбавку получают судьи с первым (высшим) классом — это обычно судьи Верховного и Конституционного судов.</p>
+                    <p style="margin-top: 0.5rem;">Один раз получив класс, судья сохраняет его навсегда, даже если уходит в отставку.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Зарплаты (расположены по убыванию) -->
+        <div class="topic-card" id="salary">
+            <div class="topic-icon"><i class="fas fa-ruble-sign"></i></div>
+            <div class="topic-title">Зарплаты</div>
+            <div class="topic-content">
+                <p><strong>Сколько получают в месяц (от самых высоких до самых низких):</strong></p>
+                <div class="salary-row"><span>Судья Верховного суда</span> <span class="salary-value">450 000 – 700 000 ₽</span></div>
+                <div class="salary-row"><span>Судья областного суда</span> <span class="salary-value">220 000 – 300 000 ₽</span></div>
+                <div class="salary-row"><span>Судья районного суда</span> <span class="salary-value">150 000 – 220 000 ₽</span></div>
+                <div class="salary-row"><span>Мировой судья</span> <span class="salary-value">120 000 – 160 000 ₽</span></div>
+                <div class="salary-row"><span>Помощник судьи</span> <span class="salary-value">50 000 – 80 000 ₽</span></div>
+                <div class="salary-row"><span>Секретарь суда</span> <span class="salary-value">35 000 – 55 000 ₽</span></div>
+                
+                <p style="margin-top:1.5rem;"><strong>Что ещё добавляют к зарплате:</strong></p>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 0.5rem;">• за выслугу лет — доплата от 10% до 50%</li>
+                    <li style="margin-bottom: 0.5rem;">• за квалификационный класс — от 15% до 30%</li>
+                    <li style="margin-bottom: 0.5rem;">• за особые условия работы — до 20%</li>
+                    <li style="margin-bottom: 0.5rem;">• районные коэффициенты — в северных регионах зарплата может быть в 2 раза выше</li>
+                </ul>
+                <p class="badge" style="margin-top:1rem;">Последняя индексация: +5,5% в 2024 году</p>
+            </div>
+        </div>
+
+        <!-- 4. Выход на пенсию -->
+        <div class="topic-card" id="pension">
+            <div class="topic-icon"><i class="fas fa-umbrella-beach"></i></div>
+            <div class="topic-title">Выход на пенсию</div>
+            <div class="topic-content">
+                <p><strong>Что получают судьи</strong> — это называется "ежемесячное пожизненное содержание". По сути, та же пенсия, только побольше.</p>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 0.5rem;">✓ Возраст: женщины выходят в 50 лет, мужчины — в 55</li>
+                    <li style="margin-bottom: 0.5rem;">✓ Нужно отработать судьёй не меньше 10 лет</li>
+                    <li style="margin-bottom: 0.5rem;">✓ Платят 80% от зарплаты. Если проработали больше 10 лет, за каждый лишний год добавляют ещё 1%. Но больше 85% получить нельзя</li>
+                    <li style="margin-bottom: 0.5rem;">✓ После выхода на пенсию сохраняется бесплатный проезд, медицинское обслуживание и другие льготы</li>
+                </ul>
+                <div class="pension-highlight">
+                    <strong>Пример:</strong> судья проработал 18 лет. Это на 8 лет больше минимальных 10. Значит, пенсия будет 80% + 8% = 88%, но так как максимум 85%, он получит 85% от зарплаты. Если зарплата была 220 тыс. ₽, пенсия будет около 187 тыс. ₽.
+                </div>
+                
+                <p style="margin-top:1.5rem;"><strong>Работники аппарата</strong> получают обычную страховую пенсию (в 60 лет мужчины, в 55 женщины). Если есть стаж госслужбы от 18,5 лет, добавляют ещё доплату за выслугу лет.</p>
+            </div>
+        </div>
+
+        <!-- 5. Как попасть в систему -->
+        <div class="topic-card" id="howto">
+            <div class="topic-icon"><i class="fas fa-door-open"></i></div>
+            <div class="topic-title">Как попасть в систему</div>
+            <div class="topic-content">
+                <p><strong>Шаг 1. Получите юридическое образование</strong></p>
+                <p style="margin-left:1.5rem; margin-bottom:1rem;">Нужен диплом о высшем юридическом образовании. Можно учиться очно или заочно — главное, чтобы вуз был государственным.</p>
+
+                <p><strong>Шаг 2. Устройтесь в аппарат суда</strong></p>
+                <p style="margin-left:1.5rem; margin-bottom:1rem;">Проще всего начать с должности секретаря или помощника судьи. Вакансии часто появляются на сайтах районных судов и на портале «Госслужба». Работа в аппарате даёт бесценный опыт и засчитывается в юридический стаж.</p>
+
+                <p><strong>Шаг 3. Если хотите стать судьёй</strong></p>
+                <div style="margin-left:1.5rem; background: #f4faff; padding: 1rem; border-radius: 20px;">
+                    <p style="margin-bottom: 0.5rem;">Вот что нужно:</p>
+                    <ul style="margin-left:1.2rem;">
+                        <li>возраст от 25 лет</li>
+                        <li>юридический стаж от 5 лет</li>
+                        <li>сдать специальный экзамен</li>
+                        <li>получить рекомендацию от судейской коллегии</li>
+                        <li>пройти конкурс на вакантное место</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top:1rem;"><strong>Совет:</strong> многие судьи начинали с секретаря или помощника. Проходите практику в суде во время учёбы — это лучший способ зарекомендовать себя.</p>
+                
+                <div class="badge" style="margin-top:1rem;">Обязательно: гражданство РФ, отсутствие судимости, знание русского языка</div>
             </div>
         </div>
     </div>
-    
-    <script>
-        // Данные для тестов
-        const quizzes = {
-            1: {
-                title: "Бэла",
-                subtitle: "Первая повесть",
-                icon: "fa-mountain",
-                questions: [
-                    {
-                        question: "Кто является рассказчиком в повести 'Бэла'?",
-                        options: [
-                            "Печорин",
-                            "Максим Максимыч",
-                            "Сам автор",
-                            "Доктор Вернер"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин познакомился с Бэлой?",
-                        options: [
-                            "На балу в крепости",
-                            "Увидел её на свадьбе сестры",
-                            "Её привезли в крепость как пленницу",
-                            "Она работала служанкой в доме коменданта"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что подарил Печорин Бэле, чтобы завоевать её расположение?",
-                        options: [
-                            "Золотые серьги",
-                            "Дорогой кинжал",
-                            "Красивого коня",
-                            "Шёлковый платок"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как погибает Бэла?",
-                        options: [
-                            "От чахотки",
-                            "Её убивает Казбич",
-                            "Кончает жизнь самоубийством",
-                            "Погибает во время набега горцев"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой Казбич?",
-                        options: [
-                            "Отец Бэлы",
-                            "Брат Бэлы",
-                            "Влюбленный в неё горец",
-                            "Слуга Печорина"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Какую вещь украл Казбич у отца Бэлы?",
-                        options: [
-                            "Деньги",
-                            "Оружие",
-                            "Коня Карагеза",
-                            "Семейные реликвии"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как Печорин отреагировал на смерть Бэлы?",
-                        options: [
-                            "Был безутешен и долго плакал",
-                            "Остался внешне спокоен, но внутренне страдал",
-                            "Сразу уехал из крепости",
-                            "Поклялся отомстить Казбичу"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Сколько времени Бэла прожила с Печориным в крепости?",
-                        options: [
-                            "Несколько недель",
-                            "Четыре месяца",
-                            "Около года",
-                            "Больше двух лет"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто предупредил Печорина о готовящемся похищении Бэлы?",
-                        options: [
-                            "Максим Максимыч",
-                            "Казбич",
-                            "Отец Бэлы",
-                            "Никто, это было неожиданно"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Что стало с Казбичем после гибели Бэлы?",
-                        options: [
-                            "Его поймали и казнили",
-                            "Он бежал в горы",
-                            "Он покончил с собой",
-                            "Печорин убил его на дуэли"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            2: {
-                title: "Максим Максимыч",
-                subtitle: "Встреча через годы",
-                icon: "fa-handshake",
-                questions: [
-                    {
-                        question: "Где происходит встреча Максима Максимыча с Печориным?",
-                        options: [
-                            "В крепости N",
-                            "В гостинице Владикавказа",
-                            "В Петербурге",
-                            "В Пятигорске"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин встретил Максима Максимыча?",
-                        options: [
-                            "Обрадовался и обнял его",
-                            "Был холоден и равнодушен",
-                            "Сделал вид, что не узнал",
-                            "Пригласил на обед"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что хотел сделать Максим Максимыч с журналом Печорина?",
-                        options: [
-                            "Сжечь его",
-                            "Опубликовать",
-                            "Вернуть Печорину",
-                            "Передать автору-повествователю"
-                        ],
-                        correct: 3
-                    },
-                    {
-                        question: "Куда направлялся Печорин после встречи?",
-                        options: [
-                            "В Петербург",
-                            "В Персию",
-                            "На Кавказ",
-                            "За границу"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что известно о дальнейшей судьбе Печорина?",
-                        options: [
-                            "Он вернулся в Петербург",
-                            "Погиб в Персии",
-                            "Стал отшельником",
-                            "Женился и остепенился"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как автор описывает внешность Печорина при встрече?",
-                        options: [
-                            "Высокий и статный",
-                            "Среднего роста, стройный",
-                            "Низкорослый и плотный",
-                            "Худой и болезненный"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что особенно поразило автора в глазах Печорина?",
-                        options: [
-                            "Их голубой цвет",
-                            "Они не смеялись, когда он смеялся",
-                            "Они были постоянно полуприкрыты",
-                            "В них было детское выражение"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Максим Максимыч отнёсся к холодности Печорина?",
-                        options: [
-                            "Обиделся и разочаровался",
-                            "Не придал этому значения",
-                            "Разозлился и ушёл",
-                            "Понял и простил его"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Что автор взял у Максима Максимыча?",
-                        options: [
-                            "Журнал Печорина",
-                            "Письма Печорина",
-                            "Портрет Печорина",
-                            "Личные вещи Печорина"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какова основная тема этой повести?",
-                        options: [
-                            "Дружба и предательство",
-                            "Любовь и ревность",
-                            "Одиночество и непонимание",
-                            "Судьба и предопределение"
-                        ],
-                        correct: 2
-                    }
-                ]
-            },
-            3: {
-                title: "Тамань",
-                subtitle: "Приключение у моря",
-                icon: "fa-ship",
-                questions: [
-                    {
-                        question: "Почему Печорин оказался в Тамани?",
-                        options: [
-                            "Он был в ссылке",
-                            "По казённой надобности",
-                            "Путешествовал для удовольствия",
-                            "Лечился на море"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кого Печорин называет 'ундиной'?",
-                        options: [
-                            "Хозяйку квартиры",
-                            "Девушку-контрабандистку",
-                            "Местную гадалку",
-                            "Девушку из соседнего дома"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Чем занимались хозяева квартиры, где остановился Печорин?",
-                        options: [
-                            "Рыболовством",
-                            "Контрабандой",
-                            "Извозом",
-                            "Торговлей"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что попыталась сделать 'ундина' с Печориным?",
-                        options: [
-                            "Ограбить его",
-                            "Утопить в море",
-                            "Сбежать с ним",
-                            "Выдать властям"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой слепой мальчик?",
-                        options: [
-                            "Брат 'ундины'",
-                            "Помощник контрабандистов",
-                            "Сын хозяйки",
-                            "Случайный попрошайка"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что украл слепой мальчик у Печорина?",
-                        options: [
-                            "Деньги",
-                            "Пистолет",
-                            "Часы",
-                            "Табакерку"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Куда уплыли контрабандисты в конце повести?",
-                        options: [
-                            "В Турцию",
-                            "На другой берег пролива",
-                            "В открытое море",
-                            "В Керчь"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как Печорин отнёсся к попытке его утопить?",
-                        options: [
-                            "Разгневался и поклялся отомстить",
-                            "Испугался и уехал из города",
-                            "Отнёсся философски и спокойно",
-                            "Доложил начальству"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Что случилось с одноглазым контрабандистом?",
-                        options: [
-                            "Его арестовали",
-                            "Он утонул",
-                            "Он сбежал с 'ундиной'",
-                            "Печорин убил его"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какое настроение осталось у Печорина после событий в Тамани?",
-                        options: [
-                            "Радость и воодушевление",
-                            "Разочарование и досада",
-                            "Страх и тревога",
-                            "Безразличие и апатия"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            4: {
-                title: "Княжна Мери",
-                subtitle: "История в Пятигорске",
-                icon: "fa-heart",
-                questions: [
-                    {
-                        question: "В каком городе происходит действие повести?",
-                        options: [
-                            "Кисловодск",
-                            "Пятигорск",
-                            "Железноводск",
-                            "Ессентуки"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой Грушницкий?",
-                        options: [
-                            "Старый друг Печорина",
-                            "Юнкер, знакомый Печорина",
-                            "Родственник княжны Мери",
-                            "Секретный агент"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Печорин решил ухаживать за княжной Мери?",
-                        options: [
-                            "Он влюбился в неё",
-                            "Чтобы досадить Грушницкому",
-                            "По просьбе Веры",
-                            "Из корыстных соображений"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такая Вера?",
-                        options: [
-                            "Сестра княжны Мери",
-                            "Бывшая возлюбленная Печорина",
-                            "Подруга княжны Мери",
-                            "Кузина Печорина"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что произошло на дуэли Печорина с Грушницким?",
-                        options: [
-                            "Печорин убил Грушницкого",
-                            "Грушницкий убил Печорина",
-                            "Дуэль была остановлена",
-                            "Оба остались ранеными"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как Печорин узнал о чувствах княжны Мери?",
-                        options: [
-                            "Она сама призналась ему",
-                            "Прочитал её дневник",
-                            "Вера рассказала ему",
-                            "Грушницкий сообщил"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Вера уехала из Пятигорска?",
-                        options: [
-                            "Из-за ревности",
-                            "Муж забрал её",
-                            "По состоянию здоровья",
-                            "Узнав о дуэли"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как вёл себя Печорин после отъезда Веры?",
-                        options: [
-                            "Был спокоен",
-                            "Попытался догнать её",
-                            "Впал в депрессию",
-                            "Обрадовался"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой доктор Вернер?",
-                        options: [
-                            "Лечащий врач Печорина",
-                            "Единственный друг Печорина",
-                            "Муж Веры",
-                            "Дядя княжны Мери"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что случилось с Печориным после дуэли?",
-                        options: [
-                            "Он женился на княжне Мери",
-                            "Его перевели в крепость",
-                            "Он уехал за границу",
-                            "Он остался в Пятигорске"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            5: {
-                title: "Фаталист",
-                subtitle: "Философская повесть",
-                icon: "fa-dice",
-                questions: [
-                    {
-                        question: "О чём спорят офицеры в начале повести?",
-                        options: [
-                            "О любви",
-                            "О предопределении",
-                            "О военной службе",
-                            "О политике"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой Вулич?",
-                        options: [
-                            "Молодой офицер",
-                            "Сербский поручик",
-                            "Доктор",
-                            "Священник"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что предложил Вулич для доказательства существования предопределения?",
-                        options: [
-                            "Прыгнуть с обрыва",
-                            "Выстрелить в себя из пистолета",
-                            "Пройти через поле боя",
-                            "Сразиться с медведем"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что произошло, когда Вулич выстрелил в себя?",
-                        options: [
-                            "Пистолет дал осечку",
-                            "Он легко ранил себя",
-                            "Он убил себя",
-                            "Пистолет оказался не заряжен"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Что предсказал Печорин Вуличу?",
-                        options: [
-                            "Скоро умрёт",
-                            "Получит повышение",
-                            "Женится",
-                            "Разбогатеет"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как погиб Вулич?",
-                        options: [
-                            "На дуэли",
-                            "От руки пьяного казака",
-                            "В бою",
-                            "От болезни"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто убил Вулича?",
-                        options: [
-                            "Печорин",
-                            "Пьяный казак",
-                            "Офицер-соперник",
-                            "Неизвестный"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин задержал убийцу Вулича?",
-                        options: [
-                            "В одиночку ворвался в дом",
-                            "С помощью солдат",
-                            "Хитростью выманил",
-                            "Подстерёг на улице"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какой вывод сделал Печорин после этих событий?",
-                        options: [
-                            "Стал верить в предопределение",
-                            "Убедился, что его нет",
-                            "Не пришёл к однозначному выводу",
-                            "Решил изменить свою жизнь"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как заканчивается роман 'Герой нашего времени'?",
-                        options: [
-                            "Смертью Печорина",
-                            "Его отъездом за границу",
-                            "Размышлениями о фатализме",
-                            "Рассказом о его дальнейшей жизни"
-                        ],
-                        correct: 2
-                    }
-                ]
-            },
-            6: {
-                title: "Образ Печорина",
-                subtitle: "Характер главного героя",
-                icon: "fa-user",
-                questions: [
-                    {
-                        question: "К какому литературному типу относится Печорин?",
-                        options: [
-                            "Лишний человек",
-                            "Маленький человек",
-                            "Положительный герой",
-                            "Романтический герой"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "В чём главная трагедия Печорина?",
-                        options: [
-                            "Неразделённая любовь",
-                            "Непонимание окружающих",
-                            "Неспособность найти цель в жизни",
-                            "Бедность и одиночество"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как Печорин относится к дружбе?",
-                        options: [
-                            "Ценит и дорожит ею",
-                            "Считает её невозможной",
-                            "Имеет много друзей",
-                            "Предаёт друзей"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что Печорин говорит о любви?",
-                        options: [
-                            "Это главное в жизни",
-                            "Это игра и развлечение",
-                            "Он никогда не любил",
-                            "Любовь спасает человека"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какую черту характера Печорина можно назвать главной?",
-                        options: [
-                            "Доброта",
-                            "Эгоизм",
-                            "Трусость",
-                            "Щедрость"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Печорин вызывает симпатию у читателя?",
-                        options: [
-                            "Из-за своей искренности",
-                            "Из-за умения анализировать себя",
-                            "Из-за добрых поступков",
-                            "Из-за трагической судьбы"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин относится к обществу?",
-                        options: [
-                            "Стремится быть его частью",
-                            "Презирает его условности",
-                            "Боится его осуждения",
-                            "Хочет его изменить"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что для Печорина является смыслом жизни?",
-                        options: [
-                            "Служение отечеству",
-                            "Любовь и семья",
-                            "Поиск сильных впечатлений",
-                            "Богатство и слава"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как Печорин объясняет свои поступки?",
-                        options: [
-                            "Влиянием судьбы",
-                            "Плохим воспитанием",
-                            "Скукой и отсутствием цели",
-                            "Желанием причинить зло"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Можно ли считать Печорина положительным героем?",
-                        options: [
-                            "Да, он благороден и честен",
-                            "Нет, он эгоистичен и жесток",
-                            "Он сложный, противоречивый характер",
-                            "Он отрицательный персонаж"
-                        ],
-                        correct: 2
-                    }
-                ]
-            },
-            7: {
-                title: "Женские образы",
-                subtitle: "Бэла, Мери, Вера",
-                icon: "fa-female",
-                questions: [
-                    {
-                        question: "Чем отличается любовь Бэлы к Печорину?",
-                        options: [
-                            "Она расчетлива и корыстна",
-                            "Это страстная, жертвенная любовь",
-                            "Это легкое увлечение",
-                            "Она ненавидит его"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему княжна Мери влюбилась в Печорина?",
-                        options: [
-                            "Из-за его богатства",
-                            "Он был непохож на других",
-                            "По настоянию родителей",
-                            "Из сострадания к нему"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что отличает Веру от других женщин в романе?",
-                        options: [
-                            "Она понимает Печорина лучше всех",
-                            "Она самая красивая",
-                            "Она богата и знатна",
-                            "Она ненавидит Печорина"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какую роль играют женские образы в романе?",
-                        options: [
-                            "Они украшают повествование",
-                            "Раскрывают характер Печорина",
-                            "Создают любовную интригу",
-                            "Являются главными героинями"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какая из героинь вызывает наибольшую симпатию у автора?",
-                        options: [
-                            "Бэла",
-                            "Княжна Мери",
-                            "Вера",
-                            "Все одинаково"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Почему отношения Печорина с женщинами трагичны?",
-                        options: [
-                            "Он не способен на настоящее чувство",
-                            "Обстоятельства разлучают их",
-                            "Женщины его недостойны",
-                            "Он боится ответственности"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как Печорин относится к Бэле после её смерти?",
-                        options: [
-                            "Быстро забывает о ней",
-                            "Долго страдает и раскаивается",
-                            "Винит во всем себя",
-                            "Считает её смерть неизбежной"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Вера прощает Печорина?",
-                        options: [
-                            "Она его по-настоящему любит",
-                            "Она зависима от него материально",
-                            "Боится его",
-                            "Не знает о его изменах"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какую роль играет княжна Мери в жизни Печорина?",
-                        options: [
-                            "Он влюбляется в неё по-настоящему",
-                            "Она лишь объект для игры",
-                            "Она меняет его жизнь",
-                            "Она становится его женой"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какая из героинь наиболее трагична?",
-                        options: [
-                            "Бэла",
-                            "Княжна Мери",
-                            "Вера",
-                            "Все по-своему трагичны"
-                        ],
-                        correct: 3
-                    }
-                ]
-            }
-        };
 
-        // Создаем карточки
-        const quizzesGrid = document.getElementById('quizzesGrid');
-        const cardTitles = [
-            "Бэла", "Максим Максимыч", "Тамань", "Княжна Мери", "Фаталист",
-            "Образ Печорина", "Женские образы", "Композиция романа", "Тема судьбы",
-            "Кавказ в романе", "Дружба и одиночество", "Любовь и страсть",
-            "Образ автора", "Критика романа", "Исторический контекст",
-            "Психологизм", "Романтические черты", "Реалистические черты",
-            "Символика", "Философские вопросы", "Нравственные проблемы",
-            "Стиль Лермонтова", "Жанровые особенности", "Художественное время",
-            "Пространство в романе"
-        ];
+    <!-- Быстрые факты -->
+    <div class="facts">
+        <div class="fact-item">
+            <div class="fact-number">26 500</div>
+            <div class="fact-label">судей всего</div>
+        </div>
+        <div class="fact-item">
+            <div class="fact-number">39 млн</div>
+            <div class="fact-label">дел в год</div>
+        </div>
+        <div class="fact-item">
+            <div class="fact-number">16 лет</div>
+            <div class="fact-label">средний стаж судьи</div>
+        </div>
+        <div class="fact-item">
+            <div class="fact-number">9 классов</div>
+            <div class="fact-label">квалификация</div>
+        </div>
+    </div>
 
-        const cardSubtitles = [
-            "Первая повесть", "Встреча через годы", "Приключение у моря", "История в Пятигорске", "Философская повесть",
-            "Характер главного героя", "Бэла, Мери, Вера", "Структура произведения", "Фатализм и свобода воли",
-            "Место действия романа", "Отношения между персонажами", "Чувства и эмоции героев",
-            "Позиция Лермонтова", "Современные оценки", "Эпоха 1830-1840-х годов",
-            "Глубина характеров", "Черты романтизма", "Элементы реализма",
-            "Символы и их значение", "Вечные вопросы бытия", "Моральные дилеммы",
-            "Особенности языка", "Своеобразие жанра", "Временная организация",
-            "Пространственные образы"
-        ];
+    <!-- Подвал -->
+    <div class="footer-note">
+        <i class="fas fa-info-circle"></i> Информация о судебной системе Российской Федерации
+    </div>
 
-        const cardIcons = [
-            "fa-mountain", "fa-handshake", "fa-ship", "fa-heart", "fa-dice",
-            "fa-user", "fa-female", "fa-book", "fa-star", "fa-globe",
-            "fa-users", "fa-fire", "fa-pen", "fa-comment", "fa-history",
-            "fa-brain", "fa-moon", "fa-sun", "fa-dove", "fa-question",
-            "fa-balance-scale", "fa-language", "fa-feather", "fa-clock", "fa-map"
-        ];
+</div>
 
-        for (let i = 0; i < 25; i++) {
-            const quizId = (i % 7) + 1;
-            const card = document.createElement('div');
-            card.className = 'quiz-card';
-            card.setAttribute('data-quiz', quizId);
-            
-            card.innerHTML = `
-                <div class="quiz-header">
-                    <div class="quiz-icon">
-                        <i class="fas ${cardIcons[i]}"></i>
-                    </div>
-                    <div>
-                        <h2 class="quiz-title">${cardTitles[i]}</h2>
-                        <p class="quiz-subtitle">${cardSubtitles[i]}</p>
-                    </div>
-                    <div class="quiz-number">#${String(i + 1).padStart(2, '0')}</div>
-                </div>
-                <div class="quiz-content">
-                    <p class="quiz-description">Тест по теме "${cardTitles[i]}". Проверьте свои знания о романе "Герой нашего времени" через анализ ${cardSubtitles[i].toLowerCase()}.</p>
-                    <div class="quiz-stats">
-                        <span><i class="fas fa-question-circle"></i> 10 вопросов</span>
-                        <span><i class="fas fa-clock"></i> 6-8 минут</span>
-                    </div>
-                    <button class="start-btn" data-quiz="${quizId}">
-                        <i class="fas fa-play-circle"></i> Начать тест
-                    </button>
-                </div>
-            `;
-            
-            quizzesGrid.appendChild(card);
+<!-- Скрипты -->
+<script>
+    function toggleDropdown(element) {
+        const content = element.nextElementSibling;
+        content.classList.toggle('show');
+        element.classList.toggle('active');
+    }
+
+    // Переменная для хранения последней выбранной кнопки
+    let lastSelectedClass = null;
+
+    // Функция для выбора класса с окрашиванием
+    function selectClass(classNumber, element) {
+        // Убираем выделение с предыдущей выбранной кнопки
+        if (lastSelectedClass) {
+            lastSelectedClass.classList.remove('selected');
         }
+        
+        // Добавляем выделение текущей кнопке
+        element.classList.add('selected');
+        lastSelectedClass = element;
+        
+        // Показываем описание
+        const infoBox = document.getElementById('classInfoBox');
+        const descriptions = {
+            9: '9 класс — начальный уровень. Такие классы дают мировым судьям и судьям районных судов, которые недавно начали работать. Надбавка к зарплате — около 15%.',
+            8: '8 класс — следующий уровень. Обычно имеют судьи с опытом работы 3–5 лет. Надбавка чуть выше — около 17–18%.',
+            7: '7 класс — средний уровень. Многие судьи районных судов со стажем имеют этот класс. Надбавка примерно 20%.',
+            6: '6 класс — выше среднего. Часто бывает у судей с большим опытом или у судей областных судов. Надбавка 22–23%.',
+            5: '5 класс — высокий уровень. Надбавка может достигать 25%.',
+            4: '4 класс — присваивают опытным судьям, часто в областных судах. Надбавка около 26–27%.',
+            3: '3 класс — очень высокий уровень. Требует большого стажа и безупречной работы. Надбавка примерно 28%.',
+            2: '2 класс — предпоследний уровень. Обычно у судей Верховного суда и председателей областных судов. Надбавка 29%.',
+            1: '1 класс (высший) — самый высокий. Его дают судьям Верховного и Конституционного судов. Надбавка до 30%.'
+        };
+        infoBox.innerHTML = `<strong>${classNumber} класс:</strong> ${descriptions[classNumber]}`;
+    }
 
-        // Переменные для отслеживания состояния
-        let currentQuiz = null;
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let score = 0;
+    // Навигация
+    const sections = document.querySelectorAll('.topic-card');
+    const navItems = document.querySelectorAll('.nav-item');
 
-        // Элементы DOM
-        const quizModal = document.getElementById('quizModal');
-        const closeModal = document.getElementById('closeModal');
-        const questionContainer = document.getElementById('questionContainer');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const currentQuestionSpan = document.getElementById('currentQuestion');
-        const totalQuestionsSpan = document.getElementById('totalQuestions');
-        const quizTitle = document.getElementById('quizTitle');
-        const randomBtn = document.getElementById('randomBtn');
-
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            // Добавляем обработчики для карточек
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('start-btn')) {
-                    e.stopPropagation();
-                    const quizId = e.target.getAttribute('data-quiz');
-                    startQuiz(quizId);
-                }
-                
-                if (e.target.closest('.quiz-card') && !e.target.classList.contains('start-btn')) {
-                    const card = e.target.closest('.quiz-card');
-                    const quizId = card.getAttribute('data-quiz');
-                    startQuiz(quizId);
-                }
-            });
-            
-            // Кнопка случайного теста
-            randomBtn.addEventListener('click', function() {
-                const randomId = Math.floor(Math.random() * 7) + 1;
-                startQuiz(randomId);
-            });
-            
-            // Закрытие модального окна
-            closeModal.addEventListener('click', closeQuizModal);
-            
-            // Кнопки навигации
-            prevBtn.addEventListener('click', showPreviousQuestion);
-            nextBtn.addEventListener('click', showNextQuestion);
-            
-            // Закрытие модального окна при клике вне его
-            quizModal.addEventListener('click', function(e) {
-                if (e.target === quizModal) {
-                    closeQuizModal();
-                }
-            });
+    function setActiveNav() {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 150;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                current = section.getAttribute('id');
+            }
         });
 
-        // Запуск теста
-        function startQuiz(quizId) {
-            currentQuiz = quizzes[quizId];
-            currentQuestionIndex = 0;
-            userAnswers = new Array(currentQuiz.questions.length).fill(null);
-            score = 0;
-            
-            quizTitle.textContent = `Тест: ${currentQuiz.title}`;
-            totalQuestionsSpan.textContent = currentQuiz.questions.length;
-            
-            showQuestion();
-            quizModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Показать вопрос
-        function showQuestion() {
-            const question = currentQuiz.questions[currentQuestionIndex];
-            
-            currentQuestionSpan.textContent = currentQuestionIndex + 1;
-            
-            let questionHTML = `
-                <div class="question">${question.question}</div>
-                <div class="options">
-            `;
-            
-            question.options.forEach((option, index) => {
-                let optionClass = 'option';
-                if (userAnswers[currentQuestionIndex] === index) {
-                    optionClass += ' selected';
-                }
-                
-                questionHTML += `
-                    <div class="${optionClass}" data-index="${index}">
-                        <span class="option-letter">${String.fromCharCode(65 + index)}</span>
-                        ${option}
-                    </div>
-                `;
-            });
-            
-            questionHTML += `</div>`;
-            
-            questionContainer.innerHTML = questionHTML;
-            
-            document.querySelectorAll('.option').forEach(option => {
-                option.addEventListener('click', function() {
-                    if (!this.classList.contains('correct') && !this.classList.contains('incorrect')) {
-                        document.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.remove('selected');
-                        });
-                        
-                        this.classList.add('selected');
-                        userAnswers[currentQuestionIndex] = parseInt(this.getAttribute('data-index'));
-                        
-                        if (currentQuestionIndex < currentQuiz.questions.length - 1) {
-                            nextBtn.disabled = false;
-                        }
-                    }
-                });
-            });
-            
-            prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.textContent = currentQuestionIndex === currentQuiz.questions.length - 1 ? 'Завершить' : 'Далее';
-        }
-
-        // Показать предыдущий вопрос
-        function showPreviousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                showQuestion();
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === '#' + current) {
+                item.classList.add('active');
             }
-        }
+        });
+    }
 
-        // Показать следующий вопрос
-        function showNextQuestion() {
-            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
-                finishQuiz();
-                return;
+    window.addEventListener('scroll', setActiveNav);
+    window.addEventListener('load', setActiveNav);
+
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
             }
-            
-            if (currentQuestionIndex < currentQuiz.questions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion();
-            }
-        }
-
-        // Завершить тест
-        function finishQuiz() {
-            score = 0;
-            currentQuiz.questions.forEach((question, index) => {
-                if (userAnswers[index] === question.correct) {
-                    score++;
-                }
-            });
-            
-            showResults();
-        }
-
-        // Показать результаты с анимированным кругом
-        function showResults() {
-            const percentage = Math.round((score / currentQuiz.questions.length) * 100);
-            const circleLength = 440;
-            const offset = circleLength - (percentage / 100) * circleLength;
-            
-            let message = '';
-            
-            if (percentage === 100) {
-                message = 'Блестящий результат! Вы прекрасно разбираетесь в творчестве Лермонтова.';
-            } else if (percentage >= 80) {
-                message = 'Отличный результат! Ваши знания о романе глубоки и точны.';
-            } else if (percentage >= 60) {
-                message = 'Хороший результат! Вы хорошо знакомы с произведением.';
-            } else if (percentage >= 40) {
-                message = 'Удовлетворительный результат. Рекомендуем перечитать роман.';
-            } else {
-                message = 'Рекомендуем внимательно изучить роман "Герой нашего времени".';
-            }
-            
-            const resultsHTML = `
-                <div class="results">
-                    <h2>Результаты теста</h2>
-                    <div class="score-circle">
-                        <svg>
-                            <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                            <circle class="circle-progress" cx="80" cy="80" r="70" style="stroke-dashoffset: ${offset}"></circle>
-                        </svg>
-                        <div class="score-number">${score}/${currentQuiz.questions.length}</div>
-                    </div>
-                    <div class="score-text">${percentage}% правильных ответов</div>
-                    <p>${message}</p>
-                    <button class="restart-btn" id="restartBtn">
-                        <i class="fas fa-redo"></i> Пройти ещё раз
-                    </button>
-                </div>
-            `;
-            
-            questionContainer.innerHTML = resultsHTML;
-            document.querySelector('.navigation').style.display = 'none';
-            
-            // Анимация заполнения круга
-            setTimeout(() => {
-                document.querySelector('.circle-progress').style.transition = 'stroke-dashoffset 1.5s ease';
-            }, 100);
-            
-            document.getElementById('restartBtn').addEventListener('click', function() {
-                currentQuestionIndex = 0;
-                userAnswers = new Array(currentQuiz.questions.length).fill(null);
-                document.querySelector('.navigation').style.display = 'flex';
-                showQuestion();
-            });
-        }
-
-        // Закрыть модальное окно
-        function closeQuizModal() {
-            quizModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    </script>
+        });
+    });
+</script>
 </body>
 </html>
