@@ -195,7 +195,7 @@
             margin-bottom: 0.8rem;
         }
 
-        /* Развертки с картинками (эмодзи) */
+        /* Развертки с картинками */
         .dropdown {
             background: #f4faff;
             border-radius: 20px;
@@ -237,7 +237,7 @@
             display: block;
         }
 
-        /* Классы - кликабельные с окрашиванием */
+        /* Классы - ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ КНОПКИ */
         .classes-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -252,27 +252,37 @@
             text-align: center;
             font-weight: 700;
             color: #0a2540;
-            border: 1px solid #b9d4f0;
+            border: 2px solid #b9d4f0;
             cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-            min-height: 80px;
+            transition: all 0.2s;
+            min-height: 85px;
             display: flex;
             align-items: center;
             justify-content: center;
-            word-break: break-word;
+            font-size: 1rem;
             line-height: 1.4;
+            word-break: break-word;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.03);
         }
 
         .class-item:hover {
             background: #d4e3fc;
-            transform: scale(1.02);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(31,90,150,0.2);
+            border-color: #1f5a96;
         }
 
         .class-item.selected {
             background: #0a2540;
             color: white;
             border-color: #0a2540;
+            box-shadow: 0 8px 15px rgba(10,37,64,0.3);
+        }
+
+        /* Специально для последней кнопки с длинным текстом */
+        .class-item:last-child {
+            font-size: 0.95rem;
+            padding: 1rem 0.3rem;
         }
 
         .class-info {
@@ -283,6 +293,7 @@
             border-left: 4px solid #1f5a96;
             min-height: 70px;
             line-height: 1.5;
+            font-size: 1rem;
         }
 
         .badge {
@@ -391,11 +402,18 @@
             .header h1 {
                 font-size: 2rem;
             }
+            .class-item {
+                min-height: 70px;
+            }
         }
 
         @media (max-width: 500px) {
             .classes-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .class-item:last-child {
+                grid-column: span 2;
+                font-size: 1rem;
             }
         }
     </style>
@@ -428,10 +446,10 @@
 
     <!-- Сетка тем -->
     <div class="topics-grid">
-        <!-- 1. Служебная лестница с ЗАМЕНЕННОЙ картинкой (теперь большая иконка лестницы) -->
+        <!-- 1. Служебная лестница -->
         <div class="topic-card" id="career">
             <div class="topic-icon">
-                <i class="fas fa-arrow-up-wide-short"></i> <!-- ЗАМЕНИЛ на другую иконку - сортировки/лестницы -->
+                <i class="fas fa-arrow-up-wide-short"></i>
             </div>
             <div class="topic-title">Служебная лестница</div>
             <div class="topic-content">
@@ -521,7 +539,7 @@
             </div>
         </div>
 
-        <!-- 2. Квалификационные классы -->
+        <!-- 2. Квалификационные классы - С ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫМИ КНОПКАМИ -->
         <div class="topic-card" id="classes">
             <div class="topic-icon"><i class="fas fa-star"></i></div>
             <div class="topic-title">Квалификационные классы</div>
@@ -557,7 +575,7 @@
             </div>
         </div>
 
-        <!-- 3. Зарплаты (расположены по убыванию) -->
+        <!-- 3. Зарплаты -->
         <div class="topic-card" id="salary">
             <div class="topic-icon"><i class="fas fa-ruble-sign"></i></div>
             <div class="topic-title">Зарплаты</div>
