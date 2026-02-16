@@ -26,7 +26,7 @@
         }
 
         .page {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(20px);
@@ -95,7 +95,7 @@
             color: #1f4973;
         }
 
-        /* Навигация по темам */
+        /* Навигация по темам - с теми же иконками, что и в карточках */
         .nav-circles {
             display: flex;
             flex-wrap: wrap;
@@ -141,21 +141,22 @@
             color: white;
         }
 
-        /* Сетка карточек */
-        .topics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+        /* КАРТОЧКИ ВО ВСЮ ШИРИНУ */
+        .topics-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
             margin: 2rem 0;
         }
 
         .topic-card {
             background: white;
             border-radius: 36px;
-            padding: 2rem;
+            padding: 2.5rem;
             box-shadow: 0 15px 30px -12px rgba(0, 35, 70, 0.12);
             border: 1px solid rgba(255,255,255,0.8);
             transition: 0.2s;
+            width: 100%;
         }
 
         .topic-card:hover {
@@ -163,55 +164,63 @@
             box-shadow: 0 25px 40px -15px #1f5a9640;
         }
 
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
         .topic-icon {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             background: linear-gradient(145deg, #e9f2fc, #d6e6ff);
             border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
             color: #0a2540;
-            font-size: 2.5rem;
+            font-size: 3rem;
             box-shadow: 0 10px 20px -8px rgba(31,90,150,0.3);
+            flex-shrink: 0;
         }
 
         .topic-title {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 1.2rem;
             color: #0f2d4a;
             border-left: 8px solid #1f5a96;
-            padding-left: 1rem;
+            padding-left: 1.5rem;
+            margin: 0;
         }
 
         .topic-content {
             color: #1f3e5c;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
         }
 
         .topic-content p {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         /* Развертки с картинками */
         .dropdown {
             background: #f4faff;
-            border-radius: 20px;
-            margin: 1rem 0 0.5rem 0;
+            border-radius: 24px;
+            margin: 1.2rem 0 0.8rem 0;
             border: 1px solid #d6e4f5;
         }
 
         .dropdown-header {
-            padding: 1rem 1.2rem;
+            padding: 1.2rem 1.5rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
-            border-radius: 20px;
+            gap: 15px;
+            border-radius: 24px;
             transition: 0.2s;
+            font-size: 1.1rem;
         }
 
         .dropdown-header:hover {
@@ -228,7 +237,7 @@
         }
 
         .dropdown-content {
-            padding: 0 1.2rem 1.2rem 3rem;
+            padding: 0 1.5rem 1.5rem 4rem;
             display: none;
             color: #2d4b6e;
         }
@@ -237,29 +246,29 @@
             display: block;
         }
 
-        /* Классы - ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЕ КНОПКИ */
+        /* Классы - кнопки */
         .classes-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.8rem;
-            margin: 1.5rem 0;
+            gap: 1rem;
+            margin: 2rem 0;
         }
 
         .class-item {
             background: #e9f2fc;
             border-radius: 30px;
-            padding: 1rem 0.5rem;
+            padding: 1.2rem 0.5rem;
             text-align: center;
             font-weight: 700;
             color: #0a2540;
             border: 2px solid #b9d4f0;
             cursor: pointer;
             transition: all 0.2s;
-            min-height: 85px;
+            min-height: 95px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
             line-height: 1.4;
             word-break: break-word;
             box-shadow: 0 4px 8px rgba(0,0,0,0.03);
@@ -279,40 +288,39 @@
             box-shadow: 0 8px 15px rgba(10,37,64,0.3);
         }
 
-        /* Специально для последней кнопки с длинным текстом */
         .class-item:last-child {
-            font-size: 0.95rem;
-            padding: 1rem 0.3rem;
+            font-size: 1rem;
         }
 
         .class-info {
             background: #f0f7ff;
-            border-radius: 20px;
-            padding: 1.2rem;
-            margin-top: 1.2rem;
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
             border-left: 4px solid #1f5a96;
-            min-height: 70px;
+            min-height: 80px;
             line-height: 1.5;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .badge {
             background: #ddebff;
             color: #0f3d6a;
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 1rem;
             font-weight: 600;
             display: inline-block;
-            margin: 0.5rem 0;
+            margin: 0.8rem 0;
         }
 
         .salary-row {
             display: flex;
             justify-content: space-between;
-            padding: 0.8rem 0;
+            padding: 1rem 0;
             border-bottom: 1px solid #e3ebf5;
             font-weight: 500;
+            font-size: 1.1rem;
         }
 
         .salary-value {
@@ -323,42 +331,43 @@
         .pension-highlight {
             background: #e4f0fa;
             border-radius: 24px;
-            padding: 1.2rem;
-            margin-top: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
             border-left: 6px solid #1f5a96;
         }
 
         .step-box {
             background: #f4faff;
-            border-radius: 20px;
-            padding: 1.2rem;
-            margin: 1rem 0;
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
         .step-num {
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             background: #0a2540;
             color: white;
-            border-radius: 20px;
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            flex-shrink: 0;
         }
 
         .facts {
             background: linear-gradient(145deg, #f6faff, #ffffff);
             border-radius: 36px;
-            padding: 2rem;
+            padding: 2.5rem;
             margin: 2.5rem 0 1rem;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            gap: 2rem;
             border: 1px solid rgba(31,90,150,0.1);
         }
 
@@ -367,7 +376,7 @@
         }
 
         .fact-number {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
             color: #0a2540;
             line-height: 1.2;
@@ -375,35 +384,37 @@
 
         .fact-label {
             color: #446688;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         .footer-note {
             margin-top: 3rem;
-            padding: 1.8rem;
+            padding: 2rem;
             text-align: center;
             background: #e5effa;
             border-radius: 40px;
             color: #1f4973;
-            font-size: 0.95rem;
+            font-size: 1rem;
             border: 1px solid white;
         }
 
         @media (max-width: 800px) {
-            .topics-grid {
-                grid-template-columns: 1fr;
+            .classes-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
             .facts {
                 grid-template-columns: 1fr 1fr;
             }
-            .classes-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
             .header h1 {
                 font-size: 2rem;
             }
-            .class-item {
-                min-height: 70px;
+            .topic-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .topic-title {
+                font-size: 2rem;
             }
         }
 
@@ -413,7 +424,6 @@
             }
             .class-item:last-child {
                 grid-column: span 2;
-                font-size: 1rem;
             }
         }
     </style>
@@ -435,30 +445,32 @@
         </div>
     </div>
 
-    <!-- Навигация -->
+    <!-- Навигация с ТЕМИ ЖЕ ИКОНКАМИ, что и в карточках -->
     <div class="nav-circles">
-        <a href="#career" class="nav-item"><i class="fas fa-ladder"></i> Служебная лестница</a>
+        <a href="#career" class="nav-item"><i class="fas fa-arrow-up-wide-short"></i> Служебная лестница</a>
         <a href="#classes" class="nav-item"><i class="fas fa-star"></i> Квалификационные классы</a>
         <a href="#salary" class="nav-item"><i class="fas fa-ruble-sign"></i> Зарплаты</a>
         <a href="#pension" class="nav-item"><i class="fas fa-umbrella-beach"></i> Выход на пенсию</a>
         <a href="#howto" class="nav-item"><i class="fas fa-door-open"></i> Как попасть</a>
     </div>
 
-    <!-- Сетка тем -->
-    <div class="topics-grid">
+    <!-- КОНТЕЙНЕР С КАРТОЧКАМИ -->
+    <div class="topics-container">
         <!-- 1. Служебная лестница -->
         <div class="topic-card" id="career">
-            <div class="topic-icon">
-                <i class="fas fa-arrow-up-wide-short"></i>
+            <div class="topic-header">
+                <div class="topic-icon">
+                    <i class="fas fa-arrow-up-wide-short"></i>
+                </div>
+                <h2 class="topic-title">Служебная лестница</h2>
             </div>
-            <div class="topic-title">Служебная лестница</div>
             <div class="topic-content">
                 <p><strong>Нажмите, чтобы развернуть подробности:</strong></p>
                 
                 <div class="dropdown">
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 1.8rem; margin-right: 8px;">📄</span>
+                        <span style="font-size: 2rem; margin-right: 10px;">📄</span>
                         <strong>Секретарь / помощник судьи</strong>
                     </div>
                     <div class="dropdown-content">
@@ -471,7 +483,7 @@
                 <div class="dropdown">
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 1.8rem; margin-right: 8px;">⚖️</span>
+                        <span style="font-size: 2rem; margin-right: 10px;">⚖️</span>
                         <strong>Мировой судья</strong>
                     </div>
                     <div class="dropdown-content">
@@ -485,7 +497,7 @@
                 <div class="dropdown">
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 1.8rem; margin-right: 8px;">🏛️</span>
+                        <span style="font-size: 2rem; margin-right: 10px;">🏛️</span>
                         <strong>Судья районного суда</strong>
                     </div>
                     <div class="dropdown-content">
@@ -499,7 +511,7 @@
                 <div class="dropdown">
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 1.8rem; margin-right: 8px;">🏛️⚖️</span>
+                        <span style="font-size: 2rem; margin-right: 10px;">🏛️⚖️</span>
                         <strong>Судья областного суда</strong>
                     </div>
                     <div class="dropdown-content">
@@ -512,7 +524,7 @@
                 <div class="dropdown">
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 1.8rem; margin-right: 8px;">👑</span>
+                        <span style="font-size: 2rem; margin-right: 10px;">👑</span>
                         <strong>Судья Верховного Суда РФ</strong>
                     </div>
                     <div class="dropdown-content">
@@ -526,7 +538,7 @@
                 <div class="dropdown">
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 1.8rem; margin-right: 8px;">👥</span>
+                        <span style="font-size: 2rem; margin-right: 10px;">👥</span>
                         <strong>Председатель суда / заместитель</strong>
                     </div>
                     <div class="dropdown-content">
@@ -539,10 +551,14 @@
             </div>
         </div>
 
-        <!-- 2. Квалификационные классы - С ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫМИ КНОПКАМИ -->
+        <!-- 2. Квалификационные классы -->
         <div class="topic-card" id="classes">
-            <div class="topic-icon"><i class="fas fa-star"></i></div>
-            <div class="topic-title">Квалификационные классы</div>
+            <div class="topic-header">
+                <div class="topic-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h2 class="topic-title">Квалификационные классы</h2>
+            </div>
             <div class="topic-content">
                 <p>Квалификационные классы — это что-то вроде разрядов или званий для судей. Чем выше класс, тем больше уважения и тем выше зарплата. Всего есть 9 классов — от 9-го (самый младший) до 1-го (высший).</p>
                 
@@ -577,8 +593,12 @@
 
         <!-- 3. Зарплаты -->
         <div class="topic-card" id="salary">
-            <div class="topic-icon"><i class="fas fa-ruble-sign"></i></div>
-            <div class="topic-title">Зарплаты</div>
+            <div class="topic-header">
+                <div class="topic-icon">
+                    <i class="fas fa-ruble-sign"></i>
+                </div>
+                <h2 class="topic-title">Зарплаты</h2>
+            </div>
             <div class="topic-content">
                 <p><strong>Сколько получают в месяц (от самых высоких до самых низких):</strong></p>
                 <div class="salary-row"><span>Судья Верховного суда</span> <span class="salary-value">450 000 – 700 000 ₽</span></div>
@@ -588,12 +608,12 @@
                 <div class="salary-row"><span>Помощник судьи</span> <span class="salary-value">50 000 – 80 000 ₽</span></div>
                 <div class="salary-row"><span>Секретарь суда</span> <span class="salary-value">35 000 – 55 000 ₽</span></div>
                 
-                <p style="margin-top:1.5rem;"><strong>Что ещё добавляют к зарплате:</strong></p>
+                <p style="margin-top:2rem;"><strong>Что ещё добавляют к зарплате:</strong></p>
                 <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 0.5rem;">• за выслугу лет — доплата от 10% до 50%</li>
-                    <li style="margin-bottom: 0.5rem;">• за квалификационный класс — от 15% до 30%</li>
-                    <li style="margin-bottom: 0.5rem;">• за особые условия работы — до 20%</li>
-                    <li style="margin-bottom: 0.5rem;">• районные коэффициенты — в северных регионах зарплата может быть в 2 раза выше</li>
+                    <li style="margin-bottom: 0.8rem;">• за выслугу лет — доплата от 10% до 50%</li>
+                    <li style="margin-bottom: 0.8rem;">• за квалификационный класс — от 15% до 30%</li>
+                    <li style="margin-bottom: 0.8rem;">• за особые условия работы — до 20%</li>
+                    <li style="margin-bottom: 0.8rem;">• районные коэффициенты — в северных регионах зарплата может быть в 2 раза выше</li>
                 </ul>
                 <p class="badge" style="margin-top:1rem;">Последняя индексация: +5,5% в 2024 году</p>
             </div>
@@ -601,39 +621,47 @@
 
         <!-- 4. Выход на пенсию -->
         <div class="topic-card" id="pension">
-            <div class="topic-icon"><i class="fas fa-umbrella-beach"></i></div>
-            <div class="topic-title">Выход на пенсию</div>
+            <div class="topic-header">
+                <div class="topic-icon">
+                    <i class="fas fa-umbrella-beach"></i>
+                </div>
+                <h2 class="topic-title">Выход на пенсию</h2>
+            </div>
             <div class="topic-content">
                 <p><strong>Что получают судьи</strong> — это называется "ежемесячное пожизненное содержание". По сути, та же пенсия, только побольше.</p>
                 <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 0.5rem;">✓ Возраст: женщины выходят в 50 лет, мужчины — в 55</li>
-                    <li style="margin-bottom: 0.5rem;">✓ Нужно отработать судьёй не меньше 10 лет</li>
-                    <li style="margin-bottom: 0.5rem;">✓ Платят 80% от зарплаты. Если проработали больше 10 лет, за каждый лишний год добавляют ещё 1%. Но больше 85% получить нельзя</li>
-                    <li style="margin-bottom: 0.5rem;">✓ После выхода на пенсию сохраняется бесплатный проезд, медицинское обслуживание и другие льготы</li>
+                    <li style="margin-bottom: 0.8rem;">✓ Возраст: женщины выходят в 50 лет, мужчины — в 55</li>
+                    <li style="margin-bottom: 0.8rem;">✓ Нужно отработать судьёй не меньше 10 лет</li>
+                    <li style="margin-bottom: 0.8rem;">✓ Платят 80% от зарплаты. Если проработали больше 10 лет, за каждый лишний год добавляют ещё 1%. Но больше 85% получить нельзя</li>
+                    <li style="margin-bottom: 0.8rem;">✓ После выхода на пенсию сохраняется бесплатный проезд, медицинское обслуживание и другие льготы</li>
                 </ul>
                 <div class="pension-highlight">
                     <strong>Пример:</strong> судья проработал 18 лет. Это на 8 лет больше минимальных 10. Значит, пенсия будет 80% + 8% = 88%, но так как максимум 85%, он получит 85% от зарплаты. Если зарплата была 220 тыс. ₽, пенсия будет около 187 тыс. ₽.
                 </div>
                 
-                <p style="margin-top:1.5rem;"><strong>Работники аппарата</strong> получают обычную страховую пенсию (в 60 лет мужчины, в 55 женщины). Если есть стаж госслужбы от 18,5 лет, добавляют ещё доплату за выслугу лет.</p>
+                <p style="margin-top:2rem;"><strong>Работники аппарата</strong> получают обычную страховую пенсию (в 60 лет мужчины, в 55 женщины). Если есть стаж госслужбы от 18,5 лет, добавляют ещё доплату за выслугу лет.</p>
             </div>
         </div>
 
         <!-- 5. Как попасть в систему -->
         <div class="topic-card" id="howto">
-            <div class="topic-icon"><i class="fas fa-door-open"></i></div>
-            <div class="topic-title">Как попасть в систему</div>
+            <div class="topic-header">
+                <div class="topic-icon">
+                    <i class="fas fa-door-open"></i>
+                </div>
+                <h2 class="topic-title">Как попасть в систему</h2>
+            </div>
             <div class="topic-content">
                 <p><strong>Шаг 1. Получите юридическое образование</strong></p>
-                <p style="margin-left:1.5rem; margin-bottom:1rem;">Нужен диплом о высшем юридическом образовании. Можно учиться очно или заочно — главное, чтобы вуз был государственным.</p>
+                <p style="margin-left:2rem; margin-bottom:1.5rem;">Нужен диплом о высшем юридическом образовании. Можно учиться очно или заочно — главное, чтобы вуз был государственным.</p>
 
                 <p><strong>Шаг 2. Устройтесь в аппарат суда</strong></p>
-                <p style="margin-left:1.5rem; margin-bottom:1rem;">Проще всего начать с должности секретаря или помощника судьи. Вакансии часто появляются на сайтах районных судов и на портале «Госслужба». Работа в аппарате даёт бесценный опыт и засчитывается в юридический стаж.</p>
+                <p style="margin-left:2rem; margin-bottom:1.5rem;">Проще всего начать с должности секретаря или помощника судьи. Вакансии часто появляются на сайтах районных судов и на портале «Госслужба». Работа в аппарате даёт бесценный опыт и засчитывается в юридический стаж.</p>
 
                 <p><strong>Шаг 3. Если хотите стать судьёй</strong></p>
-                <div style="margin-left:1.5rem; background: #f4faff; padding: 1rem; border-radius: 20px;">
-                    <p style="margin-bottom: 0.5rem;">Вот что нужно:</p>
-                    <ul style="margin-left:1.2rem;">
+                <div style="margin-left:2rem; background: #f4faff; padding: 1.5rem; border-radius: 24px;">
+                    <p style="margin-bottom: 1rem;">Вот что нужно:</p>
+                    <ul style="margin-left:1.5rem;">
                         <li>возраст от 25 лет</li>
                         <li>юридический стаж от 5 лет</li>
                         <li>сдать специальный экзамен</li>
@@ -642,9 +670,9 @@
                     </ul>
                 </div>
 
-                <p style="margin-top:1rem;"><strong>Совет:</strong> многие судьи начинали с секретаря или помощника. Проходите практику в суде во время учёбы — это лучший способ зарекомендовать себя.</p>
+                <p style="margin-top:1.5rem;"><strong>Совет:</strong> многие судьи начинали с секретаря или помощника. Проходите практику в суде во время учёбы — это лучший способ зарекомендовать себя.</p>
                 
-                <div class="badge" style="margin-top:1rem;">Обязательно: гражданство РФ, отсутствие судимости, знание русского языка</div>
+                <div class="badge" style="margin-top:1.5rem;">Обязательно: гражданство РФ, отсутствие судимости, знание русского языка</div>
             </div>
         </div>
     </div>
@@ -684,21 +712,16 @@
         element.classList.toggle('active');
     }
 
-    // Переменная для хранения последней выбранной кнопки
     let lastSelectedClass = null;
 
-    // Функция для выбора класса с окрашиванием
     function selectClass(classNumber, element) {
-        // Убираем выделение с предыдущей выбранной кнопки
         if (lastSelectedClass) {
             lastSelectedClass.classList.remove('selected');
         }
         
-        // Добавляем выделение текущей кнопке
         element.classList.add('selected');
         lastSelectedClass = element;
         
-        // Показываем описание
         const infoBox = document.getElementById('classInfoBox');
         const descriptions = {
             9: '9 класс — начальный уровень. Такие классы дают мировым судьям и судьям районных судов, которые недавно начали работать. Надбавка к зарплате — около 15%.',
@@ -709,7 +732,7 @@
             4: '4 класс — присваивают опытным судьям, часто в областных судах. Надбавка около 26–27%.',
             3: '3 класс — очень высокий уровень. Требует большого стажа и безупречной работы. Надбавка примерно 28%.',
             2: '2 класс — предпоследний уровень. Обычно у судей Верховного суда и председателей областных судов. Надбавка 29%.',
-            1: '1 класс (высший) — самый высокий. Его дают судьям Верховного и Конституционного судов. Надбавка до 30%.'
+            1: '1 класс — самый высокий. Его дают судьям Верховного и Конституционного судов. Надбавка до 30%.'
         };
         infoBox.innerHTML = `<strong>${classNumber} класс:</strong> ${descriptions[classNumber]}`;
     }
