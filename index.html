@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Судебная система РФ | Гид по карьере</title>
+    <title>Судебная система РФ | Полный гид</title>
     <!-- Шрифты и иконки -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,132 +16,225 @@
             box-sizing: border-box;
         }
 
+        /* Основные стили страницы */
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(145deg, #f0f5fd 0%, #e9f0f7 100%);
-            color: #0a1f33;
+            color: #ffffff;
             line-height: 1.5;
             padding: 2rem 1rem;
             min-height: 100vh;
+            position: relative;
+            background: #0a1a2f;
+            opacity: 1;
         }
 
+        /* Многослойный градиент */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 40% 80%, rgba(10, 26, 47, 0.95) 0%, transparent 50%),
+                radial-gradient(circle at 60% 20%, rgba(10, 26, 47, 0.9) 0%, transparent 55%),
+                linear-gradient(145deg, 
+                    rgba(10, 26, 47, 0.98) 0%, 
+                    rgba(10, 26, 47, 0.92) 30%,
+                    rgba(255, 215, 0, 0.08) 50%,
+                    rgba(10, 26, 47, 0.92) 70%,
+                    rgba(10, 26, 47, 0.98) 100%),
+                repeating-linear-gradient(45deg, 
+                    rgba(255, 215, 0, 0.02) 0px, 
+                    rgba(255, 215, 0, 0.02) 4px,
+                    transparent 4px, 
+                    transparent 12px);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: background;
+        }
+
+        /* Фоновые символы */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.1"><text x="20" y="40" font-size="32" fill="%23FFD700">👨‍⚖️</text><text x="120" y="90" font-size="36" fill="%23ffffff">⚖️</text><text x="40" y="160" font-size="28" fill="%23FFD700">🏛️</text><text x="150" y="200" font-size="42" fill="%23ffffff">👑</text><text x="80" y="250" font-size="34" fill="%23FFD700">📜</text><text x="180" y="300" font-size="38" fill="%23ffffff">⚖️</text><text x="30" y="350" font-size="30" fill="%23FFD700">🏛️</text></svg>') repeat,
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.07"><text x="50" y="50" font-size="28" fill="%23FFD700">👨‍💼</text><text x="140" y="120" font-size="34" fill="%23ffffff">⚖️</text><text x="70" y="200" font-size="40" fill="%23FFD700">🏛️</text><text x="160" y="270" font-size="32" fill="%23ffffff">👑</text><text x="90" y="330" font-size="36" fill="%23FFD700">📜</text></svg>') repeat;
+            background-size: 300px 300px, 250px 250px;
+            animation: floatSymbols 240s linear infinite;
+            will-change: background-position;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes floatSymbols {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 500px 500px, -300px -300px; }
+        }
+
+        /* Контейнер страницы */
         .page {
             max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 48px;
-            box-shadow: 0 30px 60px -25px rgba(0, 30, 70, 0.3);
-            padding: 2.5rem 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.7);
+            position: relative;
+            z-index: 20;
+            padding: 0;
         }
 
-        /* Шапка с гербом */
+        /* Шапка */
         .header {
             display: flex;
             align-items: center;
             gap: 2rem;
             margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid rgba(31, 90, 150, 0.2);
+            padding: 2rem;
+            background: rgba(10, 26, 47, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
             flex-wrap: wrap;
+            box-shadow: 0 25px 40px -20px rgba(0, 0, 0, 0.8);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header:hover {
+            border-color: rgba(255, 215, 0, 0.8);
+            box-shadow: 0 30px 50px -20px rgba(255, 215, 0, 0.4);
+            background: rgba(10, 26, 47, 0.85);
         }
 
         .header-logo {
-            background: #0a2540;
-            color: white;
-            width: 90px;
-            height: 90px;
+            background: linear-gradient(145deg, #0a1a2f, #1a2a3f);
+            color: #FFD700;
+            width: 100px;
+            height: 100px;
             border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            box-shadow: 0 15px 25px -10px #0a2540;
+            font-size: 3.8rem;
+            box-shadow: 0 15px 25px -10px #000000;
+            border: 2px solid #FFD700;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .header-title {
-            flex: 1;
+        .header:hover .header-logo {
+            transform: scale(1.05) rotate(3deg);
+            border-color: #ffffff;
+            box-shadow: 0 20px 35px -10px #FFD700;
         }
 
         .header-title h1 {
             font-size: 2.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #0a2540, #1f4a7a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 700;
+            color: #ffffff;
             margin-bottom: 0.3rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            transition: text-shadow 0.5s ease;
+        }
+
+        .header:hover .header-title h1 {
+            text-shadow: 0 2px 20px rgba(255, 215, 0, 0.6);
         }
 
         .header-title .sub {
-            font-size: 1.2rem;
-            color: #2d4b6e;
-            background: rgba(255,255,255,0.5);
+            font-size: 1.1rem;
+            color: #FFD700;
+            background: rgba(10, 26, 47, 0.9);
             display: inline-block;
             padding: 0.4rem 1.5rem;
-            border-radius: 60px;
+            border-radius: 40px;
+            border: 1px solid #FFD700;
+            font-weight: 500;
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.8);
+            transition: all 0.5s ease;
+        }
+
+        .header:hover .header-title .sub {
+            background: rgba(10, 26, 47, 1);
+            border-color: #ffffff;
         }
 
         .header-date {
-            background: white;
+            background: rgba(10, 26, 47, 0.9);
             padding: 0.7rem 1.5rem;
-            border-radius: 60px;
+            border-radius: 40px;
             font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            color: #1f4973;
+            color: #FFD700;
+            border: 1px solid #FFD700;
+            backdrop-filter: blur(5px);
+            transition: all 0.5s ease;
         }
 
-        /* Навигация по темам */
+        .header:hover .header-date {
+            background: rgba(10, 26, 47, 1);
+            border-color: #ffffff;
+        }
+
+        /* Навигация */
         .nav-circles {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.8rem;
             margin: 2rem 0 2.5rem;
         }
 
         .nav-item {
-            background: white;
+            background: rgba(10, 26, 47, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 60px;
-            padding: 0.8rem 2rem;
+            padding: 0.7rem 1.5rem;
             font-weight: 600;
-            font-size: 1.1rem;
-            color: #0a2540;
-            box-shadow: 0 8px 18px -8px rgba(0,40,80,0.15);
-            border: 1px solid rgba(255,255,255,0.5);
-            transition: 0.2s;
+            font-size: 0.95rem;
+            color: #ffffff;
+            box-shadow: 0 5px 15px -5px rgba(0,0,0,0.7);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             text-decoration: none;
         }
 
         .nav-item i {
-            font-size: 1.3rem;
-            color: #1f5a96;
+            font-size: 1.1rem;
+            color: #FFD700;
+            transition: all 0.4s ease;
         }
 
         .nav-item:hover {
-            transform: translateY(-3px);
-            background: #f0f7ff;
-            box-shadow: 0 15px 25px -10px #1f5a9633;
+            background: rgba(10, 26, 47, 0.95);
+            border-color: #FFD700;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px -10px #FFD700;
         }
 
         .nav-item.active {
-            background: #0a2540;
-            color: white;
+            background: #FFD700;
+            color: #0a1a2f;
+            border-color: #ffffff;
         }
 
         .nav-item.active i {
-            color: white;
+            color: #0a1a2f;
         }
 
-        /* КАРТОЧКИ ВО ВСЮ ШИРИНУ */
+        /* КАРТОЧКИ ТЕМ */
         .topics-container {
             display: flex;
             flex-direction: column;
@@ -150,18 +243,24 @@
         }
 
         .topic-card {
-            background: white;
-            border-radius: 36px;
+            background: rgba(10, 26, 47, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 32px;
             padding: 2.5rem;
-            box-shadow: 0 15px 30px -12px rgba(0, 35, 70, 0.12);
-            border: 1px solid rgba(255,255,255,0.8);
-            transition: 0.2s;
+            box-shadow: 0 25px 40px -20px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
+            border-left: 6px solid #FFD700;
         }
 
         .topic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 40px -15px #1f5a9640;
+            border-color: #FFD700;
+            border-left-width: 12px;
+            box-shadow: 0 35px 55px -25px #000000;
+            background: rgba(10, 26, 47, 0.8);
+            transform: translateY(-6px);
         }
 
         .topic-header {
@@ -172,64 +271,91 @@
         }
 
         .topic-icon {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(145deg, #e9f2fc, #d6e6ff);
-            border-radius: 30px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #FFD700, #B8860B);
+            border-radius: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #0a2540;
+            color: #0a1a2f;
             font-size: 3rem;
-            box-shadow: 0 10px 20px -8px rgba(31,90,150,0.3);
+            border: 2px solid #FFD700;
             flex-shrink: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px -10px #FFD700;
+        }
+
+        .topic-card:hover .topic-icon {
+            transform: rotate(5deg) scale(1.1);
+            background: linear-gradient(145deg, #FFE55C, #DAA520);
+            box-shadow: 0 15px 30px -10px #FFD700;
         }
 
         .topic-title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: #0f2d4a;
-            border-left: 8px solid #1f5a96;
+            color: #ffffff;
+            border-left: 5px solid #FFD700;
             padding-left: 1.5rem;
             margin: 0;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            transition: all 0.4s ease;
+        }
+
+        .topic-card:hover .topic-title {
+            border-left-width: 8px;
+            text-shadow: 0 2px 20px rgba(255, 215, 0, 0.5);
         }
 
         .topic-content {
-            color: #1f3e5c;
-            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.05rem;
+            transition: color 0.4s ease;
         }
 
-        .topic-content p {
-            margin-bottom: 1rem;
+        .topic-card:hover .topic-content {
+            color: rgba(255, 255, 255, 1);
         }
 
-        /* Развертки */
+        /* Дропдауны */
         .dropdown {
-            background: #f4faff;
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
             margin: 1.2rem 0 0.8rem 0;
-            border: 1px solid #d6e4f5;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            transition: all 0.4s ease;
+        }
+
+        .dropdown:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .dropdown-header {
-            padding: 1.2rem 1.5rem;
+            padding: 1.2rem 1.8rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 15px;
-            border-radius: 24px;
-            transition: 0.2s;
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 1.1rem;
+            color: #ffffff;
         }
 
         .dropdown-header:hover {
-            background: #e5effa;
+            background: rgba(255, 215, 0, 0.15);
+            padding-left: 2.4rem;
         }
 
         .dropdown-header i {
-            transition: transform 0.2s;
-            color: #1f5a96;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #FFD700;
+            font-size: 1.2rem;
         }
 
         .dropdown-header.active i {
@@ -237,16 +363,28 @@
         }
 
         .dropdown-content {
-            padding: 0 1.5rem 1.5rem 4rem;
+            padding: 0 1.8rem 1.5rem 4.2rem;
             display: none;
-            color: #2d4b6e;
+            color: rgba(255, 255, 255, 0.85);
+            animation: fadeInSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInSlide {
+            from { 
+                opacity: 0; 
+                transform: translateY(-15px) translateX(-5px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) translateX(0);
+            }
         }
 
         .dropdown-content.show {
             display: block;
         }
 
-        /* Классы */
+        /* Сетка квалификационных классов */
         .classes-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -255,76 +393,99 @@
         }
 
         .class-item {
-            background: #e9f2fc;
-            border-radius: 30px;
-            padding: 1.2rem 0.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 1.5rem 0.5rem;
             text-align: center;
             font-weight: 700;
-            color: #0a2540;
-            border: 2px solid #b9d4f0;
+            color: #ffffff;
+            border: 2px solid #FFD700;
             cursor: pointer;
-            transition: all 0.2s;
-            min-height: 100px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
-            line-height: 1.4;
-            word-break: break-word;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+            line-height: 1.3;
         }
 
         .class-item:hover {
-            background: #d4e3fc;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(31,90,150,0.2);
-            border-color: #1f5a96;
+            background: rgba(255, 215, 0, 0.25);
+            border-color: #ffffff;
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 20px 30px -15px #FFD700;
         }
 
         .class-item.selected {
-            background: #0a2540;
-            color: white;
-            border-color: #0a2540;
-            box-shadow: 0 8px 15px rgba(10,37,64,0.3);
-        }
-
-        .class-item:last-child {
-            font-size: 1rem;
+            background: #FFD700;
+            color: #0a1a2f;
+            border-color: #ffffff;
+            transform: scale(1.06);
+            box-shadow: 0 15px 30px -10px #FFD700;
         }
 
         .class-info {
-            background: #f0f7ff;
-            border-radius: 24px;
+            background: rgba(10, 26, 47, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
             padding: 1.8rem;
             margin-top: 1.5rem;
-            border-left: 4px solid #1f5a96;
-            min-height: 120px;
-            line-height: 1.6;
-            font-size: 1.1rem;
+            border-left: 5px solid #FFD700;
+            color: #ffffff;
+            min-height: 100px;
+            font-size: 1.05rem;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.4s ease;
         }
 
+        .class-info:hover {
+            border-color: #FFD700;
+            box-shadow: 0 15px 30px -15px #FFD700;
+        }
+
+        /* Таблицы */
         .class-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1.5rem 0;
-            background: #f9fcff;
-            border-radius: 24px;
+            margin: 1.8rem 0;
+            background: rgba(10, 26, 47, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .class-table:hover {
+            border-color: #FFD700;
+            box-shadow: 0 15px 35px -15px #FFD700;
         }
 
         .class-table th {
-            background: #1d3e62;
-            color: white;
-            font-weight: 600;
-            padding: 1rem;
+            background: #FFD700;
+            color: #0a1a2f;
+            font-weight: 700;
+            padding: 1rem 1.2rem;
             text-align: left;
+            border-bottom: 2px solid #ffffff;
         }
 
         .class-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #dae3ec;
-            color: #1a334b;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .class-table tr:hover td {
+            background: rgba(255, 215, 0, 0.12);
+            padding-left: 1.8rem;
         }
 
         .class-table tr:last-child td {
@@ -332,98 +493,279 @@
         }
 
         .badge {
-            background: #ddebff;
-            color: #0f3d6a;
+            background: #FFD700;
+            color: #0a1a2f;
             padding: 0.4rem 1.2rem;
             border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 700;
             display: inline-block;
             margin: 0.8rem 0;
+            border: 1px solid #ffffff;
+            transition: all 0.4s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px -8px #FFD700;
+            background: #FFE55C;
         }
 
         .salary-row {
             display: flex;
             justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid #e3ebf5;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.25);
             font-weight: 500;
-            font-size: 1.1rem;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .salary-row:hover {
+            padding-left: 1.2rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
         }
 
         .salary-value {
             font-weight: 700;
-            color: #003c78;
+            color: #FFD700;
+            transition: all 0.3s ease;
+        }
+
+        .salary-row:hover .salary-value {
+            transform: scale(1.08);
+            color: #FFE55C;
         }
 
         .pension-highlight {
-            background: #e4f0fa;
-            border-radius: 24px;
+            background: rgba(10, 26, 47, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
             padding: 1.5rem;
             margin-top: 1.5rem;
-            border-left: 6px solid #1f5a96;
+            border-left: 5px solid #FFD700;
+            color: #ffffff;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .pension-highlight:hover {
+            border-color: #FFD700;
+            box-shadow: 0 15px 30px -15px #FFD700;
+            transform: translateX(8px);
         }
 
         .step-box {
-            background: #f4faff;
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
             padding: 1.5rem;
             margin: 1.5rem 0;
             display: flex;
             gap: 1.5rem;
             align-items: center;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-box:hover {
+            border-color: #FFD700;
+            transform: translateX(15px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 25px -15px #FFD700;
         }
 
         .step-num {
-            width: 55px;
-            height: 55px;
-            background: #0a2540;
-            color: white;
-            border-radius: 24px;
+            width: 50px;
+            height: 50px;
+            background: #FFD700;
+            color: #0a1a2f;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             flex-shrink: 0;
+            border: 2px solid #ffffff;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        .step-box:hover .step-num {
+            transform: rotate(360deg) scale(1.1);
+            background: #FFE55C;
+            box-shadow: 0 10px 20px -8px #FFD700;
+        }
+
+        /* Таймлайн для истории */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+            border-left: 3px solid #FFD700;
+            padding-left: 2rem;
+        }
+
+        .timeline-item:last-child {
+            border-left: 3px solid transparent;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -0.65rem;
+            top: 0;
+            width: 1.3rem;
+            height: 1.3rem;
+            background: #FFD700;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+        }
+
+        .timeline-year {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Блок фактов */
         .facts {
-            background: linear-gradient(145deg, #f6faff, #ffffff);
-            border-radius: 36px;
+            background: rgba(10, 26, 47, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 32px;
             padding: 2.5rem;
             margin: 2.5rem 0 1rem;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
-            border: 1px solid rgba(31,90,150,0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .facts:hover {
+            border-color: #FFD700;
+            box-shadow: 0 25px 45px -20px #FFD700;
         }
 
         .fact-item {
             text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .fact-item:hover {
+            transform: scale(1.12);
+            filter: drop-shadow(0 10px 15px rgba(255, 215, 0, 0.4));
         }
 
         .fact-number {
             font-size: 3rem;
-            font-weight: 800;
-            color: #0a2540;
+            font-weight: 700;
+            color: #FFD700;
             line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            transition: all 0.4s ease;
+        }
+
+        .fact-item:hover .fact-number {
+            text-shadow: 0 0 25px #FFD700;
+            color: #FFE55C;
         }
 
         .fact-label {
-            color: #446688;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 1rem;
+            transition: all 0.4s ease;
+        }
+
+        .fact-item:hover .fact-label {
+            color: #ffffff;
         }
 
         .footer-note {
             margin-top: 3rem;
             padding: 2rem;
             text-align: center;
-            background: #e5effa;
-            border-radius: 40px;
-            color: #1f4973;
-            font-size: 1rem;
-            border: 1px solid white;
+            background: rgba(10, 26, 47, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 32px;
+            color: #FFD700;
+            font-size: 0.95rem;
+            border: 1px solid #FFD700;
+            transition: all 0.5s ease;
+        }
+
+        .footer-note:hover {
+            border-color: #ffffff;
+            box-shadow: 0 20px 40px -20px #FFD700;
+            transform: translateY(-5px);
+            background: rgba(10, 26, 47, 0.95);
+        }
+
+        /* Стили для выделения */
+        .warning-note {
+            background: rgba(255, 215, 0, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 5px solid #FFD700;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin: 1.5rem 0;
+            color: #ffffff;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .warning-note:hover {
+            border-color: #FFD700;
+            box-shadow: 0 15px 30px -15px #FFD700;
+            background: rgba(255, 215, 0, 0.15);
+        }
+
+        .info-note {
+            background: rgba(10, 26, 47, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 5px solid #FFD700;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin: 1.5rem 0;
+            color: #ffffff;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .info-note:hover {
+            border-color: #FFD700;
+            box-shadow: 0 15px 30px -15px #FFD700;
+            background: rgba(10, 26, 47, 0.8);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 900px) {
+            .nav-circles {
+                gap: 0.5rem;
+            }
+            .nav-item {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
         }
 
         @media (max-width: 800px) {
@@ -433,15 +775,10 @@
             .facts {
                 grid-template-columns: 1fr 1fr;
             }
-            .header h1 {
-                font-size: 2rem;
-            }
-            .topic-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
             .topic-title {
+                font-size: 1.8rem;
+            }
+            .header h1 {
                 font-size: 2rem;
             }
         }
@@ -450,23 +787,39 @@
             .classes-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .class-item:last-child {
-                grid-column: span 2;
+            .topic-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
+            .nav-circles {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-item {
+                justify-content: center;
+            }
+        }
+
+        .page {
+            background: transparent;
+        }
+
+        p, li, .dropdown-content, .class-info, .topic-content {
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
         }
     </style>
 </head>
 <body>
-<div class="page">
 
-    <!-- Шапка с гербом -->
+<div class="page">
+    <!-- Шапка -->
     <div class="header">
         <div class="header-logo">
-            <i class="fas fa-gavel"></i>
+            <i class="fas fa-scale-balanced"></i>
         </div>
         <div class="header-title">
             <h1>Судебная система Российской Федерации</h1>
-            <div class="sub">Карьера, зарплаты, пенсия, квалификация</div>
+            <div class="sub">Полный гид: история, структура, карьера</div>
         </div>
         <div class="header-date">
             <i class="far fa-calendar-alt"></i> 2026
@@ -475,36 +828,96 @@
 
     <!-- Навигация -->
     <div class="nav-circles">
-        <a href="#career" class="nav-item"><i class="fas fa-arrow-up-wide-short"></i> Служебная лестница</a>
-        <a href="#classes" class="nav-item"><i class="fas fa-star"></i> Квалификационные классы</a>
+        <a href="#history" class="nav-item"><i class="fas fa-landmark"></i> История</a>
+        <a href="#career" class="nav-item"><i class="fas fa-arrow-up-wide-short"></i> Карьера</a>
+        <a href="#classes" class="nav-item"><i class="fas fa-star"></i> Классы</a>
         <a href="#salary" class="nav-item"><i class="fas fa-ruble-sign"></i> Зарплаты</a>
-        <a href="#pension" class="nav-item"><i class="fas fa-umbrella-beach"></i> Выход на пенсию</a>
-        <a href="#howto" class="nav-item"><i class="fas fa-door-open"></i> Как попасть</a>
+        <a href="#pension" class="nav-item"><i class="fas fa-umbrella-beach"></i> Пенсия</a>
+        <a href="#howto" class="nav-item"><i class="fas fa-door-open"></i> Отбор</a>
     </div>
 
     <!-- КОНТЕЙНЕР С КАРТОЧКАМИ -->
     <div class="topics-container">
+        
+        <!-- История судебной системы -->
+        <div class="topic-card" id="history">
+            <div class="topic-header">
+                <div class="topic-icon"><i class="fas fa-landmark"></i></div>
+                <h2 class="topic-title">История судебной системы России</h2>
+            </div>
+            <div class="topic-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">1016 г.</div>
+                        <div class="timeline-title">Русская Правда</div>
+                        <p>Первый писаный свод законов на Руси. Суд осуществлялся князем или его представителями. Основные наказания — вира (штраф) и поток (изгнание).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1497 г.</div>
+                        <div class="timeline-title">Судебник Ивана III</div>
+                        <p>Первый общерусский судебник. Ввел понятие "суд боярский" и "суд наместничий". Закрепил Юрьев день как срок перехода крестьян.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1649 г.</div>
+                        <div class="timeline-title">Соборное уложение</div>
+                        <p>Свод законов при царе Алексее Михайловиче. Суд стал более централизованным, появились приказы (судные органы).</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1864 г.</div>
+                        <div class="timeline-title">Судебная реформа Александра II</div>
+                        <p>Введены: независимость судей, состязательность процесса, суд присяжных, мировая юстиция, адвокатура. Считается одной из самых удачных реформ.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1917-1922 гг.</div>
+                        <div class="timeline-title">Советский период</div>
+                        <p>Декрет о суде №1 упразднил старую систему. Созданы народные суды, революционные трибуналы. Позже введена система: народный суд — губернский суд — Верховный суд РСФСР.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1991-1993 гг.</div>
+                        <div class="timeline-title">Постсоветская реформа</div>
+                        <p>Принятие Концепции судебной реформы. Воссоздана мировая юстиция, введен суд присяжных, создан Конституционный Суд.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2014 г.</div>
+                        <div class="timeline-title">Объединение Верховного и Высшего Арбитражного судов</div>
+                        <p>Создан единый Верховный Суд РФ как высший орган по гражданским, уголовным, административным и арбитражным делам.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 1. Служебная лестница -->
         <div class="topic-card" id="career">
             <div class="topic-header">
-                <div class="topic-icon">
-                    <i class="fas fa-arrow-up-wide-short"></i>
-                </div>
-                <h2 class="topic-title">Служебная лестница</h2>
+                <div class="topic-icon"><i class="fas fa-arrow-up-wide-short"></i></div>
+                <h2 class="topic-title">Карьерная лестница в судебной системе</h2>
             </div>
             <div class="topic-content">
-                <p><strong>Нажмите, чтобы развернуть подробности о каждом уровне:</strong></p>
+                <p><strong>Должности в судах общей юрисдикции и требования к кандидатам:</strong></p>
                 
                 <div class="dropdown">
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">📄</span>
-                        <strong>Секретарь / помощник судьи</strong>
+                        <span style="font-size: 2rem; margin-right: 10px;">👨‍💼</span>
+                        <strong>Аппарат суда: секретарь, помощник судьи</strong>
                     </div>
                     <div class="dropdown-content">
-                        <p><i class="fas fa-user-graduate"></i> <strong>Секретарь суда:</strong> ведёт протокол заседания, извещает участников процесса, оформляет судебные документы. Можно работать со средним профессиональным или высшим образованием. Опыт работы секретарем засчитывается в юридический стаж.</p>
-                        <p><i class="fas fa-user-tie"></i> <strong>Помощник судьи:</strong> готовит проекты судебных решений, изучает законодательство и судебную практику, анализирует дела. Требуется высшее юридическое образование. Работа помощником считается юридическим стажем и даёт преимущество при назначении на судейскую должность.</p>
-                        <div class="badge">Зарплата: 40–85 тыс. ₽</div>
+                        <p><i class="fas fa-user-graduate"></i> <strong>Секретарь судебного заседания:</strong> ведет протокол, извещает участников, оформляет дела. Требование: среднее профессиональное или высшее образование.</p>
+                        <p><i class="fas fa-user-tie"></i> <strong>Помощник судьи:</strong> готовит проекты судебных актов, анализирует практику. Требуется высшее юридическое образование.</p>
+                        <div class="badge">Денежное содержание: 45–90 тыс. ₽</div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(this)">
+                        <i class="fas fa-chevron-right"></i> 
+                        <span style="font-size: 2rem; margin-right: 10px;">👨‍⚖️</span>
+                        <strong>Мировой судья</strong>
+                    </div>
+                    <div class="dropdown-content">
+                        <p><i class="fas fa-scale-balanced"></i> Рассматривает мелкие уголовные (до 3 лет), гражданские (до 50 тыс.) и административные дела.</p>
+                        <p><strong>Требования:</strong> возраст от 25 лет, стаж не менее 5 лет.</p>
+                        <div class="badge">Денежное содержание: 120–160 тыс. ₽</div>
                     </div>
                 </div>
 
@@ -512,13 +925,12 @@
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
                         <span style="font-size: 2rem; margin-right: 10px;">⚖️</span>
-                        <strong>Мировой судья</strong>
+                        <strong>Судья районного (городского) суда</strong>
                     </div>
                     <div class="dropdown-content">
-                        <p><i class="fas fa-scale-balanced"></i> Рассматривает небольшие дела — разводы (при отсутствии спора о детях), имущественные споры до 50 тыс. руб., административные нарушения, уголовные дела с наказанием до 3 лет лишения свободы.</p>
-                        <p><strong>Требования:</strong> возраст от 25 лет, стаж работы по юридической профессии не менее 5 лет, сдача квалификационного экзамена, рекомендация квалификационной коллегии судей.</p>
-                        <p><strong>Назначение:</strong> первый раз на 3 или 5 лет, при повторном назначении — без ограничения срока (до достижения предельного возраста 70 лет).</p>
-                        <div class="badge">Зарплата: 130–160 тыс. ₽</div>
+                        <p><i class="fas fa-building"></i> Основное звено. Рассматривает большинство дел по первой инстанции и апелляции на мировых судей.</p>
+                        <p><strong>Требования:</strong> возраст от 25 лет, стаж не менее 5 лет.</p>
+                        <div class="badge">Денежное содержание: 150–220 тыс. ₽</div>
                     </div>
                 </div>
 
@@ -526,26 +938,12 @@
                     <div class="dropdown-header" onclick="toggleDropdown(this)">
                         <i class="fas fa-chevron-right"></i> 
                         <span style="font-size: 2rem; margin-right: 10px;">🏛️</span>
-                        <strong>Судья районного суда</strong>
+                        <strong>Судья суда областного уровня</strong>
                     </div>
                     <div class="dropdown-content">
-                        <p><i class="fas fa-building"></i> Основное звено судебной системы. Рассматривает большинство гражданских, уголовных и административных дел по первой инстанции. Также пересматривает постановления мировых судей в апелляционном порядке.</p>
-                        <p><strong>Требования:</strong> возраст от 25 лет, стаж работы по юридической профессии не менее 5 лет.</p>
-                        <p><strong>Назначение:</strong> бессрочно, предельный возраст — 70 лет.</p>
-                        <div class="badge">Зарплата: 150–220 тыс. ₽</div>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="dropdown-header" onclick="toggleDropdown(this)">
-                        <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">🏛️⚖️</span>
-                        <strong>Судья областного суда</strong>
-                    </div>
-                    <div class="dropdown-content">
-                        <p><i class="fas fa-gavel"></i> Проверяет решения районных судов в апелляционном и кассационном порядке, рассматривает сложные дела по первой инстанции (например, о государственной тайне, о принудительной госпитализации).</p>
-                        <p><strong>Требования:</strong> обычно требуется возраст не менее 30 лет и стаж работы от 7 лет.</p>
-                        <div class="badge">Зарплата: 220–300 тыс. ₽</div>
+                        <p><i class="fas fa-gavel"></i> Апелляционная и кассационная инстанции, сложные дела первой инстанции.</p>
+                        <p><strong>Требования:</strong> возраст от 30 лет, стаж не менее 7 лет.</p>
+                        <div class="badge">Денежное содержание: 230–320 тыс. ₽</div>
                     </div>
                 </div>
 
@@ -556,10 +954,9 @@
                         <strong>Судья Верховного Суда РФ</strong>
                     </div>
                     <div class="dropdown-content">
-                        <p><i class="fas fa-crown"></i> Высшая судебная инстанция. Судьи Верховного суда рассматривают дела в кассационном и надзорном порядке, дают разъяснения по вопросам судебной практики.</p>
-                        <p><strong>Требования:</strong> возраст от 35 лет, стаж работы по юридической профессии не менее 10 лет.</p>
-                        <p><strong>Назначение:</strong> Советом Федерации по представлению Президента РФ.</p>
-                        <div class="badge">Зарплата: 450–700 тыс. ₽</div>
+                        <p><i class="fas fa-crown"></i> Высшая инстанция, надзор, разъяснения практики.</p>
+                        <p><strong>Требования:</strong> возраст от 35 лет, стаж не менее 10 лет.</p>
+                        <div class="badge">Денежное содержание: от 500 тыс. ₽</div>
                     </div>
                 </div>
 
@@ -570,25 +967,25 @@
                         <strong>Председатель суда / заместитель</strong>
                     </div>
                     <div class="dropdown-content">
-                        <p><i class="fas fa-users-cog"></i> Руководит работой суда, распределяет дела между судьями, организует работу аппарата, представляет суд в отношениях с госорганами.</p>
-                        <p><strong>Назначение:</strong> на 6 лет (возможно повторное назначение).</p>
-                        <p><strong>Доплата:</strong> за руководство добавляют 10–30% к зарплате в зависимости от уровня суда.</p>
-                        <div class="badge">Зарплата: зависит от уровня суда + надбавка за руководство</div>
+                        <p><i class="fas fa-users-cog"></i> Руководство работой суда, распределение дел, представление суда.</p>
+                        <p><strong>Назначение:</strong> на 6 лет Президентом РФ или Советом Федерации.</p>
+                        <div class="badge">Денежное содержание: значительно выше</div>
                     </div>
+                </div>
+                <div class="info-note">
+                    <i class="fas fa-info-circle"></i> <strong>Важно:</strong> Предельный возраст судьи — 70 лет (кроме Конституционного Суда).
                 </div>
             </div>
         </div>
 
-        <!-- 2. Квалификационные классы - БЕЗ CITATION -->
+        <!-- 2. Квалификационные классы -->
         <div class="topic-card" id="classes">
             <div class="topic-header">
-                <div class="topic-icon">
-                    <i class="fas fa-star"></i>
-                </div>
-                <h2 class="topic-title">Квалификационные классы</h2>
+                <div class="topic-icon"><i class="fas fa-star"></i></div>
+                <h2 class="topic-title">Квалификационные классы судей</h2>
             </div>
             <div class="topic-content">
-                <p>Квалификационные классы — это официальная оценка уровня профессионализма судьи. Всего существует 9 классов: от 9-го (низшего) до 1-го (высшего), а также высший квалификационный класс для судей Верховного и Конституционного судов.</p>
+                <p>Квалификационный класс — показатель профессионализма, опыта и компетентности судьи, влияющий на размер надбавки к должностному окладу. Всего установлено 9 классов (с 9-го по 1-й) и отдельно — высший класс.</p>
                 
                 <div class="classes-grid">
                     <div class="class-item" onclick="selectClass(9, this)">9 класс</div>
@@ -603,132 +1000,100 @@
                 </div>
 
                 <div id="classInfoBox" class="class-info">
-                    👆 Нажмите на любой класс, чтобы прочитать подробную информацию
+                    👆 Нажмите на класс, чтобы узнать подробности
                 </div>
 
-                <h3 style="margin: 2rem 0 1rem; color: #0f2d4a;">Сроки пребывания в классах</h3>
+                <h3 style="margin: 2rem 0 1rem;">Сроки пребывания в классах</h3>
                 <table class="class-table">
-                    <tr><th>Классы</th><th>Срок пребывания</th></tr>
-                    <tr><td>9, 8, 7 классы</td><td>2 года</td></tr>
-                    <tr><td>6, 5 классы</td><td>3 года</td></tr>
-                    <tr><td>4, 3, 2, 1 классы</td><td>4 года</td></tr>
-                    <tr><td>Высший класс</td><td>Без ограничения срока</td></tr>
+                    <tr><th>Классы</th><th>Срок</th></tr>
+                    <tr><td>9, 8, 7</td><td>2 года</td></tr>
+                    <tr><td>6, 5</td><td>3 года</td></tr>
+                    <tr><td>4, 3, 2, 1</td><td>4 года</td></tr>
+                    <tr><td>Высший</td><td>Без срока</td></tr>
                 </table>
 
-                <h3 style="margin: 2rem 0 1rem; color: #0f2d4a;">Какие классы присваиваются на разных уровнях</h3>
+                <h3 style="margin: 2rem 0 1rem;">Предельные классы по уровню суда</h3>
                 <table class="class-table">
-                    <tr><th>Уровень суда</th><th>Возможные классы</th></tr>
-                    <tr><td>Верховный Суд РФ</td><td>высший, первый</td></tr>
-                    <tr><td>Областные и равные им суды</td><td>первый — пятый</td></tr>
-                    <tr><td>Районные суды</td><td>пятый — седьмой</td></tr>
-                    <tr><td>Мировые судьи</td><td>седьмой — девятый</td></tr>
+                    <tr><th>Уровень суда</th><th>Максимальный класс</th></tr>
+                    <tr><td>Мировые судьи</td><td>7 класс</td></tr>
+                    <tr><td>Районные суды</td><td>5 класс</td></tr>
+                    <tr><td>Областные суды</td><td>1 класс</td></tr>
+                    <tr><td>Верховный Суд</td><td>Высший класс</td></tr>
                 </table>
-
-                <h3 style="margin: 2rem 0 1rem; color: #0f2d4a;">Как проходит аттестация</h3>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 1rem;">✓ Квалификационная аттестация проводится после истечения срока пребывания в классе</li>
-                    <li style="margin-bottom: 1rem;">✓ Судьи, имеющие первый, пятый или седьмой класс (предельный для их должности), проходят аттестацию раз в три года</li>
-                    <li style="margin-bottom: 1rem;">✓ Судьи с высшим классом аттестацию не проходят</li>
-                    <li style="margin-bottom: 1rem;">✓ Вновь назначенные судьи аттестуются через 9–12 месяцев после назначения</li>
-                </ul>
-
-                <h3 style="margin: 2rem 0 1rem; color: #0f2d4a;">Особые случаи</h3>
-                <p>Судье, внёсшему значительный вклад в правосудие, может быть присвоен более высокий класс без соблюдения очерёдности и сроков — по представлению Председателя Верховного Суда РФ решением Высшей квалификационной коллегии судей.</p>
-                
-                <p style="margin-top: 1.5rem;">При уходе в отставку класс сохраняется пожизненно. При прекращении полномочий по отрицательным основаниям (дисциплинарный проступок и др.) судья может быть лишён квалификационного класса.</p>
             </div>
         </div>
 
         <!-- 3. Зарплаты -->
         <div class="topic-card" id="salary">
             <div class="topic-header">
-                <div class="topic-icon">
-                    <i class="fas fa-ruble-sign"></i>
-                </div>
-                <h2 class="topic-title">Зарплаты</h2>
+                <div class="topic-icon"><i class="fas fa-ruble-sign"></i></div>
+                <h2 class="topic-title">Денежное содержание судей и аппарата</h2>
             </div>
             <div class="topic-content">
-                <p><strong>Сколько получают в месяц (от самых высоких до самых низких):</strong></p>
-                <div class="salary-row"><span>Судья Верховного суда</span> <span class="salary-value">450 000 – 700 000 ₽</span></div>
-                <div class="salary-row"><span>Судья областного суда</span> <span class="salary-value">220 000 – 300 000 ₽</span></div>
-                <div class="salary-row"><span>Судья районного суда</span> <span class="salary-value">150 000 – 220 000 ₽</span></div>
-                <div class="salary-row"><span>Мировой судья</span> <span class="salary-value">120 000 – 160 000 ₽</span></div>
-                <div class="salary-row"><span>Помощник судьи</span> <span class="salary-value">50 000 – 80 000 ₽</span></div>
-                <div class="salary-row"><span>Секретарь суда</span> <span class="salary-value">35 000 – 55 000 ₽</span></div>
+                <p><strong>Ежемесячное денежное вознаграждение (ориентировочно):</strong></p>
+                <div class="salary-row"><span>👑 Судья Верховного Суда</span> <span class="salary-value">500 000 – 800 000 ₽</span></div>
+                <div class="salary-row"><span>🏛️ Судья областного суда</span> <span class="salary-value">250 000 – 350 000 ₽</span></div>
+                <div class="salary-row"><span>⚖️ Судья районного суда</span> <span class="salary-value">160 000 – 240 000 ₽</span></div>
+                <div class="salary-row"><span>👨‍⚖️ Мировой судья</span> <span class="salary-value">120 000 – 170 000 ₽</span></div>
+                <div class="salary-row"><span>👨‍💼 Помощник судьи</span> <span class="salary-value">50 000 – 100 000 ₽</span></div>
+                <div class="salary-row"><span>📄 Секретарь суда</span> <span class="salary-value">35 000 – 60 000 ₽</span></div>
                 
-                <p style="margin-top:2rem;"><strong>Что ещё добавляют к зарплате:</strong></p>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 0.8rem;">• за выслугу лет — доплата от 10% до 50%</li>
-                    <li style="margin-bottom: 0.8rem;">• за квалификационный класс — от 15% до 30%</li>
-                    <li style="margin-bottom: 0.8rem;">• за особые условия работы — до 20%</li>
-                    <li style="margin-bottom: 0.8rem;">• районные коэффициенты — в северных регионах зарплата может быть в 2 раза выше</li>
+                <p style="margin-top:2rem;"><strong>Составляющие:</strong></p>
+                <ul>
+                    <li>• Должностной оклад</li>
+                    <li>• Оклад за класс (15-30%)</li>
+                    <li>• Надбавка за выслугу лет (10-50%)</li>
+                    <li>• Районные коэффициенты</li>
                 </ul>
-                <p class="badge" style="margin-top:1rem;">Последняя индексация: +5,5% в 2024 году</p>
-                
-                <div style="background: #f0f7ff; border-radius: 24px; padding: 1.5rem; margin-top: 1.5rem;">
-                    <p><i class="fas fa-exclamation-triangle" style="color: #d97706;"></i> <strong>Важно:</strong> Председатель Верховного суда Игорь Краснов в январе 2026 года заявил о необходимости реформы оплаты труда судей, назвав несправедливым, что достойная зарплата достигается только к пенсии. В 2026 году ожидаются изменения в системе оплаты.</p>
-                </div>
             </div>
         </div>
 
-        <!-- 4. Выход на пенсию -->
+        <!-- 4. Пенсия -->
         <div class="topic-card" id="pension">
             <div class="topic-header">
-                <div class="topic-icon">
-                    <i class="fas fa-umbrella-beach"></i>
-                </div>
-                <h2 class="topic-title">Выход на пенсию</h2>
+                <div class="topic-icon"><i class="fas fa-umbrella-beach"></i></div>
+                <h2 class="topic-title">Пенсионное обеспечение (ЕПС)</h2>
             </div>
             <div class="topic-content">
-                <p><strong>Что получают судьи</strong> — это называется "ежемесячное пожизненное содержание".</p>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 0.8rem;">✓ Возраст: женщины выходят в 50 лет, мужчины — в 55</li>
-                    <li style="margin-bottom: 0.8rem;">✓ Нужно отработать судьёй не меньше 10 лет</li>
-                    <li style="margin-bottom: 0.8rem;">✓ Платят 80% от зарплаты. Если проработали больше 10 лет, за каждый лишний год добавляют ещё 1%. Но больше 85% получить нельзя</li>
-                    <li style="margin-bottom: 0.8rem;">✓ После выхода на пенсию сохраняется бесплатный проезд, медицинское обслуживание и другие льготы</li>
+                <p><strong>Ежемесячное пожизненное содержание для судей в отставке:</strong></p>
+                <ul>
+                    <li>✓ Стаж от 10 лет + возраст 60/55 лет</li>
+                    <li>✓ Размер: 80% + 1% за каждый год сверх 10 (макс. 85%)</li>
+                    <li>✓ Сохраняются льготы (медицина, проезд)</li>
                 </ul>
                 <div class="pension-highlight">
-                    <strong>Пример:</strong> судья проработал 18 лет. Это на 8 лет больше минимальных 10. Значит, пенсия будет 80% + 8% = 88%, но так как максимум 85%, он получит 85% от зарплаты. Если зарплата была 220 тыс. ₽, пенсия будет около 187 тыс. ₽.
-                </div>
-                
-                <p style="margin-top:2rem;"><strong>Работники аппарата</strong> получают обычную страховую пенсию (в 60 лет мужчины, в 55 женщины). Если есть стаж госслужбы от 18,5 лет, добавляют ещё доплату за выслугу лет.</p>
-                
-                <div style="background: #f0f7ff; border-radius: 24px; padding: 1.5rem; margin-top: 1.5rem;">
-                    <p><i class="fas fa-info-circle" style="color: #1f5a96;"></i> <strong>Изменения 2026 года:</strong> Для судей в новых регионах (ДНР, ЛНР, Запорожская и Херсонская области) один день работы будет приравниваться к двум дням стажа.</p>
+                    <strong>Пример:</strong> Стаж 18 лет, зарплата 200 тыс. → 85% = 170 тыс. ₽
                 </div>
             </div>
         </div>
 
-        <!-- 5. Как попасть в систему -->
+        <!-- 5. Как попасть -->
         <div class="topic-card" id="howto">
             <div class="topic-header">
-                <div class="topic-icon">
-                    <i class="fas fa-door-open"></i>
-                </div>
-                <h2 class="topic-title">Как попасть в систему</h2>
+                <div class="topic-icon"><i class="fas fa-door-open"></i></div>
+                <h2 class="topic-title">Порядок отбора на должность судьи</h2>
             </div>
             <div class="topic-content">
-                <p><strong>Шаг 1. Получите юридическое образование</strong></p>
-                <p style="margin-left:2rem; margin-bottom:1.5rem;">Нужен диплом о высшем юридическом образовании (специалитет или магистратура). Можно учиться очно или заочно.</p>
-
-                <p><strong>Шаг 2. Устройтесь в аппарат суда</strong></p>
-                <p style="margin-left:2rem; margin-bottom:1.5rem;">Самый простой путь — начать с должности секретаря или помощника судьи. Вакансии публикуются на сайтах судов и на портале «Госслужба». Работа в аппарате засчитывается в юридический стаж и даёт понимание судебной системы изнутри.</p>
-
-                <p><strong>Шаг 3. Если хотите стать судьёй</strong></p>
-                <div style="margin-left:2rem; background: #f4faff; padding: 1.5rem; border-radius: 24px;">
-                    <p style="margin-bottom: 1rem;">По закону «О статусе судей» требуется:</p>
-                    <ul style="margin-left:1.5rem;">
-                        <li>возраст от 25 лет</li>
-                        <li>юридический стаж от 5 лет</li>
-                        <li>сдать квалификационный экзамен</li>
-                        <li>получить рекомендацию квалификационной коллегии судей</li>
-                        <li>пройти конкурс на вакантную должность</li>
-                    </ul>
+                <div class="step-box">
+                    <div class="step-num">1</div>
+                    <div>Высшее юридическое образование (специалитет/магистратура)</div>
                 </div>
-
-                <p style="margin-top:1.5rem;"><strong>Совет:</strong> многие судьи начинали с секретаря или помощника. Проходите практику в суде во время учёбы — это лучший способ зарекомендовать себя и получить опыт.</p>
-                
-                <div class="badge" style="margin-top:1.5rem;">Обязательно: гражданство РФ, отсутствие судимости, владение русским языком</div>
+                <div class="step-box">
+                    <div class="step-num">2</div>
+                    <div>Юридический стаж от 5 лет (работа в аппарате, прокуратуре, адвокатуре)</div>
+                </div>
+                <div class="step-box">
+                    <div class="step-num">3</div>
+                    <div>Сдача квалификационного экзамена</div>
+                </div>
+                <div class="step-box">
+                    <div class="step-num">4</div>
+                    <div>Рекомендация ККС и конкурс</div>
+                </div>
+                <div class="step-box">
+                    <div class="step-num">5</div>
+                    <div>Назначение (Указ Президента или закон субъекта)</div>
+                </div>
             </div>
         </div>
     </div>
@@ -736,32 +1101,31 @@
     <!-- Быстрые факты -->
     <div class="facts">
         <div class="fact-item">
-            <div class="fact-number">26 500</div>
-            <div class="fact-label">судей всего</div>
+            <div class="fact-number">~26 000</div>
+            <div class="fact-label">судей в РФ</div>
         </div>
         <div class="fact-item">
-            <div class="fact-number">39 млн</div>
+            <div class="fact-number">≈40 млн</div>
             <div class="fact-label">дел в год</div>
         </div>
         <div class="fact-item">
-            <div class="fact-number">16 лет</div>
-            <div class="fact-label">средний стаж судьи</div>
+            <div class="fact-number">15 лет</div>
+            <div class="fact-label">средний стаж</div>
         </div>
         <div class="fact-item">
-            <div class="fact-number">9 классов</div>
-            <div class="fact-label">квалификация</div>
+            <div class="fact-number">6 лет</div>
+            <div class="fact-label">срок председателя</div>
         </div>
     </div>
 
     <!-- Подвал -->
     <div class="footer-note">
-        <i class="fas fa-info-circle"></i> Информация о судебной системе Российской Федерации
+        <i class="fas fa-gavel"></i> Судебная система РФ • Актуально на 2026 год
     </div>
-
 </div>
 
-<!-- Скрипты -->
 <script>
+    // Функции для основного сайта
     function toggleDropdown(element) {
         const content = element.nextElementSibling;
         content.classList.toggle('show');
@@ -774,22 +1138,21 @@
         if (lastSelectedClass) {
             lastSelectedClass.classList.remove('selected');
         }
-        
         element.classList.add('selected');
         lastSelectedClass = element;
         
         const infoBox = document.getElementById('classInfoBox');
         
         const descriptions = {
-            9: '9 класс — начальный уровень. Присваивается мировым судьям. Срок пребывания — 2 года. По результатам аттестации судья может быть повышен до 8 класса. Надбавка к зарплате — около 15%.',
-            8: '8 класс — второй уровень для мировых судей. Срок пребывания — 2 года. Даёт право на повышенную надбавку (около 17%). После двух лет можно претендовать на 7 класс.',
-            7: '7 класс — могут иметь мировые судьи (как высший для них) и судьи районных судов (как начальный). Для мировых судей этот класс является предельным — они проходят аттестацию раз в три года. Надбавка около 20%.',
-            6: '6 класс — присваивается судьям районных судов. Срок пребывания — 3 года. Соответствует среднему уровню квалификации. Надбавка 22–23%.',
-            5: '5 класс — могут иметь судьи районных судов (как высший для них) и судьи областных судов (как начальный). Для районных судей этот класс является предельным — аттестация раз в три года. Надбавка до 25%.',
-            4: '4 класс — присваивается судьям областных судов и равных им. Срок пребывания — 4 года. Надбавка около 26–27%.',
-            3: '3 класс — высокий уровень для судей областных судов. Срок пребывания — 4 года. Требует большого стажа и безупречной работы. Надбавка около 28%.',
-            2: '2 класс — предпоследний уровень. Могут иметь судьи областных судов с большим стажем, а также судьи Верховного суда. Надбавка около 29%.',
-            1: '1 класс — высший квалификационный класс для судей (кроме особого "высшего" класса для Верховного суда). Присваивается судьям Верховного суда, а также может быть присвоен судьям областных судов за особые заслуги. Надбавка до 30%.'
+            9: '<strong>9 класс:</strong> Начальный для мировых судей. Срок 2 года. Надбавка 15%.',
+            8: '<strong>8 класс:</strong> Для мировых и районных судей. Срок 2 года. Надбавка 17-18%.',
+            7: '<strong>7 класс:</strong> Предельный для мировых судей. Срок 2 года. Надбавка 20%.',
+            6: '<strong>6 класс:</strong> Для районных судов. Срок 3 года. Надбавка 22%.',
+            5: '<strong>5 класс:</strong> Предельный для районных судов. Срок 3 года. Надбавка 25%.',
+            4: '<strong>4 класс:</strong> Для областных судов. Срок 4 года. Надбавка 27%.',
+            3: '<strong>3 класс:</strong> Для областных судов. Срок 4 года. Надбавка 28%.',
+            2: '<strong>2 класс:</strong> Для областных и Верховного суда. Срок 4 года. Надбавка 29%.',
+            1: '<strong>1 класс:</strong> Высший (кроме особого). Для Верховного суда. Надбавка 30%.'
         };
         
         infoBox.innerHTML = `<strong>${classNumber} класс:</strong> ${descriptions[classNumber]}`;
@@ -802,7 +1165,7 @@
     function setActiveNav() {
         let current = '';
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - 150;
+            const sectionTop = section.offsetTop - 180;
             const sectionBottom = sectionTop + section.offsetHeight;
             if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
                 current = section.getAttribute('id');
@@ -829,6 +1192,48 @@
                 target.scrollIntoView({ behavior: 'smooth' });
             }
         });
+    });
+
+    // Градиент при прокрутке
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    body::before {
+                        background: 
+                            radial-gradient(circle at ${20 + scrollPercent * 30}%, rgba(255, 215, 0, 0.18) 0%, transparent 45%),
+                            radial-gradient(circle at ${80 - scrollPercent * 30}% ${70 - scrollPercent * 20}%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+                            radial-gradient(circle at ${40 + scrollPercent * 20}% ${80 - scrollPercent * 10}%, rgba(10, 26, 47, 0.95) 0%, transparent 55%),
+                            radial-gradient(circle at ${60 - scrollPercent * 20}% ${20 + scrollPercent * 10}%, rgba(10, 26, 47, 0.9) 0%, transparent 60%),
+                            linear-gradient(145deg, 
+                                rgba(10, 26, 47, 0.98) 0%, 
+                                rgba(10, 26, 47, 0.92) 30%,
+                                rgba(255, 215, 0, ${0.08 + scrollPercent * 0.1}) 50%,
+                                rgba(10, 26, 47, 0.92) 70%,
+                                rgba(10, 26, 47, 0.98) 100%),
+                            repeating-linear-gradient(45deg, 
+                                rgba(255, 215, 0, 0.02) 0px, 
+                                rgba(255, 215, 0, 0.02) 4px,
+                                transparent 4px, 
+                                transparent 12px);
+                    }
+                `;
+                
+                const oldStyle = document.getElementById('dynamic-gradient');
+                if (oldStyle) {
+                    oldStyle.remove();
+                }
+                style.id = 'dynamic-gradient';
+                document.head.appendChild(style);
+                
+                ticking = false;
+            });
+            ticking = true;
+        }
     });
 </script>
 </body>
