@@ -1,1240 +1,268 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Судебная система РФ | Полный гид</title>
-    <!-- Шрифты и иконки -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Three Moments</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        /* Основные стили страницы */
+        
         body {
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
-            line-height: 1.5;
-            padding: 2rem 1rem;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a141f;
+        }
+        
+        .photo-container {
             position: relative;
-            background: #0a1a2f;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        .photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: flex-end;
+            padding: 3rem;
+        }
+        
+        .photo.active {
             opacity: 1;
+            z-index: 2;
         }
-
-        /* Многослойный градиент */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 40% 80%, rgba(10, 26, 47, 0.95) 0%, transparent 50%),
-                radial-gradient(circle at 60% 20%, rgba(10, 26, 47, 0.9) 0%, transparent 55%),
-                linear-gradient(145deg, 
-                    rgba(10, 26, 47, 0.98) 0%, 
-                    rgba(10, 26, 47, 0.92) 30%,
-                    rgba(255, 215, 0, 0.08) 50%,
-                    rgba(10, 26, 47, 0.92) 70%,
-                    rgba(10, 26, 47, 0.98) 100%),
-                repeating-linear-gradient(45deg, 
-                    rgba(255, 215, 0, 0.02) 0px, 
-                    rgba(255, 215, 0, 0.02) 4px,
-                    transparent 4px, 
-                    transparent 12px);
-            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: background;
+        
+        .photo-1 {
+            background-image: url('https://Gercec.github.io/img/1.png');
         }
-
-        /* Фоновые символы */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            background: 
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.1"><text x="20" y="40" font-size="32" fill="%23FFD700">👨‍⚖️</text><text x="120" y="90" font-size="36" fill="%23ffffff">⚖️</text><text x="40" y="160" font-size="28" fill="%23FFD700">🏛️</text><text x="150" y="200" font-size="42" fill="%23ffffff">👑</text><text x="80" y="250" font-size="34" fill="%23FFD700">📜</text><text x="180" y="300" font-size="38" fill="%23ffffff">⚖️</text><text x="30" y="350" font-size="30" fill="%23FFD700">🏛️</text></svg>') repeat,
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.07"><text x="50" y="50" font-size="28" fill="%23FFD700">👨‍💼</text><text x="140" y="120" font-size="34" fill="%23ffffff">⚖️</text><text x="70" y="200" font-size="40" fill="%23FFD700">🏛️</text><text x="160" y="270" font-size="32" fill="%23ffffff">👑</text><text x="90" y="330" font-size="36" fill="%23FFD700">📜</text></svg>') repeat;
-            background-size: 300px 300px, 250px 250px;
-            animation: floatSymbols 240s linear infinite;
-            will-change: background-position;
-            mix-blend-mode: overlay;
+        
+        .photo-2 {
+            background-image: url('https://Gercec.github.io/img/2.png');
         }
-
-        @keyframes floatSymbols {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 500px 500px, -300px -300px; }
+        
+        .photo-3 {
+            background-image: url('https://Gercec.github.io/img/3.png');
         }
-
-        /* Контейнер страницы */
-        .page {
-            max-width: 1400px;
-            margin: 0 auto;
+        
+        .paragraph {
             position: relative;
-            z-index: 20;
-            padding: 0;
-        }
-
-        /* Шапка */
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            padding: 2rem;
-            background: rgba(10, 26, 47, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 40px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            flex-wrap: wrap;
-            box-shadow: 0 25px 40px -20px rgba(0, 0, 0, 0.8);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .header:hover {
-            border-color: rgba(255, 215, 0, 0.8);
-            box-shadow: 0 30px 50px -20px rgba(255, 215, 0, 0.4);
-            background: rgba(10, 26, 47, 0.85);
-        }
-
-        .header-logo {
-            background: linear-gradient(145deg, #0a1a2f, #1a2a3f);
-            color: #FFD700;
-            width: 100px;
-            height: 100px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.8rem;
-            box-shadow: 0 15px 25px -10px #000000;
-            border: 2px solid #FFD700;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .header:hover .header-logo {
-            transform: scale(1.05) rotate(3deg);
-            border-color: #ffffff;
-            box-shadow: 0 20px 35px -10px #FFD700;
-        }
-
-        .header-title h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.3rem;
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-            transition: text-shadow 0.5s ease;
-        }
-
-        .header:hover .header-title h1 {
-            text-shadow: 0 2px 20px rgba(255, 215, 0, 0.6);
-        }
-
-        .header-title .sub {
-            font-size: 1.1rem;
-            color: #FFD700;
-            background: rgba(10, 26, 47, 0.9);
-            display: inline-block;
-            padding: 0.4rem 1.5rem;
-            border-radius: 40px;
-            border: 1px solid #FFD700;
-            font-weight: 500;
-            backdrop-filter: blur(5px);
-            transition: all 0.5s ease;
-        }
-
-        .header:hover .header-title .sub {
-            background: rgba(10, 26, 47, 1);
-            border-color: #ffffff;
-        }
-
-        .header-date {
-            background: rgba(10, 26, 47, 0.9);
-            padding: 0.7rem 1.5rem;
-            border-radius: 40px;
-            font-weight: 500;
-            color: #FFD700;
-            border: 1px solid #FFD700;
-            backdrop-filter: blur(5px);
-            transition: all 0.5s ease;
-        }
-
-        .header:hover .header-date {
-            background: rgba(10, 26, 47, 1);
-            border-color: #ffffff;
-        }
-
-        /* Навигация */
-        .nav-circles {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.8rem;
-            margin: 2rem 0 2.5rem;
-        }
-
-        .nav-item {
-            background: rgba(10, 26, 47, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 60px;
-            padding: 0.7rem 1.5rem;
-            font-weight: 600;
+            z-index: 10;
+            max-width: 600px;
+            color: rgba(230, 240, 255, 0.9);
             font-size: 0.95rem;
-            color: #ffffff;
-            box-shadow: 0 5px 15px -5px rgba(0,0,0,0.7);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
+            line-height: 1.7;
+            letter-spacing: 0.3px;
+            font-weight: 300;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            padding: 1.5rem 2rem;
+            border-left: 1px solid rgba(100, 150, 220, 0.3);
+            background: linear-gradient(to right, rgba(0, 10, 25, 0.5) 0%, rgba(0, 10, 25, 0.2) 90%);
+        }
+        
+        .nav-panel {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 130px;
+            height: 90px;
+            background: rgba(15, 25, 40, 0.7);
+            border-left: 1px solid rgba(70, 130, 200, 0.2);
+            border-top: 1px solid rgba(70, 130, 200, 0.2);
+            border-top-left-radius: 16px;
+            z-index: 90;
+            box-shadow: -3px -3px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-content {
             display: flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
+            margin-right: 12px;
+            margin-bottom: 6px;
         }
-
-        .nav-item i {
-            font-size: 1.1rem;
-            color: #FFD700;
-            transition: all 0.4s ease;
-        }
-
-        .nav-item:hover {
-            background: rgba(10, 26, 47, 0.95);
-            border-color: #FFD700;
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 15px 30px -10px #FFD700;
-        }
-
-        .nav-item.active {
-            background: #FFD700;
-            color: #0a1a2f;
-            border-color: #ffffff;
-        }
-
-        .nav-item.active i {
-            color: #0a1a2f;
-        }
-
-        /* КАРТОЧКИ ТЕМ */
-        .topics-container {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-            margin: 2rem 0;
-        }
-
-        .topic-card {
-            background: rgba(10, 26, 47, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 32px;
-            padding: 2.5rem;
-            box-shadow: 0 25px 40px -20px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 100%;
-            border-left: 6px solid #FFD700;
-        }
-
-        .topic-card:hover {
-            border-color: #FFD700;
-            border-left-width: 12px;
-            box-shadow: 0 35px 55px -25px #000000;
-            background: rgba(10, 26, 47, 0.8);
-            transform: translateY(-6px);
-        }
-
-        .topic-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .topic-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(145deg, #FFD700, #B8860B);
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0a1a2f;
-            font-size: 3rem;
-            border: 2px solid #FFD700;
-            flex-shrink: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 20px -10px #FFD700;
-        }
-
-        .topic-card:hover .topic-icon {
-            transform: rotate(5deg) scale(1.1);
-            background: linear-gradient(145deg, #FFE55C, #DAA520);
-            box-shadow: 0 15px 30px -10px #FFD700;
-        }
-
-        .topic-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #ffffff;
-            border-left: 5px solid #FFD700;
-            padding-left: 1.5rem;
-            margin: 0;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-            transition: all 0.4s ease;
-        }
-
-        .topic-card:hover .topic-title {
-            border-left-width: 8px;
-            text-shadow: 0 2px 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .topic-content {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.05rem;
-            transition: color 0.4s ease;
-        }
-
-        .topic-card:hover .topic-content {
-            color: rgba(255, 255, 255, 1);
-        }
-
-        /* Дропдауны */
-        .dropdown {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        
+        .lang-btn {
+            background: rgba(30, 50, 70, 0.9);
+            border: 1px solid rgba(100, 150, 220, 0.4);
+            color: rgba(200, 225, 255, 0.9);
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            padding: 6px 10px;
             border-radius: 20px;
-            margin: 1.2rem 0 0.8rem 0;
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            transition: all 0.4s ease;
-        }
-
-        .dropdown:hover {
-            border-color: rgba(255, 215, 0, 0.7);
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .dropdown-header {
-            padding: 1.2rem 1.8rem;
-            font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-radius: 20px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1.1rem;
-            color: #ffffff;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
-
-        .dropdown-header:hover {
-            background: rgba(255, 215, 0, 0.15);
-            padding-left: 2.4rem;
+        
+        .lang-btn:hover {
+            background: rgba(50, 80, 110, 0.9);
+            border-color: rgba(150, 200, 255, 0.6);
+            color: white;
         }
-
-        .dropdown-header i {
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #FFD700;
-            font-size: 1.2rem;
+        
+        .lang-btn:active {
+            transform: scale(0.95);
         }
-
-        .dropdown-header.active i {
-            transform: rotate(90deg);
-        }
-
-        .dropdown-content {
-            padding: 0 1.8rem 1.5rem 4.2rem;
-            display: none;
-            color: rgba(255, 255, 255, 0.85);
-            animation: fadeInSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes fadeInSlide {
-            from { 
-                opacity: 0; 
-                transform: translateY(-15px) translateX(-5px);
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0) translateX(0);
-            }
-        }
-
-        .dropdown-content.show {
-            display: block;
-        }
-
-        /* Сетка квалификационных классов */
-        .classes-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .class-item {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 1.5rem 0.5rem;
-            text-align: center;
-            font-weight: 700;
-            color: #ffffff;
-            border: 2px solid #FFD700;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            line-height: 1.3;
-        }
-
-        .class-item:hover {
-            background: rgba(255, 215, 0, 0.25);
-            border-color: #ffffff;
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 20px 30px -15px #FFD700;
-        }
-
-        .class-item.selected {
-            background: #FFD700;
-            color: #0a1a2f;
-            border-color: #ffffff;
-            transform: scale(1.06);
-            box-shadow: 0 15px 30px -10px #FFD700;
-        }
-
-        .class-info {
-            background: rgba(10, 26, 47, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 1.8rem;
-            margin-top: 1.5rem;
-            border-left: 5px solid #FFD700;
-            color: #ffffff;
-            min-height: 100px;
-            font-size: 1.05rem;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.4s ease;
-        }
-
-        .class-info:hover {
-            border-color: #FFD700;
-            box-shadow: 0 15px 30px -15px #FFD700;
-        }
-
-        /* Таблицы */
-        .class-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.8rem 0;
-            background: rgba(10, 26, 47, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.4s ease;
-        }
-
-        .class-table:hover {
-            border-color: #FFD700;
-            box-shadow: 0 15px 35px -15px #FFD700;
-        }
-
-        .class-table th {
-            background: #FFD700;
-            color: #0a1a2f;
-            font-weight: 700;
-            padding: 1rem 1.2rem;
-            text-align: left;
-            border-bottom: 2px solid #ffffff;
-        }
-
-        .class-table td {
-            padding: 1rem 1.2rem;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.25);
-            color: #ffffff;
-            transition: all 0.3s ease;
-        }
-
-        .class-table tr:hover td {
-            background: rgba(255, 215, 0, 0.12);
-            padding-left: 1.8rem;
-        }
-
-        .class-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .badge {
-            background: #FFD700;
-            color: #0a1a2f;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            display: inline-block;
-            margin: 0.8rem 0;
-            border: 1px solid #ffffff;
-            transition: all 0.4s ease;
-        }
-
-        .badge:hover {
-            transform: scale(1.08);
-            box-shadow: 0 8px 20px -8px #FFD700;
-            background: #FFE55C;
-        }
-
-        .salary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.9rem 0;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.25);
-            font-weight: 500;
-            color: #ffffff;
-            transition: all 0.3s ease;
-        }
-
-        .salary-row:hover {
-            padding-left: 1.2rem;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 12px;
-        }
-
-        .salary-value {
-            font-weight: 700;
-            color: #FFD700;
-            transition: all 0.3s ease;
-        }
-
-        .salary-row:hover .salary-value {
-            transform: scale(1.08);
-            color: #FFE55C;
-        }
-
-        .pension-highlight {
-            background: rgba(10, 26, 47, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            border-left: 5px solid #FFD700;
-            color: #ffffff;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.4s ease;
-        }
-
-        .pension-highlight:hover {
-            border-color: #FFD700;
-            box-shadow: 0 15px 30px -15px #FFD700;
-            transform: translateX(8px);
-        }
-
-        .step-box {
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .step-box:hover {
-            border-color: #FFD700;
-            transform: translateX(15px);
-            background: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 10px 25px -15px #FFD700;
-        }
-
-        .step-num {
-            width: 50px;
-            height: 50px;
-            background: #FFD700;
-            color: #0a1a2f;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-            border: 2px solid #ffffff;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .step-box:hover .step-num {
-            transform: rotate(360deg) scale(1.1);
-            background: #FFE55C;
-            box-shadow: 0 10px 20px -8px #FFD700;
-        }
-
-        /* Таймлайн для истории */
-        .timeline {
-            position: relative;
-            padding-left: 3rem;
-            margin: 2rem 0;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-bottom: 2rem;
-            border-left: 3px solid #FFD700;
-            padding-left: 2rem;
-        }
-
-        .timeline-item:last-child {
-            border-left: 3px solid transparent;
-        }
-
-        .timeline-item::before {
-            content: "";
-            position: absolute;
-            left: -0.65rem;
-            top: 0;
-            width: 1.3rem;
-            height: 1.3rem;
-            background: #FFD700;
+        
+        .next-btn {
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            border: 3px solid #ffffff;
+            background: rgba(40, 70, 100, 0.9);
+            border: 1px solid rgba(150, 200, 255, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 22px;
+            color: rgba(220, 240, 255, 0.9);
+            line-height: 1;
+            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.5);
         }
-
-        .timeline-year {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #FFD700;
-            margin-bottom: 0.5rem;
+        
+        .next-btn:hover {
+            background: rgba(60, 100, 140, 0.9);
+            border-color: rgba(200, 230, 255, 0.6);
+            color: white;
+            transform: translateX(3px);
         }
-
-        .timeline-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+        
+        .next-btn:active {
+            transform: translateX(0) scale(0.95);
         }
-
-        /* Блок фактов */
-        .facts {
-            background: rgba(10, 26, 47, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 32px;
-            padding: 2.5rem;
-            margin: 2.5rem 0 1rem;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.5s ease;
-        }
-
-        .facts:hover {
-            border-color: #FFD700;
-            box-shadow: 0 25px 45px -20px #FFD700;
-        }
-
-        .fact-item {
-            text-align: center;
-            transition: all 0.4s ease;
-        }
-
-        .fact-item:hover {
-            transform: scale(1.12);
-            filter: drop-shadow(0 10px 15px rgba(255, 215, 0, 0.4));
-        }
-
-        .fact-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #FFD700;
-            line-height: 1.2;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-            transition: all 0.4s ease;
-        }
-
-        .fact-item:hover .fact-number {
-            text-shadow: 0 0 25px #FFD700;
-            color: #FFE55C;
-        }
-
-        .fact-label {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
-            transition: all 0.4s ease;
-        }
-
-        .fact-item:hover .fact-label {
-            color: #ffffff;
-        }
-
-        .footer-note {
-            margin-top: 3rem;
-            padding: 2rem;
-            text-align: center;
-            background: rgba(10, 26, 47, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 32px;
-            color: #FFD700;
-            font-size: 0.95rem;
-            border: 1px solid #FFD700;
-            transition: all 0.5s ease;
-        }
-
-        .footer-note:hover {
-            border-color: #ffffff;
-            box-shadow: 0 20px 40px -20px #FFD700;
-            transform: translateY(-5px);
-            background: rgba(10, 26, 47, 0.95);
-        }
-
-        /* Стили для выделения */
-        .warning-note {
-            background: rgba(255, 215, 0, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-left: 5px solid #FFD700;
-            padding: 1.5rem;
-            border-radius: 20px;
-            margin: 1.5rem 0;
-            color: #ffffff;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.4s ease;
-        }
-
-        .warning-note:hover {
-            border-color: #FFD700;
-            box-shadow: 0 15px 30px -15px #FFD700;
-            background: rgba(255, 215, 0, 0.15);
-        }
-
-        .info-note {
-            background: rgba(10, 26, 47, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-left: 5px solid #FFD700;
-            padding: 1.5rem;
-            border-radius: 20px;
-            margin: 1.5rem 0;
-            color: #ffffff;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.4s ease;
-        }
-
-        .info-note:hover {
-            border-color: #FFD700;
-            box-shadow: 0 15px 30px -15px #FFD700;
-            background: rgba(10, 26, 47, 0.8);
-        }
-
-        /* Адаптивность */
-        @media (max-width: 900px) {
-            .nav-circles {
-                gap: 0.5rem;
+        
+        @media (max-width: 768px) {
+            .photo {
+                padding: 1.5rem;
             }
-            .nav-item {
-                padding: 0.6rem 1rem;
+            .paragraph {
                 font-size: 0.85rem;
+                padding: 1.2rem 1.5rem;
+                max-width: 100%;
             }
-        }
-
-        @media (max-width: 800px) {
-            .classes-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .nav-panel {
+                width: 110px;
+                height: 75px;
             }
-            .facts {
-                grid-template-columns: 1fr 1fr;
+            .next-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
             }
-            .topic-title {
-                font-size: 1.8rem;
+            .lang-btn {
+                font-size: 11px;
+                padding: 4px 8px;
             }
-            .header h1 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 500px) {
-            .classes-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .topic-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .nav-circles {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .nav-item {
-                justify-content: center;
-            }
-        }
-
-        .page {
-            background: transparent;
-        }
-
-        p, li, .dropdown-content, .class-info, .topic-content {
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
         }
     </style>
 </head>
 <body>
-
-<div class="page">
-    <!-- Шапка -->
-    <div class="header">
-        <div class="header-logo">
-            <i class="fas fa-scale-balanced"></i>
+    <div class="photo-container">
+        <div class="photo photo-1 active" id="photo1">
+            <div class="paragraph" id="text1">
+                John stood on the second floor of Vitebsky railway station in St. Petersburg leaning against the wrought iron railings. Cold twilight light fell through huge stained glass windows painting the empty hall in blue tones. John was just waiting for his train scrolling through his phone. Suddenly from the old baggage department a man in early 20th century railway uniform emerged. He carried a heavy leather suitcase and strangest of all his steps on the marble floor made no sound.
+            </div>
         </div>
-        <div class="header-title">
-            <h1>Судебная система Российской Федерации</h1>
-            <div class="sub">Полный гид: история, структура, карьера</div>
-        </div>
-        <div class="header-date">
-            <i class="far fa-calendar-alt"></i> 2026
-        </div>
-    </div>
-
-    <!-- Навигация -->
-    <div class="nav-circles">
-        <a href="#history" class="nav-item"><i class="fas fa-landmark"></i> История</a>
-        <a href="#career" class="nav-item"><i class="fas fa-arrow-up-wide-short"></i> Карьера</a>
-        <a href="#classes" class="nav-item"><i class="fas fa-star"></i> Классы</a>
-        <a href="#salary" class="nav-item"><i class="fas fa-ruble-sign"></i> Зарплаты</a>
-        <a href="#pension" class="nav-item"><i class="fas fa-umbrella-beach"></i> Пенсия</a>
-        <a href="#howto" class="nav-item"><i class="fas fa-door-open"></i> Отбор</a>
-    </div>
-
-    <!-- КОНТЕЙНЕР С КАРТОЧКАМИ -->
-    <div class="topics-container">
         
-        <!-- История судебной системы -->
-        <div class="topic-card" id="history">
-            <div class="topic-header">
-                <div class="topic-icon"><i class="fas fa-landmark"></i></div>
-                <h2 class="topic-title">История судебной системы России</h2>
-            </div>
-            <div class="topic-content">
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-year">1016 г.</div>
-                        <div class="timeline-title">Русская Правда</div>
-                        <p>Первый писаный свод законов на Руси. Суд осуществлялся князем или его представителями. Основные наказания — вира (штраф) и поток (изгнание).</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">1497 г.</div>
-                        <div class="timeline-title">Судебник Ивана III</div>
-                        <p>Первый общерусский судебник. Ввел понятие "суд боярский" и "суд наместничий". Закрепил Юрьев день как срок перехода крестьян.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">1649 г.</div>
-                        <div class="timeline-title">Соборное уложение</div>
-                        <p>Свод законов при царе Алексее Михайловиче. Суд стал более централизованным, появились приказы (судные органы).</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">1864 г.</div>
-                        <div class="timeline-title">Судебная реформа Александра II</div>
-                        <p>Введены: независимость судей, состязательность процесса, суд присяжных, мировая юстиция, адвокатура. Считается одной из самых удачных реформ.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">1917-1922 гг.</div>
-                        <div class="timeline-title">Советский период</div>
-                        <p>Декрет о суде №1 упразднил старую систему. Созданы народные суды, революционные трибуналы. Позже введена система: народный суд — губернский суд — Верховный суд РСФСР.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">1991-1993 гг.</div>
-                        <div class="timeline-title">Постсоветская реформа</div>
-                        <p>Принятие Концепции судебной реформы. Воссоздана мировая юстиция, введен суд присяжных, создан Конституционный Суд.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">2014 г.</div>
-                        <div class="timeline-title">Объединение Верховного и Высшего Арбитражного судов</div>
-                        <p>Создан единый Верховный Суд РФ как высший орган по гражданским, уголовным, административным и арбитражным делам.</p>
-                    </div>
-                </div>
+        <div class="photo photo-2" id="photo2">
+            <div class="paragraph" id="text2">
+                John followed him onto the open platform under a giant metal canopy. The man sat on a bench right under the station clock. John noticed something impossible: the hands above the stranger's head began spinning wildly backwards! Gathering courage John approached. "Excuse me" he said "something is wrong with the clock." The man raised his head and John saw his eyes glowing with soft amber light. "Time here is just a decoration John" he rasped.
             </div>
         </div>
-
-        <!-- 1. Служебная лестница -->
-        <div class="topic-card" id="career">
-            <div class="topic-header">
-                <div class="topic-icon"><i class="fas fa-arrow-up-wide-short"></i></div>
-                <h2 class="topic-title">Карьерная лестница в судебной системе</h2>
-            </div>
-            <div class="topic-content">
-                <p><strong>Должности в судах общей юрисдикции и требования к кандидатам:</strong></p>
-                
-                <div class="dropdown">
-                    <div class="dropdown-header" onclick="toggleDropdown(this)">
-                        <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">👨‍💼</span>
-                        <strong>Аппарат суда: секретарь, помощник судьи</strong>
-                    </div>
-                    <div class="dropdown-content">
-                        <p><i class="fas fa-user-graduate"></i> <strong>Секретарь судебного заседания:</strong> ведет протокол, извещает участников, оформляет дела. Требование: среднее профессиональное или высшее образование.</p>
-                        <p><i class="fas fa-user-tie"></i> <strong>Помощник судьи:</strong> готовит проекты судебных актов, анализирует практику. Требуется высшее юридическое образование.</p>
-                        <div class="badge">Денежное содержание: 45–90 тыс. ₽</div>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="dropdown-header" onclick="toggleDropdown(this)">
-                        <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">👨‍⚖️</span>
-                        <strong>Мировой судья</strong>
-                    </div>
-                    <div class="dropdown-content">
-                        <p><i class="fas fa-scale-balanced"></i> Рассматривает мелкие уголовные (до 3 лет), гражданские (до 50 тыс.) и административные дела.</p>
-                        <p><strong>Требования:</strong> возраст от 25 лет, стаж не менее 5 лет.</p>
-                        <div class="badge">Денежное содержание: 120–160 тыс. ₽</div>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="dropdown-header" onclick="toggleDropdown(this)">
-                        <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">⚖️</span>
-                        <strong>Судья районного (городского) суда</strong>
-                    </div>
-                    <div class="dropdown-content">
-                        <p><i class="fas fa-building"></i> Основное звено. Рассматривает большинство дел по первой инстанции и апелляции на мировых судей.</p>
-                        <p><strong>Требования:</strong> возраст от 25 лет, стаж не менее 5 лет.</p>
-                        <div class="badge">Денежное содержание: 150–220 тыс. ₽</div>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="dropdown-header" onclick="toggleDropdown(this)">
-                        <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">🏛️</span>
-                        <strong>Судья суда областного уровня</strong>
-                    </div>
-                    <div class="dropdown-content">
-                        <p><i class="fas fa-gavel"></i> Апелляционная и кассационная инстанции, сложные дела первой инстанции.</p>
-                        <p><strong>Требования:</strong> возраст от 30 лет, стаж не менее 7 лет.</p>
-                        <div class="badge">Денежное содержание: 230–320 тыс. ₽</div>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="dropdown-header" onclick="toggleDropdown(this)">
-                        <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">👑</span>
-                        <strong>Судья Верховного Суда РФ</strong>
-                    </div>
-                    <div class="dropdown-content">
-                        <p><i class="fas fa-crown"></i> Высшая инстанция, надзор, разъяснения практики.</p>
-                        <p><strong>Требования:</strong> возраст от 35 лет, стаж не менее 10 лет.</p>
-                        <div class="badge">Денежное содержание: от 500 тыс. ₽</div>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="dropdown-header" onclick="toggleDropdown(this)">
-                        <i class="fas fa-chevron-right"></i> 
-                        <span style="font-size: 2rem; margin-right: 10px;">👥</span>
-                        <strong>Председатель суда / заместитель</strong>
-                    </div>
-                    <div class="dropdown-content">
-                        <p><i class="fas fa-users-cog"></i> Руководство работой суда, распределение дел, представление суда.</p>
-                        <p><strong>Назначение:</strong> на 6 лет Президентом РФ или Советом Федерации.</p>
-                        <div class="badge">Денежное содержание: значительно выше</div>
-                    </div>
-                </div>
-                <div class="info-note">
-                    <i class="fas fa-info-circle"></i> <strong>Важно:</strong> Предельный возраст судьи — 70 лет (кроме Конституционного Суда).
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. Квалификационные классы -->
-        <div class="topic-card" id="classes">
-            <div class="topic-header">
-                <div class="topic-icon"><i class="fas fa-star"></i></div>
-                <h2 class="topic-title">Квалификационные классы судей</h2>
-            </div>
-            <div class="topic-content">
-                <p>Квалификационный класс — показатель профессионализма, опыта и компетентности судьи, влияющий на размер надбавки к должностному окладу. Всего установлено 9 классов (с 9-го по 1-й) и отдельно — высший класс.</p>
-                
-                <div class="classes-grid">
-                    <div class="class-item" onclick="selectClass(9, this)">9 класс</div>
-                    <div class="class-item" onclick="selectClass(8, this)">8 класс</div>
-                    <div class="class-item" onclick="selectClass(7, this)">7 класс</div>
-                    <div class="class-item" onclick="selectClass(6, this)">6 класс</div>
-                    <div class="class-item" onclick="selectClass(5, this)">5 класс</div>
-                    <div class="class-item" onclick="selectClass(4, this)">4 класс</div>
-                    <div class="class-item" onclick="selectClass(3, this)">3 класс</div>
-                    <div class="class-item" onclick="selectClass(2, this)">2 класс</div>
-                    <div class="class-item" onclick="selectClass(1, this)">1 класс</div>
-                </div>
-
-                <div id="classInfoBox" class="class-info">
-                    👆 Нажмите на класс, чтобы узнать подробности
-                </div>
-
-                <h3 style="margin: 2rem 0 1rem;">Сроки пребывания в классах</h3>
-                <table class="class-table">
-                    <tr><th>Классы</th><th>Срок</th></tr>
-                    <tr><td>9, 8, 7</td><td>2 года</td></tr>
-                    <tr><td>6, 5</td><td>3 года</td></tr>
-                    <tr><td>4, 3, 2, 1</td><td>4 года</td></tr>
-                    <tr><td>Высший</td><td>Без срока</td></tr>
-                </table>
-
-                <h3 style="margin: 2rem 0 1rem;">Предельные классы по уровню суда</h3>
-                <table class="class-table">
-                    <tr><th>Уровень суда</th><th>Максимальный класс</th></tr>
-                    <tr><td>Мировые судьи</td><td>7 класс</td></tr>
-                    <tr><td>Районные суды</td><td>5 класс</td></tr>
-                    <tr><td>Областные суды</td><td>1 класс</td></tr>
-                    <tr><td>Верховный Суд</td><td>Высший класс</td></tr>
-                </table>
-            </div>
-        </div>
-
-        <!-- 3. Зарплаты -->
-        <div class="topic-card" id="salary">
-            <div class="topic-header">
-                <div class="topic-icon"><i class="fas fa-ruble-sign"></i></div>
-                <h2 class="topic-title">Денежное содержание судей и аппарата</h2>
-            </div>
-            <div class="topic-content">
-                <p><strong>Ежемесячное денежное вознаграждение (ориентировочно):</strong></p>
-                <div class="salary-row"><span>👑 Судья Верховного Суда</span> <span class="salary-value">500 000 – 800 000 ₽</span></div>
-                <div class="salary-row"><span>🏛️ Судья областного суда</span> <span class="salary-value">250 000 – 350 000 ₽</span></div>
-                <div class="salary-row"><span>⚖️ Судья районного суда</span> <span class="salary-value">160 000 – 240 000 ₽</span></div>
-                <div class="salary-row"><span>👨‍⚖️ Мировой судья</span> <span class="salary-value">120 000 – 170 000 ₽</span></div>
-                <div class="salary-row"><span>👨‍💼 Помощник судьи</span> <span class="salary-value">50 000 – 100 000 ₽</span></div>
-                <div class="salary-row"><span>📄 Секретарь суда</span> <span class="salary-value">35 000 – 60 000 ₽</span></div>
-                
-                <p style="margin-top:2rem;"><strong>Составляющие:</strong></p>
-                <ul>
-                    <li>• Должностной оклад</li>
-                    <li>• Оклад за класс (15-30%)</li>
-                    <li>• Надбавка за выслугу лет (10-50%)</li>
-                    <li>• Районные коэффициенты</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 4. Пенсия -->
-        <div class="topic-card" id="pension">
-            <div class="topic-header">
-                <div class="topic-icon"><i class="fas fa-umbrella-beach"></i></div>
-                <h2 class="topic-title">Пенсионное обеспечение (ЕПС)</h2>
-            </div>
-            <div class="topic-content">
-                <p><strong>Ежемесячное пожизненное содержание для судей в отставке:</strong></p>
-                <ul>
-                    <li>✓ Стаж от 10 лет + возраст 60/55 лет</li>
-                    <li>✓ Размер: 80% + 1% за каждый год сверх 10 (макс. 85%)</li>
-                    <li>✓ Сохраняются льготы (медицина, проезд)</li>
-                </ul>
-                <div class="pension-highlight">
-                    <strong>Пример:</strong> Стаж 18 лет, зарплата 200 тыс. → 85% = 170 тыс. ₽
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Как попасть -->
-        <div class="topic-card" id="howto">
-            <div class="topic-header">
-                <div class="topic-icon"><i class="fas fa-door-open"></i></div>
-                <h2 class="topic-title">Порядок отбора на должность судьи</h2>
-            </div>
-            <div class="topic-content">
-                <div class="step-box">
-                    <div class="step-num">1</div>
-                    <div>Высшее юридическое образование (специалитет/магистратура)</div>
-                </div>
-                <div class="step-box">
-                    <div class="step-num">2</div>
-                    <div>Юридический стаж от 5 лет (работа в аппарате, прокуратуре, адвокатуре)</div>
-                </div>
-                <div class="step-box">
-                    <div class="step-num">3</div>
-                    <div>Сдача квалификационного экзамена</div>
-                </div>
-                <div class="step-box">
-                    <div class="step-num">4</div>
-                    <div>Рекомендация ККС и конкурс</div>
-                </div>
-                <div class="step-box">
-                    <div class="step-num">5</div>
-                    <div>Назначение (Указ Президента или закон субъекта)</div>
-                </div>
+        
+        <div class="photo photo-3" id="photo3">
+            <div class="paragraph" id="text3">
+                The stranger took an old brass key from his pocket and placed it on the edge of the bench. "My time has come your turn" he whispered and simply dissolved in a cloud of steam from a passing locomotive. John blinked and the platform was empty the clock showing the correct time again. The station attendant asked John why he was standing alone in a closed sector. John looked at his palm: there lay a heavy worn key.
             </div>
         </div>
     </div>
-
-    <!-- Быстрые факты -->
-    <div class="facts">
-        <div class="fact-item">
-            <div class="fact-number">~26 000</div>
-            <div class="fact-label">судей в РФ</div>
-        </div>
-        <div class="fact-item">
-            <div class="fact-number">≈40 млн</div>
-            <div class="fact-label">дел в год</div>
-        </div>
-        <div class="fact-item">
-            <div class="fact-number">15 лет</div>
-            <div class="fact-label">средний стаж</div>
-        </div>
-        <div class="fact-item">
-            <div class="fact-number">6 лет</div>
-            <div class="fact-label">срок председателя</div>
+    
+    <div class="nav-panel">
+        <div class="nav-content">
+            <button class="lang-btn" id="langBtn">RU</button>
+            <button class="next-btn" id="nextBtn">→</button>
         </div>
     </div>
 
-    <!-- Подвал -->
-    <div class="footer-note">
-        <i class="fas fa-gavel"></i> Судебная система РФ • Актуально на 2026 год
-    </div>
-</div>
-
-<script>
-    // Функции для основного сайта
-    function toggleDropdown(element) {
-        const content = element.nextElementSibling;
-        content.classList.toggle('show');
-        element.classList.toggle('active');
-    }
-
-    let lastSelectedClass = null;
-
-    function selectClass(classNumber, element) {
-        if (lastSelectedClass) {
-            lastSelectedClass.classList.remove('selected');
-        }
-        element.classList.add('selected');
-        lastSelectedClass = element;
+    <script>
+        const photos = document.querySelectorAll('.photo');
+        const nextBtn = document.getElementById('nextBtn');
+        const langBtn = document.getElementById('langBtn');
+        let currentIndex = 0;
+        let currentLang = 'en';
         
-        const infoBox = document.getElementById('classInfoBox');
+        const enTexts = [
+            `John stood on the second floor of Vitebsky railway station in St. Petersburg leaning against the wrought iron railings. Cold twilight light fell through huge stained glass windows painting the empty hall in blue tones. John was just waiting for his train scrolling through his phone. Suddenly from the old baggage department a man in early 20th century railway uniform emerged. He carried a heavy leather suitcase and strangest of all his steps on the marble floor made no sound.`,
+            
+            `John followed him onto the open platform under a giant metal canopy. The man sat on a bench right under the station clock. John noticed something impossible: the hands above the stranger's head began spinning wildly backwards! Gathering courage John approached. "Excuse me" he said "something is wrong with the clock." The man raised his head and John saw his eyes glowing with soft amber light. "Time here is just a decoration John" he rasped.`,
+            
+            `The stranger took an old brass key from his pocket and placed it on the edge of the bench. "My time has come your turn" he whispered and simply dissolved in a cloud of steam from a passing locomotive. John blinked and the platform was empty the clock showing the correct time again. The station attendant asked John why he was standing alone in a closed sector. John looked at his palm: there lay a heavy worn key.`
+        ];
         
-        const descriptions = {
-            9: '<strong>9 класс:</strong> Начальный для мировых судей. Срок 2 года. Надбавка 15%.',
-            8: '<strong>8 класс:</strong> Для мировых и районных судей. Срок 2 года. Надбавка 17-18%.',
-            7: '<strong>7 класс:</strong> Предельный для мировых судей. Срок 2 года. Надбавка 20%.',
-            6: '<strong>6 класс:</strong> Для районных судов. Срок 3 года. Надбавка 22%.',
-            5: '<strong>5 класс:</strong> Предельный для районных судов. Срок 3 года. Надбавка 25%.',
-            4: '<strong>4 класс:</strong> Для областных судов. Срок 4 года. Надбавка 27%.',
-            3: '<strong>3 класс:</strong> Для областных судов. Срок 4 года. Надбавка 28%.',
-            2: '<strong>2 класс:</strong> Для областных и Верховного суда. Срок 4 года. Надбавка 29%.',
-            1: '<strong>1 класс:</strong> Высший (кроме особого). Для Верховного суда. Надбавка 30%.'
-        };
+        const ruTexts = [
+            `Джон стоял на втором этаже Витебского вокзала в Санкт-Петербурге, прислонившись к кованым перилам. Сквозь огромные витражные окна падал холодный свет сумерек, окрашивая пустой зал в синие тона. Джон просто ждал свой поезд, листая ленту в телефоне. Вдруг со стороны старого багажного отделения вышел человек в форме железнодорожника начала XX века. Он нес тяжелый кожаный саквояж, и, что самое странное, его шаги по мраморному полу не издавали ни звука.`,
+            
+            `Джон последовал за ним на открытую платформу под гигантский металлический навес. Человек сел на скамью прямо под вокзальными часами. Джон заметил нечто невозможное: стрелки над головой незнакомца начали бешено вращаться в обратную сторону! Набравшись смелости, Джон подошел ближе. «Извините, — сказал он, — с часами что-то не так». Человек поднял голову, и Джон увидел, что его глаза светятся мягким янтарным светом. «Время здесь — лишь декорация, Джон», — прохрипел он.`,
+            
+            `Незнакомец достал из кармана старый латунный ключ и положил его на край скамьи. «Моё время пришло, твой черед», — прошептал он и просто растворился в облаке пара от проходящего локомотива. Джон моргнул, и платформа оказалась пуста, а часы снова показывали верное время. Дежурный по залу удивленно спросил Джона, почему тот стоит один в закрытом секторе. Джон посмотрел на свою ладонь: там лежал тяжелый, потертый ключ.`
+        ];
         
-        infoBox.innerHTML = `<strong>${classNumber} класс:</strong> ${descriptions[classNumber]}`;
-    }
-
-    // Навигация
-    const sections = document.querySelectorAll('.topic-card');
-    const navItems = document.querySelectorAll('.nav-item');
-
-    function setActiveNav() {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 180;
-            const sectionBottom = sectionTop + section.offsetHeight;
-            if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === '#' + current) {
-                item.classList.add('active');
-            }
-        });
-    }
-
-    window.addEventListener('scroll', setActiveNav);
-    window.addEventListener('load', setActiveNav);
-
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            const target = document.getElementById(targetId);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-
-    // Градиент при прокрутке
-    let ticking = false;
-    window.addEventListener('scroll', function() {
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-                
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    body::before {
-                        background: 
-                            radial-gradient(circle at ${20 + scrollPercent * 30}%, rgba(255, 215, 0, 0.18) 0%, transparent 45%),
-                            radial-gradient(circle at ${80 - scrollPercent * 30}% ${70 - scrollPercent * 20}%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
-                            radial-gradient(circle at ${40 + scrollPercent * 20}% ${80 - scrollPercent * 10}%, rgba(10, 26, 47, 0.95) 0%, transparent 55%),
-                            radial-gradient(circle at ${60 - scrollPercent * 20}% ${20 + scrollPercent * 10}%, rgba(10, 26, 47, 0.9) 0%, transparent 60%),
-                            linear-gradient(145deg, 
-                                rgba(10, 26, 47, 0.98) 0%, 
-                                rgba(10, 26, 47, 0.92) 30%,
-                                rgba(255, 215, 0, ${0.08 + scrollPercent * 0.1}) 50%,
-                                rgba(10, 26, 47, 0.92) 70%,
-                                rgba(10, 26, 47, 0.98) 100%),
-                            repeating-linear-gradient(45deg, 
-                                rgba(255, 215, 0, 0.02) 0px, 
-                                rgba(255, 215, 0, 0.02) 4px,
-                                transparent 4px, 
-                                transparent 12px);
-                    }
-                `;
-                
-                const oldStyle = document.getElementById('dynamic-gradient');
-                if (oldStyle) {
-                    oldStyle.remove();
-                }
-                style.id = 'dynamic-gradient';
-                document.head.appendChild(style);
-                
-                ticking = false;
+        const textElements = [
+            document.getElementById('text1'),
+            document.getElementById('text2'),
+            document.getElementById('text3')
+        ];
+        
+        function showPhoto(index) {
+            photos.forEach(photo => {
+                photo.classList.remove('active');
             });
-            ticking = true;
+            photos[index].classList.add('active');
         }
-    });
-</script>
+        
+        function updateTexts(lang) {
+            const texts = lang === 'en' ? enTexts : ruTexts;
+            for (let i = 0; i < textElements.length; i++) {
+                textElements[i].textContent = texts[i];
+            }
+            langBtn.textContent = lang === 'en' ? 'RU' : 'EN';
+        }
+        
+        nextBtn.addEventListener('click', function() {
+            currentIndex = (currentIndex + 1) % photos.length;
+            showPhoto(currentIndex);
+            // Reset to English when right arrow is clicked
+            currentLang = 'en';
+            updateTexts('en');
+        });
+        
+        langBtn.addEventListener('click', function() {
+            currentLang = currentLang === 'en' ? 'ru' : 'en';
+            updateTexts(currentLang);
+        });
+        
+        // Initialize
+        showPhoto(0);
+        updateTexts('en');
+    </script>
 </body>
 </html>
