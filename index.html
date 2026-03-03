@@ -3,1871 +3,932 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Герой нашего времени • Тесты</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <title>Glach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
-            --primary: #4a6fa5;
-            --primary-dark: #385d8a;
-            --secondary: #6d9dc5;
-            --accent: #ff7e5f;
-            --light: #f8f9fa;
-            --gray: #e9ecef;
-            --dark: #343a40;
-            --text: #495057;
-            --text-light: #6c757d;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafd;
+            --bg-tertiary: #f0f3f8;
+            --text-primary: #1f2a3a;
+            --text-secondary: #5f6b7a;
+            --text-tertiary: #94a3b8;
+            --border-color: #e9edf2;
+            --accent-color: #4b7bec;
+            --accent-hover: #3a6ad9;
+            --accent-soft: rgba(75, 123, 236, 0.1);
+            --user-message-bg: #e9edf2;
+            --code-bg: #f0f3f8;
+            --blockquote-border: #4b7bec;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --drag-active-bg: rgba(75, 123, 236, 0.05);
+            --drag-active-border: #4b7bec;
+            --success-color: #34c759;
         }
-        
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a1f2b;
+                --bg-secondary: #252b38;
+                --bg-tertiary: #2f3645;
+                --text-primary: #e5e9f0;
+                --text-secondary: #a0a8b8;
+                --text-tertiary: #7f8a9a;
+                --border-color: #363f51;
+                --accent-color: #5f8aee;
+                --accent-hover: #4b7bec;
+                --accent-soft: rgba(95, 138, 238, 0.15);
+                --user-message-bg: #2f3645;
+                --code-bg: #252b38;
+                --blockquote-border: #5f8aee;
+                --shadow-color: rgba(0, 0, 0, 0.3);
+                --drag-active-bg: rgba(95, 138, 238, 0.1);
+                --drag-active-border: #5f8aee;
+                --success-color: #34c759;
+            }
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s ease;
         }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
+
+        .header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-primary);
+            position: relative;
+            z-index: 10;
         }
-        
-        /* Header */
-        header {
-            text-align: center;
-            padding: 60px 20px 50px;
-            margin-bottom: 40px;
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .fixed-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .fixed-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .fixed-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .glach-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .balance-display {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-tertiary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-left: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .balance-display i {
+            color: var(--success-color);
+            font-size: 12px;
+        }
+
+        .balance-display span {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .creator-name {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            background: var(--bg-tertiary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .creator-name i {
+            font-size: 12px;
+            color: var(--accent-color);
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--bg-primary);
             position: relative;
         }
-        
-        header::before {
-            content: '';
+
+        .drag-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 300px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
-            z-index: -1;
-        }
-        
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        h1 {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 3.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: white;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        h1 span {
-            display: block;
-            font-size: 1.8rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.9);
-            margin-top: 10px;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.85);
-            max-width: 700px;
-            margin: 0 auto 25px;
-            font-weight: 300;
-            line-height: 1.8;
-        }
-        
-        .author {
-            display: inline-block;
-            padding: 12px 25px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            font-size: 1.1rem;
-            color: white;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Controls */
-        .controls {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 60px;
-        }
-        
-        .control-btn {
-            padding: 18px 40px;
-            background: white;
-            border: none;
-            color: var(--primary);
-            border-radius: var(--radius);
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
-        }
-        
-        .control-btn:hover {
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .control-btn:hover::before {
-            opacity: 1;
-        }
-        
-        .control-btn i {
-            transition: var(--transition);
-        }
-        
-        .control-btn:hover i {
-            transform: rotate(180deg);
-        }
-        
-        /* Cards Grid */
-        .quizzes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 80px;
-        }
-        
-        .quiz-card {
-            background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            border: 1px solid var(--gray);
-            transition: var(--transition);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        
-        .quiz-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--secondary);
-        }
-        
-        .quiz-header {
-            padding: 25px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .quiz-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: rotate(45deg);
-        }
-        
-        .quiz-icon {
-            font-size: 2.2rem;
-            color: white;
-            margin-bottom: 15px;
-            opacity: 0.9;
-            background: rgba(255, 255, 255, 0.15);
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            bottom: 0;
+            background: var(--drag-active-bg);
+            border: 3px dashed var(--drag-active-border);
             border-radius: 12px;
-            backdrop-filter: blur(5px);
+            margin: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            pointer-events: none;
+            animation: pulse 1.5s ease-in-out infinite;
         }
-        
-        .quiz-title {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 1.7rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: white;
+
+        .drag-overlay.show {
+            display: flex;
         }
-        
-        .quiz-subtitle {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 300;
+
+        .drag-overlay-content {
+            text-align: center;
+            color: var(--accent-color);
         }
-        
-        .quiz-number {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-weight: 600;
-            color: white;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 6px 12px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
+
+        .drag-overlay-content i {
+            font-size: 48px;
+            margin-bottom: 16px;
         }
-        
-        .quiz-content {
-            padding: 25px;
-            flex-grow: 1;
+
+        .drag-overlay-content span {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 0;
+            scroll-behavior: smooth;
+        }
+
+        .messages-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             flex-direction: column;
-            background: white;
+            gap: 24px;
         }
-        
-        .quiz-description {
-            margin-bottom: 25px;
-            color: var(--text-light);
-            line-height: 1.7;
-            flex-grow: 1;
-            font-size: 0.95rem;
-        }
-        
-        .quiz-stats {
+
+        .message {
             display: flex;
-            justify-content: space-between;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--gray);
-            padding-top: 20px;
+            gap: 16px;
+            animation: fadeIn 0.3s ease;
         }
-        
-        .quiz-stats span {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+
+        .message.user {
+            justify-content: flex-end;
         }
-        
-        .start-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 20px;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
-        }
-        
-        .start-btn:hover {
-            color: white;
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-        
-        .start-btn:hover::before {
-            opacity: 1;
-        }
-        
-        .start-btn i {
-            transition: var(--transition);
-        }
-        
-        .start-btn:hover i {
-            transform: translateX(5px);
-        }
-        
-        /* Modal */
-        .quiz-modal {
+
+        .avatar {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        }
+
+        .message-content {
+            flex: 0 1 auto;
+            max-width: calc(100% - 52px);
+        }
+
+        .message-body {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            word-wrap: break-word;
+        }
+
+        .message.user .message-body {
+            background: var(--user-message-bg);
+            padding: 12px 16px;
+            border-radius: 18px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .message-body {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-body h1 { font-size: 1.8em; margin: 0.5em 0; font-weight: 600; }
+        .message-body h2 { font-size: 1.5em; margin: 0.5em 0; font-weight: 600; }
+        .message-body h3 { font-size: 1.3em; margin: 0.5em 0; font-weight: 600; }
+        .message-body p { margin: 0.8em 0; }
+        .message-body ul, .message-body ol { margin: 0.8em 0; padding-left: 1.5em; }
+        .message-body li { margin: 0.3em 0; }
+        .message-body code {
+            background: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9em;
+        }
+        .message-body pre {
+            background: var(--code-bg);
+            padding: 16px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+        .message-body pre code {
+            background: none;
+            padding: 0;
+        }
+        .message-body blockquote {
+            border-left: 4px solid var(--blockquote-border);
+            padding-left: 16px;
+            margin: 1em 0;
+            color: var(--text-secondary);
+        }
+        .message-body table {
+            border-collapse: collapse;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            overflow-y: auto;
-            backdrop-filter: blur(5px);
+            margin: 1em 0;
         }
-        
-        .modal-content {
-            background: white;
-            margin: 40px auto;
-            width: 90%;
-            max-width: 800px;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            position: relative;
-            animation: modalAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .message-body th, .message-body td {
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            text-align: left;
         }
-        
-        @keyframes modalAppear {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        
-        .modal-header {
-            padding: 30px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .modal-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            opacity: 0.3;
-        }
-        
-        .modal-header h2 {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 1.8rem;
+        .message-body th {
+            background: var(--bg-tertiary);
             font-weight: 600;
-            margin: 0;
-            padding-right: 40px;
-            position: relative;
-            z-index: 1;
         }
-        
-        .close-modal {
+        .message-body a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        .message-body a:hover {
+            text-decoration: underline;
+        }
+        .message-body img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 0.5em 0;
+        }
+
+        .generated-image {
+            max-width: 100%;
+            border-radius: 16px;
+            margin: 16px 0;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 16px 0;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--text-tertiary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        .input-area {
+            border-top: 1px solid var(--border-color);
+            padding: 24px;
+            background: var(--bg-primary);
             position: relative;
-            cursor: pointer;
-            color: white;
+            z-index: 5;
+        }
+
+        .input-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 8px 12px 8px 20px;
+            transition: all 0.2s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--accent-color);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        #messageInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 0;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            max-height: 120px;
+            outline: none;
+            color: var(--text-primary);
+        }
+
+        #messageInput::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: none;
             width: 40px;
             height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-radius: 50%;
-            transition: var(--transition);
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .action-btn.send {
+            color: var(--accent-color);
+            background: var(--accent-soft);
+        }
+
+        .action-btn.send:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .preview-container {
+            max-width: 800px;
+            margin: 0 auto 12px;
+            display: none;
+        }
+
+        .preview-container.show {
+            display: block;
+        }
+
+        .preview-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .preview-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--accent-color);
+        }
+
+        .remove-preview {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: #ff3b30;
             border: none;
-            flex-shrink: 0;
-            font-size: 1.5rem;
-            z-index: 1;
-        }
-        
-        .close-modal:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
-        }
-        
-        .question-container {
-            padding: 40px 35px;
-            min-height: 400px;
-        }
-        
-        .question {
-            font-family: 'Source Serif Pro', serif;
-            font-size: 1.6rem;
-            margin-bottom: 35px;
-            color: var(--dark);
-            font-weight: 600;
-            line-height: 1.5;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--gray);
-        }
-        
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-        
-        .option {
-            padding: 18px 25px;
-            background: white;
-            border: 2px solid var(--gray);
-            border-radius: 10px;
+            border-radius: 50%;
+            color: white;
             cursor: pointer;
-            transition: var(--transition);
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .option::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 5px;
-            background: var(--primary);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .option:hover {
-            border-color: var(--primary);
-            background: rgba(74, 111, 165, 0.05);
-            transform: translateX(5px);
-        }
-        
-        .option:hover::before {
-            opacity: 1;
-        }
-        
-        .option.selected {
-            border-color: var(--primary);
-            background: rgba(74, 111, 165, 0.1);
-            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.1);
-        }
-        
-        .option.selected::before {
-            opacity: 1;
-        }
-        
-        .option.correct {
-            border-color: #28a745;
-            background: rgba(40, 167, 69, 0.1);
-        }
-        
-        .option.correct::before {
-            background: #28a745;
-        }
-        
-        .option.incorrect {
-            border-color: #dc3545;
-            background: rgba(220, 53, 69, 0.1);
-        }
-        
-        .option.incorrect::before {
-            background: #dc3545;
-        }
-        
-        .option-letter {
-            font-weight: 700;
-            margin-right: 20px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            min-width: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(74, 111, 165, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            font-size: 14px;
+            border: 2px solid var(--bg-primary);
         }
-        
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 35px;
-            border-top: 2px solid var(--gray);
-            background: white;
+
+        .remove-preview:hover {
+            background: #ff1f1f;
         }
-        
-        .btn {
-            padding: 14px 28px;
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: var(--transition);
-            min-width: 150px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+
+        #fileInput {
+            display: none;
         }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .btn:hover {
-            color: white;
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-        
-        .btn:hover::before {
-            opacity: 1;
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn:disabled:hover::before {
-            opacity: 0;
-        }
-        
-        .btn:disabled:hover {
-            color: var(--primary);
-            border-color: var(--gray);
-        }
-        
-        .question-counter {
-            color: var(--primary);
-            font-size: 1.1rem;
-            font-weight: 600;
-            background: rgba(74, 111, 165, 0.1);
-            padding: 10px 20px;
-            border-radius: 20px;
-        }
-        
-        .results {
-            padding: 60px 40px;
-            text-align: center;
-        }
-        
-        .results h2 {
-            font-family: 'Source Serif Pro', serif;
-            color: var(--dark);
-            margin-bottom: 30px;
-            font-size: 2rem;
-            font-weight: 600;
-        }
-        
-        .score-circle {
-            width: 180px;
-            height: 180px;
-            margin: 30px auto;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .score-circle svg {
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg);
-        }
-        
-        .score-circle circle {
-            fill: none;
-            stroke-width: 8;
-            stroke-linecap: round;
-            transform: translate(10px, 10px);
-        }
-        
-        .circle-bg {
-            stroke: var(--gray);
-        }
-        
-        .circle-progress {
-            stroke: var(--primary);
-            stroke-dasharray: 440;
-            stroke-dashoffset: 440;
-            transition: stroke-dashoffset 1s ease;
-        }
-        
-        .score-number {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .score-text {
-            font-size: 1.3rem;
-            color: var(--text-light);
-            margin-bottom: 40px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.7;
-        }
-        
-        .restart-btn {
-            padding: 18px 45px;
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .restart-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
-        }
-        
-        .restart-btn:hover {
-            color: white;
-            border-color: transparent;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(74, 111, 165, 0.2);
-        }
-        
-        .restart-btn:hover::before {
-            opacity: 1;
-        }
-        
-        .restart-btn i {
-            transition: var(--transition);
-        }
-        
-        .restart-btn:hover i {
-            transform: rotate(180deg);
-        }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .quizzes-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
+
+        @media (max-width: 640px) {
+            .messages-inner {
+                padding: 0 16px;
             }
             
-            h1 span {
-                font-size: 1.5rem;
+            .input-area {
+                padding: 16px;
             }
             
-            .quizzes-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
+            .creator-name span {
+                display: none;
             }
             
-            .controls {
-                padding: 0 20px;
+            .creator-name i {
+                margin-right: 0;
             }
             
-            .control-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .modal-content {
-                width: 95%;
-                margin: 20px auto;
-            }
-            
-            .modal-header {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 20px;
-            }
-            
-            .modal-header h2 {
-                padding-right: 0;
-                margin-bottom: 15px;
-                font-size: 1.6rem;
-            }
-            
-            .close-modal {
-                align-self: flex-end;
-            }
-            
-            .navigation {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .question-container {
-                padding: 25px 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 20px 15px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .option {
-                padding: 15px 20px;
+            .balance-display span {
+                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <h1>Герой нашего времени<br><span>Литературные тесты</span></h1>
-                <p class="subtitle">Исследуйте классический роман Михаила Лермонтова через интерактивные тесты по разным аспектам произведения</p>
-                <div class="author">Михаил Юрьевич Лермонтов • 1839—1840</div>
+    <div class="header">
+        <div class="header-left">
+            <div class="fixed-avatar">
+                <img src="https://media.tenor.com/Leq7mrkrbbgAAAAj/rabbit-r1-bunny-ai.gif" alt="Glach">
             </div>
-        </header>
-        
-        <main>
-            <div class="controls">
-                <button class="control-btn" id="randomBtn">
-                    <i class="fas fa-random"></i> Случайный тест
-                </button>
-            </div>
-            
-            <div class="quizzes-grid" id="quizzesGrid">
-                <!-- Карточки будут сгенерированы JavaScript -->
-            </div>
-        </main>
-    </div>
-    
-    <!-- Модальное окно с тестом -->
-    <div id="quizModal" class="quiz-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="quizTitle">Тест: Загрузка...</h2>
-                <button class="close-modal" id="closeModal">&times;</button>
-            </div>
-            
-            <div id="questionContainer" class="question-container">
-                <!-- Вопросы будут вставлены JavaScript -->
-            </div>
-            
-            <div class="navigation">
-                <button class="btn" id="prevBtn" disabled>Назад</button>
-                <div class="question-counter">
-                    Вопрос <span id="currentQuestion">1</span> из <span id="totalQuestions">10</span>
-                </div>
-                <button class="btn" id="nextBtn">Далее</button>
+            <span class="glach-title">Glach</span>
+            <div class="balance-display" id="balanceDisplay">
+                <i class="fas fa-leaf"></i>
+                <span>∞ pollen</span>
             </div>
         </div>
+        <div class="creator-name">
+            <i class="fas fa-code"></i>
+            <span>Михаил Фуркулицэ</span>
+        </div>
     </div>
-    
+
+    <div class="chat-container" id="chatContainer">
+        <div class="drag-overlay" id="dragOverlay">
+            <div class="drag-overlay-content">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Отпустите фото для загрузки</span>
+            </div>
+        </div>
+
+        <div class="messages-area" id="messagesArea">
+            <div class="messages-inner" id="messagesInner">
+                <div class="message assistant">
+                    <div class="message-content">
+                        <div class="message-body">
+                            <p>Привет! 👋 Рад помочь!</p>
+                            <p>Что нужно сделать?</p>
+                            <ul>
+                                <li>📝 Написать текст</li>
+                                <li>🎨 "Нарисуй..."</li>
+                                <li>📸 Проанализировать фото</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-container" id="previewContainer">
+            <div class="preview-wrapper">
+                <img id="previewImage" class="preview-image" src="">
+                <button class="remove-preview" onclick="removeImage()">×</button>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        rows="1" 
+                        placeholder="Спроси что угодно..."
+                        oninput="autoResize(this)"
+                    ></textarea>
+                    
+                    <div class="actions">
+                        <button class="action-btn" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        
+                        <button class="action-btn send" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*" onchange="handleImageSelect(this)">
+    </div>
+
     <script>
-        // Данные для тестов
-        const quizzes = {
-            1: {
-                title: "Бэла",
-                subtitle: "Первая повесть",
-                icon: "fa-mountain",
-                questions: [
-                    {
-                        question: "Кто является рассказчиком в повести 'Бэла'?",
-                        options: [
-                            "Печорин",
-                            "Максим Максимыч",
-                            "Сам автор",
-                            "Доктор Вернер"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин познакомился с Бэлой?",
-                        options: [
-                            "На балу в крепости",
-                            "Увидел её на свадьбе сестры",
-                            "Её привезли в крепость как пленницу",
-                            "Она работала служанкой в доме коменданта"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что подарил Печорин Бэле, чтобы завоевать её расположение?",
-                        options: [
-                            "Золотые серьги",
-                            "Дорогой кинжал",
-                            "Красивого коня",
-                            "Шёлковый платок"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как погибает Бэла?",
-                        options: [
-                            "От чахотки",
-                            "Её убивает Казбич",
-                            "Кончает жизнь самоубийством",
-                            "Погибает во время набега горцев"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой Казбич?",
-                        options: [
-                            "Отец Бэлы",
-                            "Брат Бэлы",
-                            "Влюбленный в неё горец",
-                            "Слуга Печорина"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Какую вещь украл Казбич у отца Бэлы?",
-                        options: [
-                            "Деньги",
-                            "Оружие",
-                            "Коня Карагеза",
-                            "Семейные реликвии"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как Печорин отреагировал на смерть Бэлы?",
-                        options: [
-                            "Был безутешен и долго плакал",
-                            "Остался внешне спокоен, но внутренне страдал",
-                            "Сразу уехал из крепости",
-                            "Поклялся отомстить Казбичу"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Сколько времени Бэла прожила с Печориным в крепости?",
-                        options: [
-                            "Несколько недель",
-                            "Четыре месяца",
-                            "Около года",
-                            "Больше двух лет"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто предупредил Печорина о готовящемся похищении Бэлы?",
-                        options: [
-                            "Максим Максимыч",
-                            "Казбич",
-                            "Отец Бэлы",
-                            "Никто, это было неожиданно"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Что стало с Казбичем после гибели Бэлы?",
-                        options: [
-                            "Его поймали и казнили",
-                            "Он бежал в горы",
-                            "Он покончил с собой",
-                            "Печорин убил его на дуэли"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            2: {
-                title: "Максим Максимыч",
-                subtitle: "Встреча через годы",
-                icon: "fa-handshake",
-                questions: [
-                    {
-                        question: "Где происходит встреча Максима Максимыча с Печориным?",
-                        options: [
-                            "В крепости N",
-                            "В гостинице Владикавказа",
-                            "В Петербурге",
-                            "В Пятигорске"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин встретил Максима Максимыча?",
-                        options: [
-                            "Обрадовался и обнял его",
-                            "Был холоден и равнодушен",
-                            "Сделал вид, что не узнал",
-                            "Пригласил на обед"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что хотел сделать Максим Максимыч с журналом Печорина?",
-                        options: [
-                            "Сжечь его",
-                            "Опубликовать",
-                            "Вернуть Печорину",
-                            "Передать автору-повествователю"
-                        ],
-                        correct: 3
-                    },
-                    {
-                        question: "Куда направлялся Печорин после встречи?",
-                        options: [
-                            "В Петербург",
-                            "В Персию",
-                            "На Кавказ",
-                            "За границу"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что известно о дальнейшей судьбе Печорина?",
-                        options: [
-                            "Он вернулся в Петербург",
-                            "Погиб в Персии",
-                            "Стал отшельником",
-                            "Женился и остепенился"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как автор описывает внешность Печорина при встрече?",
-                        options: [
-                            "Высокий и статный",
-                            "Среднего роста, стройный",
-                            "Низкорослый и плотный",
-                            "Худой и болезненный"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что особенно поразило автора в глазах Печорина?",
-                        options: [
-                            "Их голубой цвет",
-                            "Они не смеялись, когда он смеялся",
-                            "Они были постоянно полуприкрыты",
-                            "В них было детское выражение"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Максим Максимыч отнёсся к холодности Печорина?",
-                        options: [
-                            "Обиделся и разочаровался",
-                            "Не придал этому значения",
-                            "Разозлился и ушёл",
-                            "Понял и простил его"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Что автор взял у Максима Максимыча?",
-                        options: [
-                            "Журнал Печорина",
-                            "Письма Печорина",
-                            "Портрет Печорина",
-                            "Личные вещи Печорина"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какова основная тема этой повести?",
-                        options: [
-                            "Дружба и предательство",
-                            "Любовь и ревность",
-                            "Одиночество и непонимание",
-                            "Судьба и предопределение"
-                        ],
-                        correct: 2
-                    }
-                ]
-            },
-            3: {
-                title: "Тамань",
-                subtitle: "Приключение у моря",
-                icon: "fa-ship",
-                questions: [
-                    {
-                        question: "Почему Печорин оказался в Тамани?",
-                        options: [
-                            "Он был в ссылке",
-                            "По казённой надобности",
-                            "Путешествовал для удовольствия",
-                            "Лечился на море"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кого Печорин называет 'ундиной'?",
-                        options: [
-                            "Хозяйку квартиры",
-                            "Девушку-контрабандистку",
-                            "Местную гадалку",
-                            "Девушку из соседнего дома"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Чем занимались хозяева квартиры, где остановился Печорин?",
-                        options: [
-                            "Рыболовством",
-                            "Контрабандой",
-                            "Извозом",
-                            "Торговлей"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что попыталась сделать 'ундина' с Печориным?",
-                        options: [
-                            "Ограбить его",
-                            "Утопить в море",
-                            "Сбежать с ним",
-                            "Выдать властям"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой слепой мальчик?",
-                        options: [
-                            "Брат 'ундины'",
-                            "Помощник контрабандистов",
-                            "Сын хозяйки",
-                            "Случайный попрошайка"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что украл слепой мальчик у Печорина?",
-                        options: [
-                            "Деньги",
-                            "Пистолет",
-                            "Часы",
-                            "Табакерку"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Куда уплыли контрабандисты в конце повести?",
-                        options: [
-                            "В Турцию",
-                            "На другой берег пролива",
-                            "В открытое море",
-                            "В Керчь"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как Печорин отнёсся к попытке его утопить?",
-                        options: [
-                            "Разгневался и поклялся отомстить",
-                            "Испугался и уехал из города",
-                            "Отнёсся философски и спокойно",
-                            "Доложил начальству"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Что случилось с одноглазым контрабандистом?",
-                        options: [
-                            "Его арестовали",
-                            "Он утонул",
-                            "Он сбежал с 'ундиной'",
-                            "Печорин убил его"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какое настроение осталось у Печорина после событий в Тамани?",
-                        options: [
-                            "Радость и воодушевление",
-                            "Разочарование и досада",
-                            "Страх и тревога",
-                            "Безразличие и апатия"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            4: {
-                title: "Княжна Мери",
-                subtitle: "История в Пятигорске",
-                icon: "fa-heart",
-                questions: [
-                    {
-                        question: "В каком городе происходит действие повести?",
-                        options: [
-                            "Кисловодск",
-                            "Пятигорск",
-                            "Железноводск",
-                            "Ессентуки"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой Грушницкий?",
-                        options: [
-                            "Старый друг Печорина",
-                            "Юнкер, знакомый Печорина",
-                            "Родственник княжны Мери",
-                            "Секретный агент"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Печорин решил ухаживать за княжной Мери?",
-                        options: [
-                            "Он влюбился в неё",
-                            "Чтобы досадить Грушницкому",
-                            "По просьбе Веры",
-                            "Из корыстных соображений"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такая Вера?",
-                        options: [
-                            "Сестра княжны Мери",
-                            "Бывшая возлюбленная Печорина",
-                            "Подруга княжны Мери",
-                            "Кузина Печорина"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что произошло на дуэли Печорина с Грушницким?",
-                        options: [
-                            "Печорин убил Грушницкого",
-                            "Грушницкий убил Печорина",
-                            "Дуэль была остановлена",
-                            "Оба остались ранеными"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как Печорин узнал о чувствах княжны Мери?",
-                        options: [
-                            "Она сама призналась ему",
-                            "Прочитал её дневник",
-                            "Вера рассказала ему",
-                            "Грушницкий сообщил"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Вера уехала из Пятигорска?",
-                        options: [
-                            "Из-за ревности",
-                            "Муж забрал её",
-                            "По состоянию здоровья",
-                            "Узнав о дуэли"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как вёл себя Печорин после отъезда Веры?",
-                        options: [
-                            "Был спокоен",
-                            "Попытался догнать её",
-                            "Впал в депрессию",
-                            "Обрадовался"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой доктор Вернер?",
-                        options: [
-                            "Лечащий врач Печорина",
-                            "Единственный друг Печорина",
-                            "Муж Веры",
-                            "Дядя княжны Мери"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что случилось с Печориным после дуэли?",
-                        options: [
-                            "Он женился на княжне Мери",
-                            "Его перевели в крепость",
-                            "Он уехал за границу",
-                            "Он остался в Пятигорске"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            5: {
-                title: "Фаталист",
-                subtitle: "Философская повесть",
-                icon: "fa-dice",
-                questions: [
-                    {
-                        question: "О чём спорят офицеры в начале повести?",
-                        options: [
-                            "О любви",
-                            "О предопределении",
-                            "О военной службе",
-                            "О политике"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто такой Вулич?",
-                        options: [
-                            "Молодой офицер",
-                            "Сербский поручик",
-                            "Доктор",
-                            "Священник"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что предложил Вулич для доказательства существования предопределения?",
-                        options: [
-                            "Прыгнуть с обрыва",
-                            "Выстрелить в себя из пистолета",
-                            "Пройти через поле боя",
-                            "Сразиться с медведем"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что произошло, когда Вулич выстрелил в себя?",
-                        options: [
-                            "Пистолет дал осечку",
-                            "Он легко ранил себя",
-                            "Он убил себя",
-                            "Пистолет оказался не заряжен"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Что предсказал Печорин Вуличу?",
-                        options: [
-                            "Скоро умрёт",
-                            "Получит повышение",
-                            "Женится",
-                            "Разбогатеет"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как погиб Вулич?",
-                        options: [
-                            "На дуэли",
-                            "От руки пьяного казака",
-                            "В бою",
-                            "От болезни"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Кто убил Вулича?",
-                        options: [
-                            "Печорин",
-                            "Пьяный казак",
-                            "Офицер-соперник",
-                            "Неизвестный"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин задержал убийцу Вулича?",
-                        options: [
-                            "В одиночку ворвался в дом",
-                            "С помощью солдат",
-                            "Хитростью выманил",
-                            "Подстерёг на улице"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какой вывод сделал Печорин после этих событий?",
-                        options: [
-                            "Стал верить в предопределение",
-                            "Убедился, что его нет",
-                            "Не пришёл к однозначному выводу",
-                            "Решил изменить свою жизнь"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как заканчивается роман 'Герой нашего времени'?",
-                        options: [
-                            "Смертью Печорина",
-                            "Его отъездом за границу",
-                            "Размышлениями о фатализме",
-                            "Рассказом о его дальнейшей жизни"
-                        ],
-                        correct: 2
-                    }
-                ]
-            },
-            6: {
-                title: "Образ Печорина",
-                subtitle: "Характер главного героя",
-                icon: "fa-user",
-                questions: [
-                    {
-                        question: "К какому литературному типу относится Печорин?",
-                        options: [
-                            "Лишний человек",
-                            "Маленький человек",
-                            "Положительный герой",
-                            "Романтический герой"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "В чём главная трагедия Печорина?",
-                        options: [
-                            "Неразделённая любовь",
-                            "Непонимание окружающих",
-                            "Неспособность найти цель в жизни",
-                            "Бедность и одиночество"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как Печорин относится к дружбе?",
-                        options: [
-                            "Ценит и дорожит ею",
-                            "Считает её невозможной",
-                            "Имеет много друзей",
-                            "Предаёт друзей"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что Печорин говорит о любви?",
-                        options: [
-                            "Это главное в жизни",
-                            "Это игра и развлечение",
-                            "Он никогда не любил",
-                            "Любовь спасает человека"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какую черту характера Печорина можно назвать главной?",
-                        options: [
-                            "Доброта",
-                            "Эгоизм",
-                            "Трусость",
-                            "Щедрость"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Печорин вызывает симпатию у читателя?",
-                        options: [
-                            "Из-за своей искренности",
-                            "Из-за умения анализировать себя",
-                            "Из-за добрых поступков",
-                            "Из-за трагической судьбы"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Как Печорин относится к обществу?",
-                        options: [
-                            "Стремится быть его частью",
-                            "Презирает его условности",
-                            "Боится его осуждения",
-                            "Хочет его изменить"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что для Печорина является смыслом жизни?",
-                        options: [
-                            "Служение отечеству",
-                            "Любовь и семья",
-                            "Поиск сильных впечатлений",
-                            "Богатство и слава"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Как Печорин объясняет свои поступки?",
-                        options: [
-                            "Влиянием судьбы",
-                            "Плохим воспитанием",
-                            "Скукой и отсутствием цели",
-                            "Желанием причинить зло"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Можно ли считать Печорина положительным героем?",
-                        options: [
-                            "Да, он благороден и честен",
-                            "Нет, он эгоистичен и жесток",
-                            "Он сложный, противоречивый характер",
-                            "Он отрицательный персонаж"
-                        ],
-                        correct: 2
-                    }
-                ]
-            },
-            7: {
-                title: "Женские образы",
-                subtitle: "Бэла, Мери, Вера",
-                icon: "fa-female",
-                questions: [
-                    {
-                        question: "Чем отличается любовь Бэлы к Печорину?",
-                        options: [
-                            "Она расчетлива и корыстна",
-                            "Это страстная, жертвенная любовь",
-                            "Это легкое увлечение",
-                            "Она ненавидит его"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему княжна Мери влюбилась в Печорина?",
-                        options: [
-                            "Из-за его богатства",
-                            "Он был непохож на других",
-                            "По настоянию родителей",
-                            "Из сострадания к нему"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Что отличает Веру от других женщин в романе?",
-                        options: [
-                            "Она понимает Печорина лучше всех",
-                            "Она самая красивая",
-                            "Она богата и знатна",
-                            "Она ненавидит Печорина"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какую роль играют женские образы в романе?",
-                        options: [
-                            "Они украшают повествование",
-                            "Раскрывают характер Печорина",
-                            "Создают любовную интригу",
-                            "Являются главными героинями"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какая из героинь вызывает наибольшую симпатию у автора?",
-                        options: [
-                            "Бэла",
-                            "Княжна Мери",
-                            "Вера",
-                            "Все одинаково"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Почему отношения Печорина с женщинами трагичны?",
-                        options: [
-                            "Он не способен на настоящее чувство",
-                            "Обстоятельства разлучают их",
-                            "Женщины его недостойны",
-                            "Он боится ответственности"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Как Печорин относится к Бэле после её смерти?",
-                        options: [
-                            "Быстро забывает о ней",
-                            "Долго страдает и раскаивается",
-                            "Винит во всем себя",
-                            "Считает её смерть неизбежной"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Почему Вера прощает Печорина?",
-                        options: [
-                            "Она его по-настоящему любит",
-                            "Она зависима от него материально",
-                            "Боится его",
-                            "Не знает о его изменах"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "Какую роль играет княжна Мери в жизни Печорина?",
-                        options: [
-                            "Он влюбляется в неё по-настоящему",
-                            "Она лишь объект для игры",
-                            "Она меняет его жизнь",
-                            "Она становится его женой"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Какая из героинь наиболее трагична?",
-                        options: [
-                            "Бэла",
-                            "Княжна Мери",
-                            "Вера",
-                            "Все по-своему трагичны"
-                        ],
-                        correct: 3
-                    }
-                ]
-            }
+        const API_KEY = "sk_RqUBvfIpPWiwfgHLr1hYVP0Y9LY5Gl0B";
+        const MODELS = {
+            TEXT: 'gemini-fast',
+            IMAGE: 'zimage'
         };
 
-        // Создаем карточки
-        const quizzesGrid = document.getElementById('quizzesGrid');
-        const cardTitles = [
-            "Бэла", "Максим Максимыч", "Тамань", "Княжна Мери", "Фаталист",
-            "Образ Печорина", "Женские образы", "Композиция романа", "Тема судьбы",
-            "Кавказ в романе", "Дружба и одиночество", "Любовь и страсть",
-            "Образ автора", "Критика романа", "Исторический контекст",
-            "Психологизм", "Романтические черты", "Реалистические черты",
-            "Символика", "Философские вопросы", "Нравственные проблемы",
-            "Стиль Лермонтова", "Жанровые особенности", "Художественное время",
-            "Пространство в романе"
+        const IMAGE_KEYWORDS = [
+            'нарисуй', 'нарисовать', 'нарисуйте', 'нарисую',
+            'сгенерируй', 'сгенерировать', 'генерация',
+            'создай', 'создать', 'сделай', 'сделать',
+            'изобрази', 'изобразить', 'покажи', 'показать',
+            'картинку', 'картинка', 'картинки',
+            'фото', 'фотографию', 'фотография',
+            'изображение', 'изображения',
+            'рисунок', 'рисунки', 'набросок', 'эскиз',
+            'пейзаж', 'портрет', 'натюрморт',
+            'иллюстрация', 'иллюстрацию',
+            'открытку', 'открытка', 'плакат', 'постер',
+            'баннер', 'логотип', 'дизайн', 'арт',
+            'draw', 'paint', 'sketch', 'create image',
+            'generate image', 'make picture', 'show picture',
+            'create a picture', 'generate a photo',
+            'picture', 'image', 'photo', 'photograph',
+            'illustration', 'drawing', 'sketch', 'art',
+            'poster', 'banner', 'logo', 'design',
+            'нарисуй-ка', 'нарисуйте мне',
+            'сгенерируй изображение', 'создай картинку',
+            'покажи картинку', 'сделай фото',
+            'хочу увидеть', 'как выглядит',
+            'вообрази', 'представь'
         ];
 
-        const cardSubtitles = [
-            "Первая повесть", "Встреча через годы", "Приключение у моря", "История в Пятигорске", "Философская повесть",
-            "Характер главного героя", "Бэла, Мери, Вера", "Структура произведения", "Фатализм и свобода воли",
-            "Место действия романа", "Отношения между персонажами", "Чувства и эмоции героев",
-            "Позиция Лермонтова", "Современные оценки", "Эпоха 1830-1840-х годов",
-            "Глубина характеров", "Черты романтизма", "Элементы реализма",
-            "Символы и их значение", "Вечные вопросы бытия", "Моральные дилеммы",
-            "Особенности языка", "Своеобразие жанра", "Временная организация",
-            "Пространственные образы"
-        ];
+        const messagesInner = document.getElementById('messagesInner');
+        const messageInput = document.getElementById('messageInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const chatContainer = document.getElementById('chatContainer');
+        const dragOverlay = document.getElementById('dragOverlay');
+        const balanceElement = document.getElementById('balanceDisplay');
+        
+        let currentImageBase64 = null;
+        let currentFile = null;
 
-        const cardIcons = [
-            "fa-mountain", "fa-handshake", "fa-ship", "fa-heart", "fa-dice",
-            "fa-user", "fa-female", "fa-book", "fa-star", "fa-globe",
-            "fa-users", "fa-fire", "fa-pen", "fa-comment", "fa-history",
-            "fa-brain", "fa-moon", "fa-sun", "fa-dove", "fa-question",
-            "fa-balance-scale", "fa-language", "fa-feather", "fa-clock", "fa-map"
-        ];
+        // Проверка баланса
+        async function checkBalance() {
+            try {
+                const response = await fetch('https://gen.pollinations.ai/account/balance', {
+                    headers: { 'Authorization': `Bearer ${API_KEY}` }
+                });
+                const data = await response.json();
+                balanceElement.innerHTML = `<i class="fas fa-leaf"></i><span>${data.balance} pollen</span>`;
+            } catch (error) {
+                balanceElement.innerHTML = `<i class="fas fa-leaf"></i><span>∞ pollen</span>`;
+            }
+        }
+        checkBalance();
 
-        for (let i = 0; i < 25; i++) {
-            const quizId = (i % 7) + 1;
-            const card = document.createElement('div');
-            card.className = 'quiz-card';
-            card.setAttribute('data-quiz', quizId);
-            
-            card.innerHTML = `
-                <div class="quiz-header">
-                    <div class="quiz-icon">
-                        <i class="fas ${cardIcons[i]}"></i>
-                    </div>
-                    <div>
-                        <h2 class="quiz-title">${cardTitles[i]}</h2>
-                        <p class="quiz-subtitle">${cardSubtitles[i]}</p>
-                    </div>
-                    <div class="quiz-number">#${String(i + 1).padStart(2, '0')}</div>
-                </div>
-                <div class="quiz-content">
-                    <p class="quiz-description">Тест по теме "${cardTitles[i]}". Проверьте свои знания о романе "Герой нашего времени" через анализ ${cardSubtitles[i].toLowerCase()}.</p>
-                    <div class="quiz-stats">
-                        <span><i class="fas fa-question-circle"></i> 10 вопросов</span>
-                        <span><i class="fas fa-clock"></i> 6-8 минут</span>
-                    </div>
-                    <button class="start-btn" data-quiz="${quizId}">
-                        <i class="fas fa-play-circle"></i> Начать тест
-                    </button>
-                </div>
-            `;
-            
-            quizzesGrid.appendChild(card);
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
         }
 
-        // Переменные для отслеживания состояния
-        let currentQuiz = null;
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let score = 0;
+        function highlight() {
+            dragOverlay.classList.add('show');
+        }
 
-        // Элементы DOM
-        const quizModal = document.getElementById('quizModal');
-        const closeModal = document.getElementById('closeModal');
-        const questionContainer = document.getElementById('questionContainer');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const currentQuestionSpan = document.getElementById('currentQuestion');
-        const totalQuestionsSpan = document.getElementById('totalQuestions');
-        const quizTitle = document.getElementById('quizTitle');
-        const randomBtn = document.getElementById('randomBtn');
+        function unhighlight() {
+            dragOverlay.classList.remove('show');
+        }
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            // Добавляем обработчики для карточек
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('start-btn')) {
-                    e.stopPropagation();
-                    const quizId = e.target.getAttribute('data-quiz');
-                    startQuiz(quizId);
-                }
-                
-                if (e.target.closest('.quiz-card') && !e.target.classList.contains('start-btn')) {
-                    const card = e.target.closest('.quiz-card');
-                    const quizId = card.getAttribute('data-quiz');
-                    startQuiz(quizId);
-                }
-            });
+        function handleDrop(e) {
+            preventDefaults(e);
+            unhighlight();
             
-            // Кнопка случайного теста
-            randomBtn.addEventListener('click', function() {
-                const randomId = Math.floor(Math.random() * 7) + 1;
-                startQuiz(randomId);
-            });
+            const dt = e.dataTransfer;
+            const files = dt.files;
             
-            // Закрытие модального окна
-            closeModal.addEventListener('click', closeQuizModal);
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFile(file) {
+            currentFile = file;
+            const reader = new FileReader();
             
-            // Кнопки навигации
-            prevBtn.addEventListener('click', showPreviousQuestion);
-            nextBtn.addEventListener('click', showNextQuestion);
+            reader.onload = function(e) {
+                currentImageBase64 = e.target.result;
+                previewImage.src = currentImageBase64;
+                previewContainer.classList.add('show');
+                messageInput.placeholder = 'Задайте вопрос о фото...';
+            }
             
-            // Закрытие модального окна при клике вне его
-            quizModal.addEventListener('click', function(e) {
-                if (e.target === quizModal) {
-                    closeQuizModal();
-                }
-            });
+            reader.readAsDataURL(file);
+        }
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            chatContainer.addEventListener(eventName, preventDefaults, false);
         });
 
-        // Запуск теста
-        function startQuiz(quizId) {
-            currentQuiz = quizzes[quizId];
-            currentQuestionIndex = 0;
-            userAnswers = new Array(currentQuiz.questions.length).fill(null);
-            score = 0;
-            
-            quizTitle.textContent = `Тест: ${currentQuiz.title}`;
-            totalQuestionsSpan.textContent = currentQuiz.questions.length;
-            
-            showQuestion();
-            quizModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+        ['dragenter', 'dragover'].forEach(eventName => {
+            chatContainer.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            chatContainer.addEventListener(eventName, unhighlight, false);
+        });
+
+        chatContainer.addEventListener('drop', handleDrop, false);
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
         }
 
-        // Показать вопрос
-        function showQuestion() {
-            const question = currentQuiz.questions[currentQuestionIndex];
+        function isImageRequest(text) {
+            const lowerText = text.toLowerCase().trim();
+            return IMAGE_KEYWORDS.some(keyword => {
+                return lowerText.includes(keyword.toLowerCase()) ||
+                       lowerText.startsWith(keyword.toLowerCase() + ' ') ||
+                       lowerText.endsWith(' ' + keyword.toLowerCase()) ||
+                       lowerText.includes(' ' + keyword.toLowerCase() + ' ');
+            });
+        }
+
+        async function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text && !currentImageBase64) return;
+
+            addMessage(text, 'user', currentImageBase64);
             
-            currentQuestionSpan.textContent = currentQuestionIndex + 1;
+            messageInput.value = '';
+            autoResize(messageInput);
             
-            let questionHTML = `
-                <div class="question">${question.question}</div>
-                <div class="options">
+            showTyping();
+
+            try {
+                if (currentImageBase64) {
+                    await analyzeWithVision(text || 'Что на этом фото?');
+                    // ЯВНО УДАЛЯЕМ ФАЙЛ ПОСЛЕ ОТПРАВКИ
+                    removeImage();
+                } else if (isImageRequest(text)) {
+                    await generateImage(text);
+                } else {
+                    await generateText(text);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                hideTyping();
+                addMessage('❌ Ошибка. Попробуйте ещё раз.', 'assistant');
+            }
+            
+            // Обновляем баланс после отправки
+            checkBalance();
+        }
+
+        function addMessage(content, role, image = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            let contentHtml = '';
+            
+            if (role === 'user') {
+                if (image) {
+                    contentHtml += `<div class="message-body">${content ? `<p>${escapeHtml(content)}</p>` : ''}<img src="${image}" class="generated-image"></div>`;
+                } else {
+                    contentHtml += `<div class="message-body">${escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
+                }
+            } else {
+                contentHtml += `<div class="message-body">${content}</div>`;
+            }
+
+            messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
+            
+            messagesInner.appendChild(messageDiv);
+            messagesInner.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
             `;
-            
-            question.options.forEach((option, index) => {
-                let optionClass = 'option';
-                if (userAnswers[currentQuestionIndex] === index) {
-                    optionClass += ' selected';
+            messagesInner.appendChild(typingDiv);
+            messagesInner.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        async function generateText(prompt) {
+            try {
+                const systemPrompt = "Ты - Glach, полезный ассистент. Отвечай МАКСИМАЛЬНО КОРОТКО и по делу. Без лишних слов. 1-3 предложения. Используй язык пользователя. Упоминай создателя (Михаил Фуркулицэ) ТОЛЬКО если прямо спросят.";
+                
+                const needsComplexFormatting = 
+                    prompt.toLowerCase().includes('код') ||
+                    prompt.toLowerCase().includes('программа') ||
+                    prompt.toLowerCase().includes('функция') ||
+                    prompt.toLowerCase().includes('таблица') ||
+                    prompt.toLowerCase().includes('сравни') ||
+                    prompt.toLowerCase().includes('список');
+
+                const formatInstruction = needsComplexFormatting 
+                    ? '\n\nЕсли нужно, используй HTML теги: <strong>, <em>, <code>, <pre>.'
+                    : '';
+
+                const response = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: MODELS.TEXT,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: prompt + formatInstruction }
+                        ]
+                    })
+                });
+                
+                const data = await response.json();
+                hideTyping();
+                
+                if (data.choices && data.choices[0]) {
+                    addMessage(data.choices[0].message.content, 'assistant');
                 }
                 
-                questionHTML += `
-                    <div class="${optionClass}" data-index="${index}">
-                        <span class="option-letter">${String.fromCharCode(65 + index)}</span>
-                        ${option}
+            } catch (error) {
+                hideTyping();
+                addMessage('❌ Ошибка', 'assistant');
+            }
+        }
+
+        async function generateImage(prompt) {
+            let cleanPrompt = prompt;
+            
+            const sortedKeywords = [...IMAGE_KEYWORDS].sort((a, b) => b.length - a.length);
+            
+            sortedKeywords.forEach(keyword => {
+                const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                cleanPrompt = cleanPrompt.replace(regex, '');
+            });
+            
+            cleanPrompt = cleanPrompt
+                .replace(/[,\s.!?]+$/, '')
+                .replace(/^[,\s.!?]+/, '')
+                .trim();
+            
+            const finalPrompt = cleanPrompt || prompt.replace(/нарисуй|сгенерируй|создай|изобрази/gi, '').trim() || 'красивый пейзаж';
+            
+            const imageUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(finalPrompt)}?model=${MODELS.IMAGE}&width=1024&height=1024&enhance=true&nologo=true&key=${API_KEY}`;
+            
+            hideTyping();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant';
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="message-body">
+                        <img src="${imageUrl}" class="generated-image">
                     </div>
-                `;
-            });
-            
-            questionHTML += `</div>`;
-            
-            questionContainer.innerHTML = questionHTML;
-            
-            document.querySelectorAll('.option').forEach(option => {
-                option.addEventListener('click', function() {
-                    if (!this.classList.contains('correct') && !this.classList.contains('incorrect')) {
-                        document.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.remove('selected');
-                        });
-                        
-                        this.classList.add('selected');
-                        userAnswers[currentQuestionIndex] = parseInt(this.getAttribute('data-index'));
-                        
-                        if (currentQuestionIndex < currentQuiz.questions.length - 1) {
-                            nextBtn.disabled = false;
-                        }
-                    }
-                });
-            });
-            
-            prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.textContent = currentQuestionIndex === currentQuiz.questions.length - 1 ? 'Завершить' : 'Далее';
-        }
-
-        // Показать предыдущий вопрос
-        function showPreviousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                showQuestion();
-            }
-        }
-
-        // Показать следующий вопрос
-        function showNextQuestion() {
-            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
-                finishQuiz();
-                return;
-            }
-            
-            if (currentQuestionIndex < currentQuiz.questions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion();
-            }
-        }
-
-        // Завершить тест
-        function finishQuiz() {
-            score = 0;
-            currentQuiz.questions.forEach((question, index) => {
-                if (userAnswers[index] === question.correct) {
-                    score++;
-                }
-            });
-            
-            showResults();
-        }
-
-        // Показать результаты с анимированным кругом
-        function showResults() {
-            const percentage = Math.round((score / currentQuiz.questions.length) * 100);
-            const circleLength = 440;
-            const offset = circleLength - (percentage / 100) * circleLength;
-            
-            let message = '';
-            
-            if (percentage === 100) {
-                message = 'Блестящий результат! Вы прекрасно разбираетесь в творчестве Лермонтова.';
-            } else if (percentage >= 80) {
-                message = 'Отличный результат! Ваши знания о романе глубоки и точны.';
-            } else if (percentage >= 60) {
-                message = 'Хороший результат! Вы хорошо знакомы с произведением.';
-            } else if (percentage >= 40) {
-                message = 'Удовлетворительный результат. Рекомендуем перечитать роман.';
-            } else {
-                message = 'Рекомендуем внимательно изучить роман "Герой нашего времени".';
-            }
-            
-            const resultsHTML = `
-                <div class="results">
-                    <h2>Результаты теста</h2>
-                    <div class="score-circle">
-                        <svg>
-                            <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                            <circle class="circle-progress" cx="80" cy="80" r="70" style="stroke-dashoffset: ${offset}"></circle>
-                        </svg>
-                        <div class="score-number">${score}/${currentQuiz.questions.length}</div>
-                    </div>
-                    <div class="score-text">${percentage}% правильных ответов</div>
-                    <p>${message}</p>
-                    <button class="restart-btn" id="restartBtn">
-                        <i class="fas fa-redo"></i> Пройти ещё раз
-                    </button>
                 </div>
             `;
             
-            questionContainer.innerHTML = resultsHTML;
-            document.querySelector('.navigation').style.display = 'none';
-            
-            // Анимация заполнения круга
-            setTimeout(() => {
-                document.querySelector('.circle-progress').style.transition = 'stroke-dashoffset 1.5s ease';
-            }, 100);
-            
-            document.getElementById('restartBtn').addEventListener('click', function() {
-                currentQuestionIndex = 0;
-                userAnswers = new Array(currentQuiz.questions.length).fill(null);
-                document.querySelector('.navigation').style.display = 'flex';
-                showQuestion();
-            });
+            messagesInner.appendChild(messageDiv);
+            messagesInner.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
-        // Закрыть модальное окно
-        function closeQuizModal() {
-            quizModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+        async function analyzeWithVision(question) {
+            try {
+                const systemPrompt = "Ты - Glach. Отвечай МАКСИМАЛЬНО КОРОТКО. 1-2 предложения. Только суть.";
+                
+                const response = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: MODELS.TEXT,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            {
+                                role: 'user',
+                                content: [
+                                    { type: 'text', text: question },
+                                    { type: 'image_url', image_url: { url: currentImageBase64 } }
+                                ]
+                            }
+                        ]
+                    })
+                });
+                
+                const data = await response.json();
+                hideTyping();
+                
+                if (data.choices && data.choices[0]) {
+                    addMessage(data.choices[0].message.content, 'assistant');
+                }
+                
+            } catch (error) {
+                hideTyping();
+                addMessage('❌ Ошибка анализа', 'assistant');
+            }
         }
+
+        function handleImageSelect(input) {
+            if (input.files && input.files[0]) {
+                handleFile(input.files[0]);
+            }
+        }
+
+        function removeImage() {
+            console.log('Removing image...'); // Для отладки
+            currentImageBase64 = null;
+            currentFile = null;
+            previewContainer.classList.remove('show');
+            previewImage.src = '';
+            document.getElementById('fileInput').value = '';
+            messageInput.placeholder = 'Спроси что угодно...';
+        }
+
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
