@@ -16,27 +16,31 @@
         }
 
         :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafd;
-            --bg-tertiary: #f0f3f8;
-            --text-primary: #1f2a3a;
-            --text-secondary: #5f6b7a;
-            --text-tertiary: #94a3b8;
-            --border-color: #e9edf2;
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #eef2f6;
+            --text-primary: #1a2634;
+            --text-secondary: #4a5568;
+            --text-tertiary: #718096;
+            --border-color: #e2e8f0;
             --accent-color: #4b7bec;
             --accent-hover: #3a6ad9;
             --accent-soft: rgba(75, 123, 236, 0.1);
-            --user-message-bg: #e9edf2;
-            --assistant-message-bg: #f0f3f8;
-            --code-bg: #f0f3f8;
+            --user-message-bg: #eef2f6;
+            --assistant-message-bg: #ffffff;
             --blockquote-border: #4b7bec;
             --shadow-color: rgba(0, 0, 0, 0.05);
             --drag-active-bg: rgba(75, 123, 236, 0.05);
             --drag-active-border: #4b7bec;
-            --success-color: #34c759;
             --warning-color: #ff9500;
             --warning-bg: rgba(255, 149, 0, 0.1);
-            --message-gap: 28px; /* Увеличил расстояние для надежности */
+            --message-gap: 28px;
+            --code-block-bg: #1e1e2e;
+            --code-block-header: #2d2d3a;
+            --code-block-text: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         @media (prefers-color-scheme: dark) {
@@ -52,15 +56,18 @@
                 --accent-hover: #4b7bec;
                 --accent-soft: rgba(95, 138, 238, 0.15);
                 --user-message-bg: #2f3645;
-                --assistant-message-bg: #2f3645;
-                --code-bg: #252b38;
+                --assistant-message-bg: #252b38;
                 --blockquote-border: #5f8aee;
                 --shadow-color: rgba(0, 0, 0, 0.3);
                 --drag-active-bg: rgba(95, 138, 238, 0.1);
                 --drag-active-border: #5f8aee;
-                --success-color: #34c759;
                 --warning-color: #ffb340;
                 --warning-bg: rgba(255, 179, 64, 0.1);
+                --code-block-bg: #1a1f2b;
+                --code-block-header: #252b38;
+                --glass-bg: rgba(30, 35, 45, 0.7);
+                --glass-border: rgba(255, 255, 255, 0.08);
+                --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             }
         }
 
@@ -71,7 +78,6 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
         .header {
@@ -80,9 +86,23 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--bg-primary);
-            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 10;
+            position: relative;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
         }
 
         .header-left {
@@ -93,13 +113,14 @@
         }
 
         .fixed-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px var(--shadow-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s ease;
             flex-shrink: 0;
+            border: 2px solid var(--accent-color);
         }
 
         .fixed-avatar img {
@@ -114,14 +135,10 @@
         }
 
         .glach-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
             color: var(--text-primary);
             letter-spacing: -0.3px;
-        }
-
-        .balance-display {
-            display: none;
         }
 
         .limit-notice {
@@ -133,8 +150,9 @@
             border-radius: 20px;
             font-size: 13px;
             color: var(--warning-color);
-            border: 1px solid rgba(255, 149, 0, 0.3);
-            white-space: nowrap;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .limit-notice i {
@@ -144,17 +162,20 @@
         .creator-name {
             font-size: 14px;
             color: var(--text-tertiary);
-            background: var(--bg-tertiary);
-            padding: 4px 10px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 6px 12px;
             border-radius: 20px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             margin-left: auto;
+            border: 1px solid var(--glass-border);
         }
 
         .creator-name i {
-            font-size: 12px;
+            font-size: 14px;
             color: var(--accent-color);
         }
 
@@ -173,17 +194,19 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--drag-active-bg);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 3px dashed var(--drag-active-border);
             border-radius: 12px;
             margin: 20px;
             display: none;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
             z-index: 100;
             pointer-events: none;
             animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: var(--glass-shadow);
         }
 
         .drag-overlay.show {
@@ -193,6 +216,7 @@
         .drag-overlay-content {
             text-align: center;
             color: var(--accent-color);
+            text-shadow: 0 2px 10px rgba(95, 138, 238, 0.3);
         }
 
         .drag-overlay-content i {
@@ -225,23 +249,16 @@
             flex-direction: column;
         }
 
-        /* Исправленная система отступов */
         .message {
             display: flex;
             width: 100%;
             animation: fadeIn 0.3s ease;
             margin-top: 0;
-            margin-bottom: var(--message-gap); /* Гарантированный отступ снизу */
+            margin-bottom: var(--message-gap);
         }
 
-        /* Убираем отступ только у самого последнего сообщения */
         .message:last-child {
             margin-bottom: 0;
-        }
-
-        /* Дополнительная страховка для всех сообщений */
-        .message + .message {
-            margin-top: 0; /* Убираем возможные верхние отступы */
         }
 
         .message.assistant {
@@ -272,6 +289,8 @@
             word-wrap: break-word;
             padding: 12px 16px;
             border-radius: 18px;
+            background: var(--user-message-bg);
+            border: 1px solid var(--border-color);
         }
 
         .message.user .message-body {
@@ -284,6 +303,18 @@
             border-bottom-left-radius: 4px;
         }
 
+        .typing-animation {
+            display: inline-block;
+            overflow: hidden;
+            white-space: pre-wrap;
+            animation: typing 2s steps(40, end);
+        }
+
+        @keyframes typing {
+            from { max-width: 0; }
+            to { max-width: 100%; }
+        }
+
         .message-body h1 { font-size: 1.8em; margin: 0.5em 0; font-weight: 600; }
         .message-body h2 { font-size: 1.5em; margin: 0.5em 0; font-weight: 600; }
         .message-body h3 { font-size: 1.3em; margin: 0.5em 0; font-weight: 600; }
@@ -292,62 +323,124 @@
         .message-body p:last-child { margin-bottom: 0; }
         .message-body ul, .message-body ol { margin: 0.8em 0; padding-left: 1.5em; }
         .message-body li { margin: 0.3em 0; }
-        .message-body code {
-            background: var(--code-bg);
+        
+        .message-body code:not(pre code) {
+            background: var(--bg-tertiary);
             padding: 0.2em 0.4em;
             border-radius: 6px;
-            font-family: 'Monaco', 'Menlo', monospace;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
             font-size: 0.9em;
+            color: var(--accent-color);
         }
-        .message-body pre {
-            background: var(--code-bg);
-            padding: 16px;
-            border-radius: 12px;
+        
+        .md-code-block {
+            margin: 4px 0;
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .md-code-block-banner-wrap {
+            background: var(--code-block-header);
+            padding: 0 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            height: 20px;
+            line-height: 20px;
+        }
+
+        .md-code-block-banner-wrap > div {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .md-code-block-banner-wrap svg {
+            width: 10px;
+            height: 10px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        .md-code-block-banner-wrap span {
+            font-size: 9px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            line-height: 1;
+        }
+
+        .md-code-block pre {
+            margin: 0;
+            padding: 4px;
             overflow-x: auto;
-            margin: 0.8em 0;
+            background: transparent;
+            color: var(--code-block-text);
+            font-family: 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.3;
         }
-        .message-body pre code {
+
+        .md-code-block code {
             background: none;
             padding: 0;
+            color: inherit;
+            font-family: inherit;
         }
+
+        .copy-code-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0 4px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            font-size: 8px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            line-height: 18px;
+            height: 18px;
+        }
+
+        .copy-code-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--glass-border);
+        }
+
+        .copy-code-btn i {
+            font-size: 9px;
+        }
+
+        .code-block-small {
+            display: inline-block;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            border-radius: 3px;
+            padding: 0px 3px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 0.75em;
+            margin: 0 1px;
+            color: var(--code-block-text);
+            line-height: 1.2;
+        }
+
         .message-body blockquote {
             border-left: 4px solid var(--blockquote-border);
             padding-left: 16px;
             margin: 0.8em 0;
             color: var(--text-secondary);
-        }
-        .message-body table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 0.8em 0;
-        }
-        .message-body th, .message-body td {
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            text-align: left;
-        }
-        .message-body th {
-            background: var(--bg-tertiary);
-            font-weight: 600;
-        }
-        .message-body a {
-            color: var(--accent-color);
-            text-decoration: none;
-        }
-        .message-body a:hover {
-            text-decoration: underline;
-        }
-        .message-body img {
-            max-width: 100%;
-            border-radius: 12px;
-            margin: 0.5em 0;
-        }
-
-        .generated-image {
-            max-width: 100%;
-            border-radius: 16px;
-            margin: 8px 0 0 0;
-            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         .typing-indicator {
@@ -361,23 +454,22 @@
             height: 8px;
             background: var(--text-tertiary);
             border-radius: 50%;
-            animation: typing 1.4s infinite;
+            animation: bounce 1.4s infinite;
         }
 
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
 
-        @keyframes typing {
+        @keyframes bounce {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
             30% { transform: translateY(-8px); opacity: 1; }
         }
 
         .input-area {
-            border-top: 1px solid var(--border-color);
             padding: 24px;
             background: var(--bg-primary);
-            position: relative;
             z-index: 5;
+            position: relative;
         }
 
         .input-container {
@@ -389,16 +481,15 @@
             display: flex;
             align-items: flex-end;
             gap: 12px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 8px 12px 8px 20px;
             transition: all 0.2s;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
         }
 
         .input-wrapper:focus-within {
             border-color: var(--accent-color);
-            background: var(--bg-primary);
             box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
@@ -415,13 +506,6 @@
             outline: none;
             color: var(--text-primary);
             line-height: 1.3;
-            overflow-y: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        #messageInput::-webkit-scrollbar {
-            display: none;
         }
 
         #messageInput::placeholder {
@@ -487,6 +571,7 @@
             border-radius: 12px;
             object-fit: cover;
             border: 2px solid var(--accent-color);
+            box-shadow: var(--glass-shadow);
         }
 
         .remove-preview {
@@ -505,10 +590,12 @@
             justify-content: center;
             font-size: 14px;
             border: 2px solid var(--bg-primary);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .remove-preview:hover {
             background: #ff1f1f;
+            transform: scale(1.1);
         }
 
         #fileInput {
@@ -537,25 +624,21 @@
                 display: none;
             }
             
-            .creator-name i {
-                margin-right: 0;
-            }
-            
-            .header-left {
-                gap: 8px;
-            }
-            
-            .limit-notice {
-                font-size: 12px;
-                padding: 4px 8px;
-            }
-            
             .limit-notice span {
                 display: none;
             }
             
             .message {
-                margin-bottom: 20px; /* Чуть меньше на мобилках */
+                margin-bottom: 20px;
+            }
+
+            .fixed-avatar {
+                width: 40px;
+                height: 40px;
+            }
+
+            .glach-title {
+                font-size: 20px;
             }
         }
     </style>
@@ -589,7 +672,6 @@
 
         <div class="messages-area" id="messagesArea">
             <div class="messages-inner" id="messagesInner">
-                <!-- Приветственное сообщение -->
                 <div class="message assistant">
                     <div class="message-content">
                         <div class="message-body">
@@ -599,6 +681,7 @@
                                 <li><strong>📝 Писать тексты</strong> — посты, сочинения, ответы</li>
                                 <li><strong>🎨 Рисовать картинки</strong> — скажи "нарисуй..."</li>
                                 <li><strong>📸 Смотреть фото</strong> — загрузи и спроси что хочешь</li>
+                                <li><strong>💻 Показывать код</strong> — используй ##код## для маленьких блоков или ```код``` для больших</li>
                             </ul>
                             <p>Чем помочь? 😊</p>
                         </div>
@@ -656,21 +739,9 @@
             'фото', 'фотографию', 'фотография',
             'изображение', 'изображения',
             'рисунок', 'рисунки', 'набросок', 'эскиз',
-            'пейзаж', 'портрет', 'натюрморт',
-            'иллюстрация', 'иллюстрацию',
-            'открытку', 'открытка', 'плакат', 'постер',
-            'баннер', 'логотип', 'дизайн', 'арт',
             'draw', 'paint', 'sketch', 'create image',
             'generate image', 'make picture', 'show picture',
-            'create a picture', 'generate a photo',
-            'picture', 'image', 'photo', 'photograph',
-            'illustration', 'drawing', 'sketch', 'art',
-            'poster', 'banner', 'logo', 'design',
-            'нарисуй-ка', 'нарисуйте мне',
-            'сгенерируй изображение', 'создай картинку',
-            'покажи картинку', 'сделай фото',
-            'хочу увидеть', 'как выглядит',
-            'вообрази', 'представь'
+            'picture', 'image', 'photo'
         ];
 
         const messagesInner = document.getElementById('messagesInner');
@@ -738,25 +809,85 @@
 
         function autoResize(textarea) {
             textarea.style.height = 'auto';
-            
             let newHeight = textarea.scrollHeight;
             const maxHeight = 120;
-            
-            if (newHeight > maxHeight) {
-                textarea.style.height = maxHeight + 'px';
-            } else {
-                textarea.style.height = newHeight + 'px';
-            }
+            textarea.style.height = (newHeight > maxHeight ? maxHeight : newHeight) + 'px';
         }
 
         function isImageRequest(text) {
             const lowerText = text.toLowerCase().trim();
-            return IMAGE_KEYWORDS.some(keyword => {
-                return lowerText.includes(keyword.toLowerCase()) ||
-                       lowerText.startsWith(keyword.toLowerCase() + ' ') ||
-                       lowerText.endsWith(' ' + keyword.toLowerCase()) ||
-                       lowerText.includes(' ' + keyword.toLowerCase() + ' ');
+            return IMAGE_KEYWORDS.some(keyword => 
+                lowerText.includes(keyword.toLowerCase())
+            );
+        }
+
+        function createCodeBlock(code, language = '') {
+            const escapedCode = code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+            
+            return `
+                <div class="md-code-block">
+                    <div class="md-code-block-banner-wrap">
+                        <div>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 18L22 12L16 6M8 6L2 12L8 18"/>
+                            </svg>
+                            <span>${language || 'html'}</span>
+                        </div>
+                        <button class="copy-code-btn" onclick="copyCode(this)" data-code="${escapedCode.replace(/"/g, '&quot;')}">
+                            <i class="far fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                    <pre><code>${escapedCode}</code></pre>
+                </div>
+            `;
+        }
+
+        function replaceSymbolsWithHtml(text) {
+            if (!text) return text;
+            
+            let processed = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(match, language, code) {
+                return createCodeBlock(code.trim(), language);
             });
+            
+            processed = processed.replace(/##(.*?)##/g, '<span class="code-block-small">$1</span>');
+            
+            processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            processed = processed.replace(/`(.*?)`/g, '<code>$1</code>');
+            
+            return processed;
+        }
+
+        window.copyCode = function(button) {
+            const code = button.getAttribute('data-code');
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> <span>Copy</span>';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        };
+
+        function typeWriter(element, text, speed = 20) {
+            let i = 0;
+            element.innerHTML = '';
+            element.classList.add('typing-animation');
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
         }
 
         async function sendMessage() {
@@ -798,15 +929,23 @@
                 } else {
                     contentHtml += `<div class="message-body">${escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
                 }
+                messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
+                messagesInner.appendChild(messageDiv);
             } else {
-                contentHtml += `<div class="message-body">${content}</div>`;
+                const messageBody = document.createElement('div');
+                messageBody.className = 'message-body';
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.appendChild(messageBody);
+                
+                messageDiv.appendChild(messageContent);
+                messagesInner.appendChild(messageDiv);
+                
+                const formattedContent = replaceSymbolsWithHtml(content);
+                typeWriter(messageBody, formattedContent, 15);
             }
-
-            messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
             
-            messagesInner.appendChild(messageDiv);
-            
-            // Принудительно применяем отступы через пересчет
             messagesInner.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
@@ -843,18 +982,6 @@
             try {
                 const systemPrompt = "Ты - Glach, полезный ассистент. Отвечай локанично и по делу. Без лишних слов. Используй язык пользователя. Упоминай создателя (Михаил Фуркулицэ) ТОЛЬКО если прямо спросят.";
                 
-                const needsComplexFormatting = 
-                    prompt.toLowerCase().includes('код') ||
-                    prompt.toLowerCase().includes('программа') ||
-                    prompt.toLowerCase().includes('функция') ||
-                    prompt.toLowerCase().includes('таблица') ||
-                    prompt.toLowerCase().includes('сравни') ||
-                    prompt.toLowerCase().includes('список');
-
-                const formatInstruction = needsComplexFormatting 
-                    ? '\n\nЕсли нужно, используй HTML теги: <strong>, <em>, <code>, <pre>.'
-                    : '';
-
                 const response = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
@@ -865,7 +992,7 @@
                         model: MODELS.TEXT,
                         messages: [
                             { role: 'system', content: systemPrompt },
-                            { role: 'user', content: prompt + formatInstruction }
+                            { role: 'user', content: prompt }
                         ]
                     })
                 });
@@ -884,23 +1011,8 @@
         }
 
         async function generateImage(prompt) {
-            let cleanPrompt = prompt;
-            
-            const sortedKeywords = [...IMAGE_KEYWORDS].sort((a, b) => b.length - a.length);
-            
-            sortedKeywords.forEach(keyword => {
-                const regex = new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-                cleanPrompt = cleanPrompt.replace(regex, '');
-            });
-            
-            cleanPrompt = cleanPrompt
-                .replace(/[,\s.!?]+$/, '')
-                .replace(/^[,\s.!?]+/, '')
-                .trim();
-            
-            const finalPrompt = cleanPrompt || prompt.replace(/нарисуй|сгенерируй|создай|изобрази/gi, '').trim() || 'красивый пейзаж';
-            
-            const imageUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(finalPrompt)}?model=${MODELS.IMAGE}&width=1024&height=1024&enhance=true&nologo=true&key=${API_KEY}`;
+            let cleanPrompt = prompt.replace(/нарисуй|сгенерируй|создай|изобрази/gi, '').trim() || 'красивый пейзаж';
+            const imageUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(cleanPrompt)}?model=${MODELS.IMAGE}&width=1024&height=1024&enhance=true&nologo=true&key=${API_KEY}`;
             
             hideTyping();
             
@@ -963,7 +1075,6 @@
         }
 
         function removeImage() {
-            console.log('Removing image...');
             currentImageBase64 = null;
             currentFile = null;
             previewContainer.classList.remove('show');
