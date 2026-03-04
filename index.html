@@ -36,7 +36,7 @@
             --success-color: #34c759;
             --warning-color: #ff9500;
             --warning-bg: rgba(255, 149, 0, 0.1);
-            --message-gap: 24px;
+            --message-gap: 28px; /* Увеличил расстояние для надежности */
         }
 
         @media (prefers-color-scheme: dark) {
@@ -120,7 +120,6 @@
             letter-spacing: -0.3px;
         }
 
-        /* Баланс полностью скрыт */
         .balance-display {
             display: none;
         }
@@ -226,15 +225,23 @@
             flex-direction: column;
         }
 
+        /* Исправленная система отступов */
         .message {
             display: flex;
             width: 100%;
             animation: fadeIn 0.3s ease;
-            margin-bottom: var(--message-gap);
+            margin-top: 0;
+            margin-bottom: var(--message-gap); /* Гарантированный отступ снизу */
         }
 
+        /* Убираем отступ только у самого последнего сообщения */
         .message:last-child {
             margin-bottom: 0;
+        }
+
+        /* Дополнительная страховка для всех сообщений */
+        .message + .message {
+            margin-top: 0; /* Убираем возможные верхние отступы */
         }
 
         .message.assistant {
@@ -548,7 +555,7 @@
             }
             
             .message {
-                margin-bottom: 20px;
+                margin-bottom: 20px; /* Чуть меньше на мобилках */
             }
         }
     </style>
@@ -560,7 +567,6 @@
                 <img src="https://media.tenor.com/Leq7mrkrbbgAAAAj/rabbit-r1-bunny-ai.gif" alt="Glach">
             </div>
             <span class="glach-title">Glach</span>
-            <!-- Баланс полностью убран -->
             
             <div class="limit-notice" title="Информационное сообщение">
                 <i class="fas fa-info-circle"></i>
@@ -676,8 +682,6 @@
         
         let currentImageBase64 = null;
         let currentFile = null;
-
-        // Функция проверки баланса полностью удалена, так как элемент скрыт
 
         function preventDefaults(e) {
             e.preventDefault();
@@ -801,6 +805,8 @@
             messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
             
             messagesInner.appendChild(messageDiv);
+            
+            // Принудительно применяем отступы через пересчет
             messagesInner.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
