@@ -859,6 +859,31 @@
             border: 2px solid white;
         }
 
+        .clear-context-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            margin-left: 10px;
+        }
+
+        .clear-context-btn:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .clear-context-btn i {
+            font-size: 12px;
+        }
+
         @media (max-width: 640px) {
             .messages-inner {
                 padding: 0 16px;
@@ -927,6 +952,11 @@
                 <i class="fas fa-info-circle"></i>
                 <span>beta version</span>
             </div>
+            
+            <button class="clear-context-btn" onclick="clearContext()" title="Очистить контекст (кроме запросов на генерацию картинок)">
+                <i class="fas fa-eraser"></i>
+                <span>Очистить контекст</span>
+            </button>
         </div>
         <div class="creator-name" title="Осталось 9999 запросов на сегодня">
             <i class="fas fa-code"></i>
@@ -1013,6 +1043,9 @@
             'picture', 'image', 'photo'
         ];
 
+        // Массив для хранения истории сообщений (контекста)
+        let messageHistory = [];
+        
         const messagesInner = document.getElementById('messagesInner');
         const messageInput = document.getElementById('messageInput');
         const previewContainer = document.getElementById('previewContainer');
@@ -1040,7 +1073,81 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             autoResize(messageInput);
+            // Загружаем сохраненную историю при старте
+            loadMessageHistory();
         });
+
+        // Функция для очистки контекста (кроме запросов на генерацию картинок)
+        function clearContext() {
+            // Оставляем только сообщения, которые являются запросами на генерацию картинок
+            messageHistory = messageHistory.filter(msg => 
+                msg.role === 'assistant' && msg.content && msg.content.includes('<img')
+            );
+            
+            // Очищаем отображение и перестраиваем заново
+            messagesInner.innerHTML = '';
+            
+            // Добавляем обратно только сообщения с картинками
+            messageHistory.forEach(msg => {
+                if (msg.role === 'assistant' && msg.content && msg.content.includes('<img')) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message assistant`;
+                    messageDiv.innerHTML = `<div class="message-content"><div class="message-body">${msg.content}</div></div>`;
+                    messagesInner.appendChild(messageDiv);
+                }
+            });
+            
+            // Показываем приветственный экран, если сообщений не осталось
+            if (messagesInner.children.length === 0) {
+                firstMessageSent = false;
+                welcomeScreen.classList.remove('hidden');
+            }
+            
+            scrollToBottom();
+        }
+
+        // Функция для загрузки истории из localStorage
+        function loadMessageHistory() {
+            const saved = localStorage.getItem('glach_message_history');
+            if (saved) {
+                try {
+                    messageHistory = JSON.parse(saved);
+                    // Восстанавливаем сообщения в интерфейсе
+                    messageHistory.forEach(msg => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `message ${msg.role}`;
+                        
+                        let contentHtml = '';
+                        if (msg.role === 'user') {
+                            if (msg.image) {
+                                contentHtml += `<div class="message-body">${msg.content ? `<p>${escapeHtml(msg.content)}</p>` : ''}<img src="${msg.image}" class="generated-image"></div>`;
+                            } else {
+                                contentHtml += `<div class="message-body">${escapeHtml(msg.content).replace(/\n/g, '<br>')}</div>`;
+                            }
+                        } else {
+                            contentHtml += `<div class="message-body">${msg.content}</div>`;
+                        }
+                        
+                        messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
+                        messagesInner.appendChild(messageDiv);
+                    });
+                    
+                    if (messageHistory.length > 0) {
+                        firstMessageSent = true;
+                        welcomeScreen.classList.add('hidden');
+                    }
+                    
+                    scrollToBottom();
+                } catch (e) {
+                    console.error('Error loading history:', e);
+                }
+            }
+        }
+
+        // Функция для сохранения истории в localStorage
+        function saveMessageHistory() {
+            localStorage.setItem('glach_message_history', JSON.stringify(messageHistory));
+        }
 
         function preventDefaults(e) {
             e.preventDefault();
@@ -1177,20 +1284,34 @@
             messageDiv.className = `message ${role} message-new`;
             
             let contentHtml = '';
+            let messageContent = '';
             
             if (role === 'user') {
                 if (image) {
                     contentHtml += `<div class="message-body">${content ? `<p>${escapeHtml(content)}</p>` : ''}<img src="${image}" class="generated-image"></div>`;
+                    messageContent = content || '';
                 } else {
                     contentHtml += `<div class="message-body">${escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
+                    messageContent = content;
                 }
             } else {
                 const formattedContent = replaceSymbolsWithHtml(content);
                 contentHtml += `<div class="message-body">${formattedContent}</div>`;
+                messageContent = content;
             }
 
             messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
             messagesInner.appendChild(messageDiv);
+            
+            // Сохраняем в историю, если это не запрос на генерацию картинки
+            if (!(role === 'user' && isImageRequest(content))) {
+                messageHistory.push({
+                    role: role,
+                    content: role === 'assistant' ? contentHtml : messageContent,
+                    image: image || null
+                });
+                saveMessageHistory();
+            }
             
             scrollToBottom();
         }
@@ -1258,6 +1379,16 @@
             try {
                 const systemPrompt = "Ты - Glach, современный креативный ассистент. Отвечай стильно, свежо и по делу. Используй эмодзи умеренно. Язык - русский. Ты умеешь: генерировать тексты, отвечать на вопросы, переводить, писать код, творчески подходить к задачам, суммировать информацию, а также распознавать текст, предметы и людей на фотографиях. Если тебя просят нарисовать или сгенерировать изображение - ты можешь это сделать.";
                 
+                // Формируем сообщения с учетом истории
+                const messages = [
+                    { role: 'system', content: systemPrompt },
+                    ...messageHistory.map(msg => ({
+                        role: msg.role,
+                        content: msg.role === 'user' ? msg.content : msg.content.replace(/<[^>]*>/g, '') // Убираем HTML из ответов ассистента для контекста
+                    })),
+                    { role: 'user', content: prompt }
+                ];
+                
                 const response = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
@@ -1266,10 +1397,7 @@
                     },
                     body: JSON.stringify({
                         model: MODELS.TEXT,
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: prompt }
-                        ]
+                        messages: messages
                     })
                 });
                 
@@ -1303,6 +1431,15 @@
             `;
             
             messagesInner.appendChild(messageDiv);
+            
+            // Сохраняем в историю (картинки сохраняются)
+            messageHistory.push({
+                role: 'assistant',
+                content: `<img src="${imageUrl}" class="generated-image">`,
+                image: null
+            });
+            saveMessageHistory();
+            
             scrollToBottom();
         }
 
@@ -1374,4 +1511,4 @@
         });
     </script>
 </body>
-</html>
+                </html>
