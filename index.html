@@ -673,7 +673,7 @@ await sleep(speed / 2);
 }
 }
 
-async function typeWriter(element, html, speed = 70) {
+async function typeWriter(element, html, speed = 35) {
 element.innerHTML = '';
 if (!html) return;
 const tempDiv = document.createElement('div');
@@ -817,18 +817,48 @@ messagesInner.appendChild(assistantDiv);
 
 let rawText = data.choices[0].message.content;
 
-if (!rawText.includes('<p>') && !rawText.includes('<div>') && !rawText.includes('<ul>')) {
+// Улучшенное форматирование текста
+if (!rawText.includes('<p>') && !rawText.includes('<div>') && !rawText.includes('<ul>') && !rawText.includes('<ol>')) {
+// Разбиваем на абзацы по двойным переносам строк
 const paragraphs = rawText.split(/\n\s*\n/);
 if (paragraphs.length > 1) {
-rawText = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+rawText = paragraphs.map(p => {
+// Обрабатываем заголовки (если строка начинается с ** или ##)
+if (p.trim().startsWith('**') && p.trim().endsWith('**')) {
+return `<h3>${p.trim().replace(/\*\*/g, '')}</h3>`;
+}
+// Обрабатываем списки
+if (p.includes('\n- ') || p.includes('\n* ')) {
+const lines = p.split('\n');
+let listItems = [];
+let listContent = '';
+for (let line of lines) {
+if (line.trim().startsWith('-') || line.trim().startsWith('*')) {
+listItems.push(`<li>${line.trim().substring(1).trim()}</li>`);
+} else if (listItems.length > 0) {
+listContent = `<ul>${listItems.join('')}</ul>`;
+listItems = [];
 } else {
+listContent += `<p>${line}</p>`;
+}
+}
+if (listItems.length > 0) {
+listContent += `<ul>${listItems.join('')}</ul>`;
+}
+return listContent;
+}
+return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+}).join('');
+} else {
+// Если нет двойных переносов, просто заменяем одиночные переносы на <br>
 rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 }
 } else {
+// Если уже есть HTML, просто заменяем переносы строк
 rawText = rawText.replace(/\n/g, '<br>');
 }
 
-await typeWriter(bodyDiv, rawText);
+await typeWriter(bodyDiv, rawText, 35); // Ускоренная печать
 messageHistory.push({ role: 'assistant', content: rawText });
 saveMessageHistory();
 }
@@ -919,7 +949,7 @@ rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 }
 }
 
-await typeWriter(bodyDiv, rawText);
+await typeWriter(bodyDiv, rawText, 35);
 messageHistory.push({ role: 'assistant', content: rawText });
 saveMessageHistory();
 }
