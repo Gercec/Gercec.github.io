@@ -672,7 +672,7 @@ await sleep(speed / 2);
 }
 }
 
-async function typeWriter(element, html, speed = 1) {
+async function typeWriter(element, html, speed = 0.1) {
 element.innerHTML = '';
 if (!html) return;
 const tempDiv = document.createElement('div');
