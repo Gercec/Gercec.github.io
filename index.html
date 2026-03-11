@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Glach - AI Assistant</title>
 <link rel="icon" href="https://media.tenor.com/Leq7mrkrbbgAAAAj/rabbit-r1-bunny-ai.gif" type="image/gif">
 <link rel="shortcut icon" href="https://media.tenor.com/Leq7mrkrbbgAAAAj/rabbit-r1-bunny-ai.gif" type="image/gif">
@@ -159,6 +159,7 @@ margin: 0 auto;
 padding: 0 24px;
 display: flex;
 flex-direction: column;
+width: 100%;
 }
 
 .welcome-screen {
@@ -230,7 +231,13 @@ justify-content: flex-end;
 }
 
 .message-content {
-max-width: 70%;
+max-width: 85%;
+width: fit-content;
+}
+
+.message.user .message-content {
+display: flex;
+justify-content: flex-end;
 }
 
 .message-body {
@@ -242,18 +249,21 @@ background: var(--user-message-bg);
 border: 1px solid rgba(255, 255, 255, 0.2);
 white-space: pre-wrap;
 word-wrap: break-word;
+width: 100%;
 }
 
 .message.user .message-body {
 background: var(--accent-gradient);
 color: white;
 border-bottom-right-radius: 8px;
+max-width: 100%;
 }
 
 .message.assistant .message-body {
 background: var(--assistant-message-bg);
 border-bottom-left-radius: 8px;
 border: 1px solid var(--glass-border);
+max-width: 100%;
 }
 
 .message-body p {
@@ -300,11 +310,14 @@ padding: 12px;
 border-radius: 12px;
 overflow-x: auto;
 margin: 12px 0;
+max-width: 100%;
 }
 
 .message-body pre code {
 background: none;
 padding: 0;
+white-space: pre-wrap;
+word-break: break-word;
 }
 
 .message-body a {
@@ -314,6 +327,13 @@ text-decoration: none;
 
 .message-body a:hover {
 text-decoration: underline;
+}
+
+.message-body img {
+max-width: 100%;
+height: auto;
+border-radius: 12px;
+margin-top: 8px;
 }
 
 .typing-indicator {
@@ -380,6 +400,7 @@ max-height: 120px;
 min-height: 48px;
 outline: none;
 color: var(--text-primary);
+width: 100%;
 }
 
 #messageInput::placeholder {
@@ -494,6 +515,193 @@ background: var(--accent-soft);
 border-color: var(--accent-color);
 color: var(--accent-color);
 }
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+.header {
+padding: 16px 20px;
+}
+
+.header-left {
+gap: 12px;
+}
+
+.fixed-avatar {
+width: 48px;
+height: 48px;
+border-radius: 16px;
+}
+
+.glach-title {
+font-size: 24px;
+}
+
+.beta-notice {
+padding: 6px 12px;
+font-size: 12px;
+}
+
+.creator-name {
+padding: 6px 12px;
+font-size: 13px;
+}
+
+.messages-inner {
+padding: 0 16px;
+}
+
+.message-content {
+max-width: 90%;
+}
+
+.message-body {
+font-size: 15px;
+padding: 14px 18px;
+}
+
+.input-area {
+padding: 16px 16px 24px;
+}
+
+.input-wrapper {
+padding: 6px 6px 6px 20px;
+}
+
+#messageInput {
+font-size: 16px;
+padding: 10px 0;
+min-height: 44px;
+}
+
+.preview-container {
+margin-bottom: 12px;
+}
+
+.preview-image {
+width: 90px;
+height: 90px;
+border-radius: 20px;
+}
+
+.remove-preview {
+width: 28px;
+height: 28px;
+font-size: 14px;
+top: -10px;
+right: -10px;
+}
+}
+
+@media (max-width: 480px) {
+.header {
+padding: 12px 16px;
+}
+
+.header-left {
+gap: 8px;
+}
+
+.fixed-avatar {
+width: 42px;
+height: 42px;
+border-radius: 14px;
+}
+
+.glach-title {
+font-size: 22px;
+}
+
+.beta-notice {
+padding: 4px 10px;
+font-size: 11px;
+}
+
+.creator-name {
+padding: 4px 10px;
+font-size: 12px;
+}
+
+.creator-name span {
+display: none;
+}
+
+.creator-name i {
+margin: 0;
+}
+
+.clear-context-btn {
+padding: 4px 8px;
+font-size: 10px;
+margin-left: 4px;
+}
+
+.messages-inner {
+padding: 0 12px;
+}
+
+.message-content {
+max-width: 92%;
+}
+
+.message-body {
+font-size: 14px;
+padding: 12px 16px;
+}
+
+.welcome-avatar {
+width: 100px;
+height: 100px;
+border-radius: 25px;
+}
+
+.welcome-title {
+font-size: 36px;
+}
+
+.welcome-subtitle {
+font-size: 16px;
+}
+
+.input-area {
+padding: 12px 12px 20px;
+}
+
+.input-wrapper {
+padding: 4px 4px 4px 16px;
+border-radius: 24px;
+}
+
+#messageInput {
+font-size: 15px;
+padding: 8px 0;
+min-height: 42px;
+}
+
+.action-btn {
+width: 38px;
+height: 38px;
+font-size: 17px;
+}
+
+.action-btn.send {
+width: 42px;
+height: 42px;
+font-size: 19px;
+}
+
+.preview-image {
+width: 80px;
+height: 80px;
+border-radius: 18px;
+}
+}
+
+/* Поддержка безопасной зоны на iPhone */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+.input-area {
+padding-bottom: max(32px, env(safe-area-inset-bottom));
+}
+}
 </style>
 </head>
 <body>
@@ -582,7 +790,17 @@ const messagesArea = document.getElementById('messagesArea');
 const welcomeScreen = document.getElementById('welcomeScreen');
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-const scrollToBottom = () => messagesArea.scrollTop = messagesArea.scrollHeight;
+const scrollToBottom = () => {
+messagesArea.scrollTo({
+top: messagesArea.scrollHeight,
+behavior: 'smooth'
+});
+};
+
+// Обработка появления клавиатуры на мобильных
+window.addEventListener('resize', () => {
+setTimeout(scrollToBottom, 100);
+});
 
 window.addEventListener('DOMContentLoaded', () => {
 autoResize(messageInput);
@@ -672,7 +890,7 @@ await sleep(speed / 2);
 }
 }
 
-async function typeWriter(element, html, speed = 0.1) {
+async function typeWriter(element, html, speed = 5) { // Ускорено до 5мс
 element.innerHTML = '';
 if (!html) return;
 const tempDiv = document.createElement('div');
@@ -857,7 +1075,7 @@ rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 rawText = rawText.replace(/\n/g, '<br>');
 }
 
-await typeWriter(bodyDiv, rawText, 35); // Ускоренная печать
+await typeWriter(bodyDiv, rawText, 5); // Сильно ускорено до 5мс
 messageHistory.push({ role: 'assistant', content: rawText });
 saveMessageHistory();
 }
@@ -948,7 +1166,7 @@ rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 }
 }
 
-await typeWriter(bodyDiv, rawText, 35);
+await typeWriter(bodyDiv, rawText, 5);
 messageHistory.push({ role: 'assistant', content: rawText });
 saveMessageHistory();
 }
@@ -984,6 +1202,10 @@ e.preventDefault();
 sendMessage();
 }
 });
+
+if (window.innerWidth > 768) {
+messageInput.focus();
+}
 </script>
 </body>
 </html>
