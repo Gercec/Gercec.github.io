@@ -18,26 +18,6 @@ box-sizing: border-box;
 }
 
 :root {
---bg-primary: #f0f5fe;
---bg-secondary: #ffffff;
---bg-tertiary: #e6f0ff;
---text-primary: #1b2b4e;
---text-secondary: #3a4f6e;
---text-tertiary: #5f7a9e;
---border-color: #d4e2f5;
---accent-color: #3a7bd5;
---accent-glow: #5b9aff;
---accent-soft: rgba(58, 123, 213, 0.1);
---accent-gradient: linear-gradient(135deg, #3a7bd5, #5b9aff);
---user-message-bg: #e6f0ff;
---assistant-message-bg: #ffffff;
---shadow-color: rgba(58, 123, 213, 0.15);
---glass-bg: rgba(255, 255, 255, 0.75);
---glass-border: rgba(58, 123, 213, 0.15);
-}
-
-@media (prefers-color-scheme: dark) {
-:root {
 --bg-primary: #0f172a;
 --bg-secondary: #1e293b;
 --bg-tertiary: #263445;
@@ -54,7 +34,8 @@ box-sizing: border-box;
 --shadow-color: rgba(0, 0, 0, 0.4);
 --glass-bg: rgba(30, 41, 59, 0.8);
 --glass-border: rgba(96, 165, 250, 0.15);
-}
+--warning-bg: rgba(245, 158, 11, 0.15);
+--warning-color: #fbbf24;
 }
 
 body {
@@ -114,7 +95,7 @@ padding: 8px 16px;
 border-radius: 40px;
 font-size: 13px;
 color: var(--warning-color);
-border: 1px solid rgba(255, 138, 92, 0.3);
+border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .creator-name {
@@ -732,7 +713,7 @@ padding-bottom: max(32px, env(safe-area-inset-bottom));
 <img src="https://media.tenor.com/Leq7mrkrbbgAAAAj/rabbit-r1-bunny-ai.gif" alt="Glach">
 </div>
 <h1 class="welcome-title">Glach</h1>
-<div class="welcome-subtitle">Я могу сгенерировать текст, создать изображение по описанию и проанализировать ваши фото.<br>Спрашивайте о чём угодно!</div>
+<div class="welcome-subtitle">Я помогу с ответами на вопросы, проанализирую фото и поддержу беседу.<br>Спрашивайте о чём угодно!</div>
 </div>
 
 <div class="messages-area" id="messagesArea">
@@ -773,10 +754,6 @@ oninput="autoResize(this)"
 <script>
 const API_KEY = "sk_6KqzxrbQIfTCxVyL6U6LsjGDNVZwcXCa";
 const MODELS = { TEXT: 'gemini-fast' };
-const IMAGE_KEYWORDS = [
-'нарисуй', 'нарисовать', 'сгенерируй', 'создай изображение',
-'draw', 'generate image', 'create image'
-];
 
 let messageHistory = [];
 let currentImageBase64 = null;
@@ -850,10 +827,6 @@ const maxHeight = 120;
 textarea.style.height = (newHeight > maxHeight ? maxHeight : newHeight) + 'px';
 }
 
-function isImageRequest(text) {
-return IMAGE_KEYWORDS.some(keyword => text.toLowerCase().includes(keyword.toLowerCase()));
-}
-
 function escapeHtml(unsafe) {
 return unsafe
 .replace(/&/g, "&amp;")
@@ -890,7 +863,7 @@ await sleep(speed / 2);
 }
 }
 
-async function typeWriter(element, html, speed = 5) { // Ускорено до 5мс
+async function typeWriter(element, html, speed = 5) {
 element.innerHTML = '';
 if (!html) return;
 const tempDiv = document.createElement('div');
@@ -957,8 +930,6 @@ try {
 if (currentImageBase64) {
 await analyzeWithVision(text || 'Что на этом фото?');
 removeImage();
-} else if (isImageRequest(text)) {
-await generateImage(text);
 } else {
 await generateText(text);
 }
@@ -983,10 +954,9 @@ const systemPrompt = `Ты - Glach, дружелюбный и креативны
 
 ВАЖНЫЕ ПРАВИЛА:
 1. Никогда не упоминай что ты языковая модель или что ты от Google
-2. Ты - Glach, просто помощник, твой созадтель Михаил  Фуркулицэ
+2. Ты - Glach, просто помощник, твой создатель Михаил Фуркулицэ
 3. ВСЕГДА отвечай на том же языке, на котором задан вопрос
-4. Ты умеешь генерировать изображения - если тебя попросят нарисовать или создать картинку
-5. Форматируй ответы с помощью HTML тегов для лучшей читаемости. Используй:
+4. Форматируй ответы с помощью HTML тегов для лучшей читаемости. Используй:
    - <p> для абзацев
    - <strong> или <b> для жирного текста
    - <em> или <i> для курсива
@@ -995,7 +965,7 @@ const systemPrompt = `Ты - Glach, дружелюбный и креативны
    - <h3> или <h4> для заголовков
    - <pre><code> для кода
    - <a href="ссылка"> для ссылок
-6. Будь дружелюбным и полезным, используй эмодзи где уместно :)`;
+5. Будь дружелюбным и полезным, используй эмодзи где уместно :)`;
 
 const messages = [
 { role: 'system', content: systemPrompt },
@@ -1075,7 +1045,7 @@ rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 rawText = rawText.replace(/\n/g, '<br>');
 }
 
-await typeWriter(bodyDiv, rawText, 5); // Сильно ускорено до 5мс
+await typeWriter(bodyDiv, rawText, 5);
 messageHistory.push({ role: 'assistant', content: rawText });
 saveMessageHistory();
 }
@@ -1091,28 +1061,6 @@ errorDiv.innerHTML = `
 messagesInner.appendChild(errorDiv);
 scrollToBottom();
 }
-}
-
-async function generateImage(prompt) {
-let cleanPrompt = prompt.replace(/нарисуй|нарисовать|сгенерируй|создай изображение|draw|generate image|create image/gi, '').trim() || 'красивый пейзаж';
-const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=1024&height=1024&nologo=true`;
-
-hideTyping();
-
-const messageDiv = document.createElement('div');
-messageDiv.className = 'message assistant';
-messageDiv.innerHTML = `
-<div class="message-content">
-<div class="message-body">
-<img src="${imageUrl}" class="generated-image">
-</div>
-</div>
-`;
-messagesInner.appendChild(messageDiv);
-
-messageHistory.push({ role: 'assistant', content: '[Сгенерировано изображение]' });
-saveMessageHistory();
-scrollToBottom();
 }
 
 async function analyzeWithVision(question) {
