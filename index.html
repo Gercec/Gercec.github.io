@@ -774,19 +774,54 @@ behavior: 'smooth'
 });
 };
 
-// Обработка появления клавиатуры на мобильных
 window.addEventListener('resize', () => {
 setTimeout(scrollToBottom, 100);
 });
 
 window.addEventListener('DOMContentLoaded', () => {
 autoResize(messageInput);
-localStorage.removeItem('glach_message_history');
-messageHistory = [];
-messagesInner.innerHTML = '';
-welcomeScreen.classList.remove('hidden');
-firstMessageSent = false;
+loadHistory();
 });
+
+function saveHistory() {
+const toSave = messageHistory.slice(-20);
+localStorage.setItem('glach_message_history', JSON.stringify(toSave));
+}
+
+function loadHistory() {
+try {
+const saved = localStorage.getItem('glach_message_history');
+if (saved) {
+const parsed = JSON.parse(saved);
+if (Array.isArray(parsed) && parsed.length > 0) {
+messageHistory = parsed.slice(-20);
+messagesInner.innerHTML = '';
+for (const msg of messageHistory) {
+if (msg.role === 'user') {
+const messageDiv = document.createElement('div');
+messageDiv.className = 'message user';
+let contentHtml = '';
+if (msg.hasImage && msg.imageData) {
+contentHtml = `<div class="message-body">${msg.content ? escapeHtml(msg.content) + '<br>' : ''}<img src="${msg.imageData}" class="generated-image"></div>`;
+} else {
+contentHtml = `<div class="message-body">${escapeHtml(msg.content)}</div>`;
+}
+messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
+messagesInner.appendChild(messageDiv);
+} else if (msg.role === 'assistant') {
+const assistantDiv = document.createElement('div');
+assistantDiv.className = 'message assistant';
+assistantDiv.innerHTML = `<div class="message-content"><div class="message-body">${msg.content}</div></div>`;
+messagesInner.appendChild(assistantDiv);
+}
+}
+firstMessageSent = true;
+welcomeScreen.classList.add('hidden');
+scrollToBottom();
+}
+}
+} catch(e) {}
+}
 
 function clearContext() {
 messageHistory = [];
@@ -795,10 +830,6 @@ localStorage.removeItem('glach_message_history');
 firstMessageSent = false;
 welcomeScreen.classList.remove('hidden');
 removeImage();
-}
-
-function saveMessageHistory() {
-localStorage.setItem('glach_message_history', JSON.stringify(messageHistory));
 }
 
 function handleFile(file) {
@@ -919,8 +950,13 @@ contentHtml = `<div class="message-body">${escapeHtml(text)}</div>`;
 messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
 messagesInner.appendChild(messageDiv);
 
-messageHistory.push({ role: 'user', content: text || '[Изображение]' });
-saveMessageHistory();
+messageHistory.push({ 
+role: 'user', 
+content: text || '[Изображение]',
+hasImage: !!currentImageBase64,
+imageData: currentImageBase64
+});
+saveHistory();
 
 messageInput.value = '';
 autoResize(messageInput);
@@ -950,29 +986,24 @@ scrollToBottom();
 
 async function generateText(prompt) {
 try {
-const systemPrompt = `Ты - Glach, дружелюбный и креативный ассистент.
+const systemPrompt = `Ты - Glach, AI-ассистент.
 
 ВАЖНЫЕ ПРАВИЛА:
-1. Никогда не упоминай что ты языковая модель или что ты от Google
-2. Ты - Glach, просто помощник, твой создатель Михаил Фуркулицэ
-3. ВСЕГДА отвечай на том же языке, на котором задан вопрос
-4. Форматируй ответы с помощью HTML тегов для лучшей читаемости. Используй:
-   - <p> для абзацев
-   - <strong> или <b> для жирного текста
-   - <em> или <i> для курсива
-   - <ul><li> для списков
-   - <ol><li> для нумерованных списков
-   - <h3> или <h4> для заголовков
-   - <pre><code> для кода
-   - <a href="ссылка"> для ссылок
-5. Будь дружелюбным и полезным, используй эмодзи где уместно :)`;
+1. Отвечай сразу по существу, без приветствий и представлений
+2. НЕ ПОВТОРЯЙ слова пользователя. Если пользователь написал "padding", не пиши "paddingpadding"
+3. Никогда не упоминай что ты языковая модель
+4. Отвечай на том же языке, на котором задан вопрос
+5. Используй HTML теги для форматирования: <p> для абзацев, <strong> для важного, <ul><li> для списков
+6. Будь полезным и точным`;
+
+const contextMessages = messageHistory.slice(-20).map(msg => ({
+role: msg.role,
+content: msg.role === 'assistant' ? stripHtmlTags(msg.content) : msg.content
+}));
 
 const messages = [
 { role: 'system', content: systemPrompt },
-...messageHistory.slice(-10).map(msg => ({
-role: msg.role,
-content: msg.role === 'user' ? msg.content : stripHtmlTags(msg.content)
-})),
+...contextMessages,
 { role: 'user', content: prompt }
 ];
 
@@ -1004,50 +1035,24 @@ messagesInner.appendChild(assistantDiv);
 
 let rawText = data.choices[0].message.content;
 
-// Улучшенное форматирование текста
+// Убираем повторяющиеся слова
+rawText = rawText.replace(/\b(\w+)\1\b/gi, '$1');
+rawText = rawText.replace(/([а-яa-z]+)\1{2,}/gi, '$1');
+
 if (!rawText.includes('<p>') && !rawText.includes('<div>') && !rawText.includes('<ul>') && !rawText.includes('<ol>')) {
-// Разбиваем на абзацы по двойным переносам строк
 const paragraphs = rawText.split(/\n\s*\n/);
 if (paragraphs.length > 1) {
-rawText = paragraphs.map(p => {
-// Обрабатываем заголовки (если строка начинается с ** или ##)
-if (p.trim().startsWith('**') && p.trim().endsWith('**')) {
-return `<h3>${p.trim().replace(/\*\*/g, '')}</h3>`;
-}
-// Обрабатываем списки
-if (p.includes('\n- ') || p.includes('\n* ')) {
-const lines = p.split('\n');
-let listItems = [];
-let listContent = '';
-for (let line of lines) {
-if (line.trim().startsWith('-') || line.trim().startsWith('*')) {
-listItems.push(`<li>${line.trim().substring(1).trim()}</li>`);
-} else if (listItems.length > 0) {
-listContent = `<ul>${listItems.join('')}</ul>`;
-listItems = [];
+rawText = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
 } else {
-listContent += `<p>${line}</p>`;
-}
-}
-if (listItems.length > 0) {
-listContent += `<ul>${listItems.join('')}</ul>`;
-}
-return listContent;
-}
-return `<p>${p.replace(/\n/g, '<br>')}</p>`;
-}).join('');
-} else {
-// Если нет двойных переносов, просто заменяем одиночные переносы на <br>
 rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 }
 } else {
-// Если уже есть HTML, просто заменяем переносы строк
 rawText = rawText.replace(/\n/g, '<br>');
 }
 
 await typeWriter(bodyDiv, rawText, 5);
 messageHistory.push({ role: 'assistant', content: rawText });
-saveMessageHistory();
+saveHistory();
 }
 } catch (error) {
 hideTyping();
@@ -1076,7 +1081,7 @@ model: MODELS.TEXT,
 messages: [
 {
 role: 'system',
-content: 'Ты - Glach. Анализируй фото. Отвечай на том же языке, на котором задан вопрос. Используй HTML теги для форматирования ответа (абзацы, списки, жирный текст).'
+content: 'Ты - Glach, AI-ассистент. Отвечай сразу по существу, без приветствий. Не повторяй слова пользователя. Используй HTML теги для форматирования.'
 },
 {
 role: 'user',
@@ -1104,6 +1109,7 @@ assistantDiv.appendChild(contentDiv);
 messagesInner.appendChild(assistantDiv);
 
 let rawText = data.choices[0].message.content;
+rawText = rawText.replace(/\b(\w+)\1\b/gi, '$1');
 
 if (!rawText.includes('<p>') && !rawText.includes('<ul>')) {
 const paragraphs = rawText.split(/\n\s*\n/);
@@ -1116,7 +1122,7 @@ rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 
 await typeWriter(bodyDiv, rawText, 5);
 messageHistory.push({ role: 'assistant', content: rawText });
-saveMessageHistory();
+saveHistory();
 }
 } catch (error) {
 hideTyping();
