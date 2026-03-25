@@ -425,6 +425,12 @@ height: 44px;
 font-size: 20px;
 }
 
+.action-btn.send:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+transform: none;
+}
+
 .preview-container {
 max-width: 800px;
 margin: 0 auto 16px;
@@ -740,7 +746,7 @@ oninput="autoResize(this)"
 <button class="action-btn" onclick="document.getElementById('fileInput').click()">
 <i class="fas fa-paperclip"></i>
 </button>
-<button class="action-btn send" onclick="sendMessage()">
+<button class="action-btn send" id="sendBtn" onclick="sendMessage()">
 <i class="fas fa-paper-plane"></i>
 </button>
 </div>
@@ -758,6 +764,7 @@ const MODELS = { TEXT: 'gemini-fast' };
 let messageHistory = [];
 let currentImageBase64 = null;
 let firstMessageSent = false;
+let isProcessing = false; // Флаг для блокировки повторных отправок
 
 const messagesInner = document.getElementById('messagesInner');
 const messageInput = document.getElementById('messageInput');
@@ -765,6 +772,7 @@ const previewContainer = document.getElementById('previewContainer');
 const previewImage = document.getElementById('previewImage');
 const messagesArea = document.getElementById('messagesArea');
 const welcomeScreen = document.getElementById('welcomeScreen');
+const sendBtn = document.getElementById('sendBtn');
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const scrollToBottom = () => {
@@ -830,6 +838,8 @@ localStorage.removeItem('glach_message_history');
 firstMessageSent = false;
 welcomeScreen.classList.remove('hidden');
 removeImage();
+isProcessing = false;
+sendBtn.disabled = false;
 }
 
 function handleFile(file) {
@@ -927,8 +937,21 @@ if (typing) typing.remove();
 }
 
 async function sendMessage() {
+// Блокировка повторной отправки
+if (isProcessing) return;
+isProcessing = true;
+sendBtn.disabled = true;
+
 const text = messageInput.value.trim();
-if (!text && !currentImageBase64) return;
+if (!text && !currentImageBase64) {
+isProcessing = false;
+sendBtn.disabled = false;
+return;
+}
+
+// Очищаем поле ввода
+messageInput.value = '';
+autoResize(messageInput);
 
 hideWelcomeScreen();
 
@@ -958,14 +981,15 @@ imageData: currentImageBase64
 });
 saveHistory();
 
-messageInput.value = '';
-autoResize(messageInput);
+const imageToSend = currentImageBase64;
+// Очищаем превью сразу после отправки
+removeImage();
+
 showTyping();
 
 try {
-if (currentImageBase64) {
-await analyzeWithVision(text || 'Что на этом фото?');
-removeImage();
+if (imageToSend) {
+await analyzeWithVision(text || 'Что на этом фото?', imageToSend);
 } else {
 await generateText(text);
 }
@@ -981,6 +1005,9 @@ errorDiv.innerHTML = `
 `;
 messagesInner.appendChild(errorDiv);
 scrollToBottom();
+} finally {
+isProcessing = false;
+sendBtn.disabled = false;
 }
 }
 
@@ -1007,6 +1034,9 @@ const messages = [
 { role: 'user', content: prompt }
 ];
 
+const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 секунд таймаут
+
 const response = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
 method: 'POST',
 headers: {
@@ -1016,11 +1046,18 @@ headers: {
 body: JSON.stringify({
 model: MODELS.TEXT,
 messages: messages
-})
+}),
+signal: controller.signal
 });
 
-const data = await response.json();
+clearTimeout(timeoutId);
 hideTyping();
+
+if (!response.ok) {
+throw new Error(`HTTP error! status: ${response.status}`);
+}
+
+const data = await response.json();
 
 if (data.choices && data.choices[0]) {
 const assistantDiv = document.createElement('div');
@@ -1056,20 +1093,18 @@ saveHistory();
 }
 } catch (error) {
 hideTyping();
-const errorDiv = document.createElement('div');
-errorDiv.className = 'message assistant';
-errorDiv.innerHTML = `
-<div class="message-content">
-<div class="message-body">❌ Ошибка генерации</div>
-</div>
-`;
-messagesInner.appendChild(errorDiv);
-scrollToBottom();
+if (error.name === 'AbortError') {
+throw new Error('Превышено время ожидания ответа');
+}
+throw error;
 }
 }
 
-async function analyzeWithVision(question) {
+async function analyzeWithVision(question, imageBase64) {
 try {
+const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 30000);
+
 const response = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
 method: 'POST',
 headers: {
@@ -1087,15 +1122,22 @@ content: 'Ты - Glach, AI-ассистент. Отвечай сразу по с
 role: 'user',
 content: [
 { type: 'text', text: question },
-{ type: 'image_url', image_url: { url: currentImageBase64 } }
+{ type: 'image_url', image_url: { url: imageBase64 } }
 ]
 }
 ]
-})
+}),
+signal: controller.signal
 });
 
-const data = await response.json();
+clearTimeout(timeoutId);
 hideTyping();
+
+if (!response.ok) {
+throw new Error(`HTTP error! status: ${response.status}`);
+}
+
+const data = await response.json();
 
 if (data.choices && data.choices[0]) {
 const assistantDiv = document.createElement('div');
@@ -1126,20 +1168,17 @@ saveHistory();
 }
 } catch (error) {
 hideTyping();
-const errorDiv = document.createElement('div');
-errorDiv.className = 'message assistant';
-errorDiv.innerHTML = `
-<div class="message-content">
-<div class="message-body">❌ Ошибка анализа</div>
-</div>
-`;
-messagesInner.appendChild(errorDiv);
-scrollToBottom();
+if (error.name === 'AbortError') {
+throw new Error('Превышено время ожидания ответа');
+}
+throw error;
 }
 }
 
 function handleImageSelect(input) {
-if (input.files && input.files[0]) handleFile(input.files[0]);
+if (input.files && input.files[0]) {
+handleFile(input.files[0]);
+}
 }
 
 function removeImage() {
@@ -1151,7 +1190,7 @@ messageInput.placeholder = 'Напишите сообщение...';
 }
 
 messageInput.addEventListener('keydown', (e) => {
-if (e.key === 'Enter' && !e.shiftKey) {
+if (e.key === 'Enter' && !e.shiftKey && !isProcessing) {
 e.preventDefault();
 sendMessage();
 }
