@@ -788,53 +788,15 @@ setTimeout(scrollToBottom, 100);
 
 window.addEventListener('DOMContentLoaded', () => {
 autoResize(messageInput);
-loadHistory();
+// История не загружается — чат всегда пустой при загрузке страницы
 });
 
-function saveHistory() {
-const toSave = messageHistory.slice(-20);
-localStorage.setItem('glach_message_history', JSON.stringify(toSave));
-}
-
-function loadHistory() {
-try {
-const saved = localStorage.getItem('glach_message_history');
-if (saved) {
-const parsed = JSON.parse(saved);
-if (Array.isArray(parsed) && parsed.length > 0) {
-messageHistory = parsed.slice(-20);
-messagesInner.innerHTML = '';
-for (const msg of messageHistory) {
-if (msg.role === 'user') {
-const messageDiv = document.createElement('div');
-messageDiv.className = 'message user';
-let contentHtml = '';
-if (msg.hasImage && msg.imageData) {
-contentHtml = `<div class="message-body">${msg.content ? escapeHtml(msg.content) + '<br>' : ''}<img src="${msg.imageData}" class="generated-image"></div>`;
-} else {
-contentHtml = `<div class="message-body">${escapeHtml(msg.content)}</div>`;
-}
-messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
-messagesInner.appendChild(messageDiv);
-} else if (msg.role === 'assistant') {
-const assistantDiv = document.createElement('div');
-assistantDiv.className = 'message assistant';
-assistantDiv.innerHTML = `<div class="message-content"><div class="message-body">${msg.content}</div></div>`;
-messagesInner.appendChild(assistantDiv);
-}
-}
-firstMessageSent = true;
-welcomeScreen.classList.add('hidden');
-scrollToBottom();
-}
-}
-} catch(e) {}
-}
+// Функция сохранения удалена — история НЕ сохраняется
+// Функция загрузки удалена — история НЕ загружается
 
 function clearContext() {
 messageHistory = [];
 messagesInner.innerHTML = '';
-localStorage.removeItem('glach_message_history');
 firstMessageSent = false;
 welcomeScreen.classList.remove('hidden');
 removeImage();
@@ -973,13 +935,14 @@ contentHtml = `<div class="message-body">${escapeHtml(text)}</div>`;
 messageDiv.innerHTML = `<div class="message-content">${contentHtml}</div>`;
 messagesInner.appendChild(messageDiv);
 
+// Сохраняем в историю ТОЛЬКО для текущей сессии (не в localStorage)
 messageHistory.push({ 
 role: 'user', 
 content: text || '[Изображение]',
 hasImage: !!currentImageBase64,
 imageData: currentImageBase64
 });
-saveHistory();
+// Сохранение в localStorage НЕ вызывается
 
 const imageToSend = currentImageBase64;
 // Очищаем превью сразу после отправки
@@ -1035,7 +998,7 @@ const messages = [
 ];
 
 const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 секунд таймаут
+const timeoutId = setTimeout(() => controller.abort(), 30000);
 
 const response = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
 method: 'POST',
@@ -1089,7 +1052,7 @@ rawText = rawText.replace(/\n/g, '<br>');
 
 await typeWriter(bodyDiv, rawText, 5);
 messageHistory.push({ role: 'assistant', content: rawText });
-saveHistory();
+// Сохранение в localStorage НЕ вызывается
 }
 } catch (error) {
 hideTyping();
@@ -1164,7 +1127,7 @@ rawText = `<p>${rawText.replace(/\n/g, '<br>')}</p>`;
 
 await typeWriter(bodyDiv, rawText, 5);
 messageHistory.push({ role: 'assistant', content: rawText });
-saveHistory();
+// Сохранение в localStorage НЕ вызывается
 }
 } catch (error) {
 hideTyping();
