@@ -49,25 +49,27 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      padding: 50px 16px 40px 16px; /* Увеличен отступ сверху, чтобы контент не перекрывался бегущей строкой */
+      padding: 50px 16px 40px 16px;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden; /* Защита от горизонтального сдвига на мобильных */
       background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
       background-size: 24px 24px;
     }
 
     /* Бесшовная бегущая строка сверху */
     .marquee-container {
-      width: 100vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
       background: rgba(215, 25, 33, 0.15);
       border-top: 1px solid var(--nothing-red);
       border-bottom: 1px solid var(--nothing-red);
       overflow: hidden;
       white-space: nowrap;
-      position: fixed;
-      top: 0;
-      left: 0;
       z-index: 1000;
       padding: 6px 0;
       box-shadow: 0 0 10px var(--nothing-red-glow);
