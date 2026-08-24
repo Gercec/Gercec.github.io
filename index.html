@@ -22,19 +22,20 @@
     }
 
     :root {
-      --bg-color: #050505;
-      --card-bg: #0d0d0d;
-      --card-border: #1e1e1e;
-      --card-border-active: #333333;
+      --bg-color: #000000;
+      --card-bg: #0a0a0a;
+      --card-bg-secondary: #121212;
+      --card-border: #222222;
+      --card-border-active: #ffffff;
       
       /* Nothing Red Accent */
-      --nothing-red: #e10000;
-      --nothing-red-glow: rgba(225, 0, 0, 0.4);
-      --nothing-red-subtle: rgba(225, 0, 0, 0.12);
+      --nothing-red: #d71921;
+      --nothing-red-glow: rgba(215, 25, 33, 0.5);
+      --nothing-red-subtle: rgba(215, 25, 33, 0.15);
 
       --text-main: #ffffff;
-      --text-sub: #a0a0a0;
-      --text-muted: #555555;
+      --text-sub: #b0b0b0;
+      --text-muted: #666666;
 
       --font-pixel: 'ND Dot', 'Silkscreen', monospace;
       --font-mono: 'JetBrains Mono', monospace;
@@ -55,28 +56,26 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      /* Точечная сетка в стиле Nothing OS */
-      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
       background-position: center;
     }
 
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 620px;
     }
 
     header {
-      margin-bottom: 36px;
+      margin-bottom: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
     }
 
-    /* Анимированная матрица точек логотипа */
     .glyph-logo-container {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       position: relative;
       display: flex;
       align-items: center;
@@ -84,37 +83,36 @@
     }
 
     .app-logo {
-      height: 90px;
+      height: 85px;
       width: auto;
       filter: invert(1) brightness(2);
       transition: transform 0.3s ease;
     }
 
     .app-logo:hover {
-      transform: scale(1.03);
+      transform: scale(1.04);
     }
 
-    /* Пиксельный заголовок строго по центру */
     h1 {
       width: 100%;
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
       font-family: var(--font-pixel);
       font-size: clamp(2rem, 7vw, 3.2rem);
       font-weight: 400;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       color: #ffffff;
       text-transform: uppercase;
       line-height: 1.1;
       text-align: center;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
     }
 
     .subtitle {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-family: var(--font-mono);
       text-transform: uppercase;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-align: center;
       display: flex;
       align-items: center;
@@ -130,94 +128,104 @@
       display: inline-block;
     }
 
-    /* Переключатель семестра (дизайн Nothing OS) */
+    /* Семестры — Блок в стиле тумблера */
     .semester-switch {
       display: flex;
       width: 100%;
-      background: #0a0a0a;
+      background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 20px;
-      padding: 5px;
-      margin-top: 28px;
+      padding: 6px;
+      margin-top: 24px;
     }
 
     .semester-btn {
       flex: 1;
       padding: 12px;
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
       font-family: var(--font-mono);
       font-weight: 700;
       font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border-radius: 15px;
+      letter-spacing: 0.1em;
+      border-radius: 14px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
     }
 
     .semester-btn.active {
       background: #ffffff;
       color: #000000;
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+      border-color: #ffffff;
+      font-weight: 700;
     }
 
-    /* Элементы управления */
+    /* Блок селекторов */
     .controls-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 22px;
+      border-radius: 24px;
+      padding: 20px;
       margin-bottom: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
+      position: relative;
     }
 
     .select-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     label {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.15em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    label::before {
+      content: '//';
+      color: var(--nothing-red);
     }
 
     select {
       width: 100%;
-      padding: 14px 18px;
-      background: #000000;
+      padding: 14px 16px;
+      background: var(--card-bg-secondary);
       color: var(--text-main);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
+      border-radius: 14px;
       font-family: var(--font-mono);
       font-size: 0.85rem;
       outline: none;
       cursor: pointer;
       transition: all 0.2s;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='square'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 18px center;
+      background-position: right 16px center;
     }
 
     select:focus {
-      border-color: #ffffff;
+      border-color: var(--card-border-active);
     }
 
     select:disabled {
-      opacity: 0.25;
+      opacity: 0.3;
       cursor: not-allowed;
     }
 
-    /* Табы дней недели */
+    /* Табы дней — Новая блочная геометрия */
     .day-tabs {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -229,126 +237,110 @@
       padding: 14px 0;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 18px;
+      border-radius: 16px;
       color: var(--text-muted);
       text-align: center;
       font-family: var(--font-pixel);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.15s ease;
       user-select: none;
     }
 
     .day-tab:hover {
       color: var(--text-main);
-      border-color: var(--card-border-active);
+      border-color: #444;
     }
 
     .day-tab.active {
       background: var(--nothing-red);
       color: #ffffff;
       border-color: var(--nothing-red);
-      box-shadow: 0 0 16px var(--nothing-red-glow);
+      box-shadow: 0 0 14px var(--nothing-red-glow);
     }
 
-    /* Карточки расписания */
+    /* Новая архитектура Блоков Карточки Расписания */
     .schedule-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
 
     .lesson-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 24px;
-      padding: 20px 22px;
+      padding: 18px;
       display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      transition: all 0.2s ease;
+      flex-direction: column;
+      gap: 14px;
       position: relative;
-      overflow: hidden;
-    }
-
-    /* Glyph LED индикатор в углу каждой карточки */
-    .lesson-card::after {
-      content: '';
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      width: 5px;
-      height: 5px;
-      background-color: #ffffff;
-      border-radius: 50%;
-      opacity: 0.3;
-      box-shadow: 0 0 6px #ffffff;
+      transition: border-color 0.2s ease, transform 0.2s ease;
     }
 
     .lesson-card:hover {
-      border-color: var(--card-border-active);
-      transform: translateY(-1px);
+      border-color: #333333;
+      transform: translateY(-2px);
     }
 
-    .lesson-card:hover::after {
-      background-color: var(--nothing-red);
-      opacity: 1;
-      box-shadow: 0 0 8px var(--nothing-red);
-    }
-
-    .lesson-meta {
+    /* Верхняя секция блока: номер и время */
+    .lesson-header-block {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      min-width: 95px;
-      padding-right: 16px;
-      border-right: 1px dashed var(--card-border);
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed var(--card-border);
+      padding-bottom: 12px;
+    }
+
+    .lesson-num-badge {
+      font-family: var(--font-pixel);
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      background: var(--card-bg-secondary);
+      border: 1px solid var(--card-border);
+      padding: 4px 10px;
+      border-radius: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .lesson-time-badge {
       font-family: var(--font-mono);
-    }
-
-    .lesson-num {
-      font-size: 0.6rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 6px;
-    }
-
-    .lesson-time {
       font-weight: 700;
       font-size: 0.85rem;
-      color: #ffffff;
+      color: #000000;
+      background: #ffffff;
+      padding: 4px 12px;
+      border-radius: 8px;
       letter-spacing: -0.02em;
     }
 
-    .lesson-info {
+    /* Основная информация блока */
+    .lesson-body-block {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      flex: 1;
     }
 
     .lesson-title {
-      font-weight: 500;
-      font-size: 1rem;
+      font-weight: 600;
+      font-size: 1.05rem;
       line-height: 1.4;
       color: #ffffff;
-      padding-right: 12px;
+      letter-spacing: -0.01em;
     }
 
-    .lesson-details-row {
+    /* Мета-информация в виде технологических чипов */
+    .lesson-meta-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    /* Элементы с пиксельными SVG-иконками */
-    .chip {
-      background: #000000;
-      padding: 6px 12px;
-      border-radius: 12px;
+    .info-chip {
+      background: var(--card-bg-secondary);
       border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 8px 12px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -357,10 +349,10 @@
       font-family: var(--font-mono);
     }
 
-    .chip-break {
+    .info-chip.break-chip {
       background: var(--nothing-red-subtle);
-      color: #ff6666;
-      border-color: rgba(225, 0, 0, 0.3);
+      border-color: rgba(215, 25, 33, 0.4);
+      color: #ff5555;
     }
 
     .pixel-icon {
@@ -371,14 +363,26 @@
       flex-shrink: 0;
     }
 
+    /* Красный Glyph-индикатор в углу каждого блока */
+    .glyph-corner-dot {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 4px;
+      height: 4px;
+      background-color: var(--nothing-red);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--nothing-red-glow);
+    }
+
     .empty-state {
       text-align: center;
       color: var(--text-muted);
       font-family: var(--font-mono);
-      padding: 60px 20px;
+      padding: 50px 20px;
       background: var(--card-bg);
       border: 1px dashed var(--card-border);
-      border-radius: 28px;
+      border-radius: 24px;
       font-size: 0.8rem;
       line-height: 1.8;
       text-transform: uppercase;
@@ -399,26 +403,13 @@
 
     @media (max-width: 480px) {
       body {
-        padding: 24px 12px;
+        padding: 20px 12px;
       }
       .app-logo {
-        height: 70px;
+        height: 65px;
       }
-      .lesson-card {
-        flex-direction: column;
-        gap: 12px;
-      }
-      .lesson-meta {
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        padding-right: 0;
-        padding-bottom: 12px;
-        border-right: none;
-        border-bottom: 1px dashed var(--card-border);
-      }
-      .lesson-num {
-        margin-bottom: 0;
+      .lesson-header-block {
+        align-items: flex-start;
       }
     }
   </style>
@@ -427,15 +418,12 @@
 
   <!-- Набор SVG-спрайтов с пиксельными иконками Nothing -->
   <svg style="display: none;">
-    <!-- Преподаватель (Пиксельный человечек) -->
     <symbol id="icon-user" viewBox="0 0 16 16">
       <path d="M6 1h4v2H6zM4 3h8v3H4zM6 6h4v2H6zM2 10h12v2H2zM1 12h14v3H1z"/>
     </symbol>
-    <!-- Аудитория (Пиксельная дверь) -->
     <symbol id="icon-room" viewBox="0 0 16 16">
       <path d="M2 1h12v14H2zm2 2v10h8V3zm5 5h2v2H9z"/>
     </symbol>
-    <!-- Перерыв (Пиксельные часы) -->
     <symbol id="icon-clock" viewBox="0 0 16 16">
       <path d="M5 1h6v2H5zM3 3h10v2H3zM1 5h14v6H1zM3 11h10v2H3zM5 13h6v2H5zM7 5h2v3h3v2H7z"/>
     </symbol>
@@ -482,7 +470,7 @@
       </div>
     </div>
 
-    <!-- Пиксельные табы дней недели -->
+    <!-- Табы дней недели -->
     <div id="dayTabs" class="day-tabs hidden">
       <div class="day-tab active" data-day="пн">ПН</div>
       <div class="day-tab" data-day="вт">ВТ</div>
@@ -761,34 +749,33 @@
 
       container.innerHTML = dayLessons.map((lesson, idx) => `
         <div class="lesson-card">
-          <div class="lesson-meta">
-            <span class="lesson-num">${idx + 1}-Я ПАРА</span>
-            <span class="lesson-time">${lesson.time || '--:--'}</span>
+          <!-- Верхний блок с номером и временем -->
+          <div class="lesson-header-block">
+            <span class="lesson-num-badge">${idx + 1}-Я ПАРА</span>
+            <span class="lesson-time-badge">${lesson.time || '--:--'}</span>
           </div>
-          <div class="lesson-info">
+          
+          <!-- Основной блок с предметом и чипами -->
+          <div class="lesson-body-block">
             <div class="lesson-title">${lesson.subject}</div>
             
-            <div class="lesson-details-row">
+            <div class="lesson-meta-grid">
               ${lesson.teacher ? `
-                <span class="chip">
+                <div class="info-chip">
                   <svg class="pixel-icon"><use href="#icon-user"></use></svg>
-                  ${lesson.teacher}
-                </span>` : ''}
+                  <span>${lesson.teacher}</span>
+                </div>` : ''}
               ${lesson.room ? `
-                <span class="chip">
+                <div class="info-chip">
                   <svg class="pixel-icon"><use href="#icon-room"></use></svg>
-                  ${lesson.room}
-                </span>` : ''}
-            </div>
-
-            ${lesson.breakNote ? `
-              <div class="lesson-details-row">
-                <span class="chip chip-break">
+                  <span>${lesson.room}</span>
+                </div>` : ''}
+              ${lesson.breakNote ? `
+                <div class="info-chip break-chip">
                   <svg class="pixel-icon"><use href="#icon-clock"></use></svg>
-                  ${lesson.breakNote}
-                </span>
-              </div>
-            ` : ''}
+                  <span>${lesson.breakNote}</span>
+                </div>` : ''}
+            </div>
           </div>
         </div>
       `).join('');
