@@ -33,7 +33,6 @@
       --text-sub: #a0a0a0;
       --text-muted: #666666;
 
-      /* Жесткая установка только пиксельных шрифтов */
       --font-pixel: 'ND Dot', 'Silkscreen', monospace;
     }
 
@@ -50,7 +49,7 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      padding: 40px 16px;
+      padding: 50px 16px 40px 16px; /* Увеличен отступ сверху, чтобы контент не перекрывался бегущей строкой */
       display: flex;
       justify-content: center;
       min-height: 100vh;
@@ -58,37 +57,78 @@
       background-size: 24px 24px;
     }
 
+    /* Бесшовная бегущая строка сверху */
+    .marquee-container {
+      width: 100vw;
+      background: rgba(215, 25, 33, 0.15);
+      border-top: 1px solid var(--nothing-red);
+      border-bottom: 1px solid var(--nothing-red);
+      overflow: hidden;
+      white-space: nowrap;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      padding: 6px 0;
+      box-shadow: 0 0 10px var(--nothing-red-glow);
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+      will-change: transform;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      color: #ff2a36;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 6px rgba(255, 42, 54, 0.8);
+      font-weight: bold;
+      padding-right: 40px;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
     .container {
       width: 100%;
       max-width: 640px;
+      margin-top: 16px;
     }
 
     header {
-      margin-bottom: 32px;
+      margin-bottom: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .app-logo {
-      height: 80px;
+      height: 60px;
       width: auto;
       filter: invert(1) brightness(2);
-      margin-bottom: 16px;
+      margin-bottom: 10px;
       image-rendering: pixelated;
     }
 
     h1 {
-      font-size: clamp(1.8rem, 5.5vw, 2.8rem);
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
       letter-spacing: 0.12em;
       text-align: center;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       text-transform: uppercase;
     }
 
     .pixel-label-graphic {
       display: inline-block;
-      height: 14px;
+      height: 12px;
       vertical-align: middle;
       image-rendering: pixelated;
       margin-right: 6px;
@@ -96,42 +136,42 @@
 
     .subtitle {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.15em;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .dot-indicator {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       background-color: var(--nothing-red);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--nothing-red-glow);
+      box-shadow: 0 0 6px var(--nothing-red-glow);
     }
 
     .semester-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       width: 100%;
       background: var(--module-bg);
       border: 1px solid var(--border-color);
-      padding: 6px;
-      border-radius: 16px;
-      margin-top: 24px;
+      padding: 4px;
+      border-radius: 12px;
+      margin-top: 16px;
     }
 
     .semester-btn {
-      padding: 12px;
+      padding: 8px;
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       letter-spacing: 0.1em;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
       text-transform: uppercase;
@@ -146,22 +186,22 @@
     .controls-module {
       background: var(--module-bg);
       border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 24px;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
 
     .select-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
     label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -171,12 +211,12 @@
 
     select, option {
       width: 100%;
-      padding: 12px 14px;
+      padding: 10px 12px;
       background: var(--module-sub-bg);
       color: var(--text-main);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
       outline: none;
       cursor: pointer;
       appearance: none;
@@ -184,7 +224,7 @@
       letter-spacing: 0.05em;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 14px center;
+      background-position: right 12px center;
     }
 
     select:focus {
@@ -195,33 +235,34 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 6px;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
 
     .day-tab {
-      padding: 12px 0;
+      padding: 10px 0;
       background: var(--module-bg);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 10px;
       color: var(--text-muted);
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: all 0.2s ease;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .day-tab.active {
       background: var(--nothing-red);
       color: #ffffff;
       border-color: var(--nothing-red);
-      box-shadow: 0 0 12px var(--nothing-red-glow);
+      box-shadow: 0 0 10px var(--nothing-red-glow);
     }
 
     .schedule-list {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 12px;
     }
 
     .lesson-block-container {
@@ -230,7 +271,7 @@
       gap: 2px;
       background: var(--border-color);
       border: 1px solid var(--border-color);
-      border-radius: 20px;
+      border-radius: 16px;
       overflow: hidden;
     }
 
@@ -239,37 +280,37 @@
       justify-content: space-between;
       align-items: center;
       background: var(--module-bg);
-      padding: 12px 16px;
+      padding: 10px 14px;
     }
 
     .block-num {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-sub);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     .block-time {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       background: #ffffff;
       color: #000000;
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 3px 8px;
+      border-radius: 4px;
       letter-spacing: 0.05em;
     }
 
     .block-main-content {
       background: var(--module-sub-bg);
-      padding: 18px 16px;
+      padding: 14px;
       border-left: 4px solid var(--nothing-red);
     }
 
     .block-title {
-      font-size: 1rem;
-      line-height: 1.5;
+      font-size: 0.9rem;
+      line-height: 1.4;
       color: #ffffff;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -277,18 +318,18 @@
 
     .block-meta-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 2px;
       background: var(--border-color);
     }
 
     .meta-cell {
       background: var(--module-bg);
-      padding: 10px 14px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.75rem;
+      gap: 8px;
+      font-size: 0.7rem;
       color: var(--text-sub);
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -301,15 +342,15 @@
       background-image: repeating-linear-gradient(
         -45deg,
         transparent,
-        transparent 8px,
-        rgba(215, 25, 33, 0.05) 8px,
-        rgba(215, 25, 33, 0.05) 16px
+        transparent 6px,
+        rgba(215, 25, 33, 0.05) 6px,
+        rgba(215, 25, 33, 0.05) 12px
       );
     }
 
     .pixel-icon {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       fill: currentColor;
       flex-shrink: 0;
       image-rendering: pixelated;
@@ -318,12 +359,12 @@
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      padding: 48px 20px;
+      padding: 32px 16px;
       background: var(--module-bg);
       border: 1px dashed var(--border-color);
-      border-radius: 20px;
-      font-size: 0.8rem;
-      line-height: 1.8;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      line-height: 1.6;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
@@ -331,8 +372,8 @@
     .empty-state code {
       color: var(--text-main);
       background: #1a1a1a;
-      padding: 2px 8px;
-      border-radius: 6px;
+      padding: 2px 6px;
+      border-radius: 4px;
     }
 
     .hidden {
@@ -348,11 +389,25 @@
 </head>
 <body>
 
+  <!-- Непрерывная бегущая строка сверху -->
+  <div class="marquee-container">
+    <div class="marquee-track">
+      <div class="marquee-item">
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+      <div class="marquee-item">
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+      <div class="marquee-item">
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+      <div class="marquee-item">
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+
   <svg style="display: none;">
-    <symbol id="pixel-slash-slash" viewBox="0 0 16 12">
-      <path fill="#d71921" d="M2 0h2v2H2zm0 2h2v2H2zM1 4h2v2H1zm0 2h2v2H1zM0 8h2v2H0zm0 2h2v2H0zM8 0h2v2H8zm0 2h2v2H8zM7 4h2v2H7zm0 2h2v2H7zM6 8h2v2H6zm0 2h2v2H6z"/>
-    </symbol>
-    
     <symbol id="icon-user" viewBox="0 0 16 16">
       <path d="M6 1h4v2H6zM4 3h8v3H4zM6 6h4v2H6zM2 10h12v2H2zM1 12h14v3H1z"/>
     </symbol>
@@ -370,37 +425,38 @@
       <h1>РАСПИСАНИЕ</h1>
       <p class="subtitle">
         <span class="dot-indicator"></span>
-        <svg class="pixel-label-graphic" style="width: 22px;" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
-            creator - Михаил Фуркулицэ - РУП-121/26
+        <span class="pixel-label-graphic">CREATOR МИХАИЛ ФУРКУЛИЦЭ 1 КУРС</span>
       </p>
       
       <div class="semester-switch">
-        <button class="semester-btn active" id="sem1Btn" onclick="switchSemester(1)">1 СЕМЕСТР</button>
-        <button class="semester-btn" id="sem2Btn" onclick="switchSemester(2)">2 СЕМЕСТР</button>
+        <button class="semester-btn active" id="sem1Btn" onclick="switchSemester(1)">
+          <span class="pixel-label-graphic">СЕМЕСТР 01</span>
+        </button>
+        <button class="semester-btn" id="sem2Btn" onclick="switchSemester(2)">
+          <span class="pixel-label-graphic">СЕМЕСТР 02</span>
+        </button>
       </div>
     </header>
 
     <div class="controls-module">
       <div class="select-group">
         <label for="courseSelect">
-          <svg class="pixel-label-graphic" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
-          КУРС
+          <span class="pixel-label-graphic">КУРС</span>
         </label>
         <select id="courseSelect" onchange="loadScheduleForSelectedCourse()">
-          <option value="1">1 КУРС</option>
-          <option value="2">2 КУРС</option>
-          <option value="3">3 КУРС</option>
-          <option value="4">4 КУРС</option>
+          <option value="1">-- 01 КУРС --</option>
+          <option value="2">-- 02 КУРС --</option>
+          <option value="3">-- 03 КУРС --</option>
+          <option value="4">-- 04 КУРС --</option>
         </select>
       </div>
 
       <div class="select-group">
         <label for="groupSelect">
-          <svg class="pixel-label-graphic" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
-          ГРУППА
+          <span class="pixel-label-graphic">ГРУППА</span>
         </label>
         <select id="groupSelect" disabled>
-          <option value="">-- ЗАГРУЗКА ДАННЫХ... --</option>
+          <option value="">ЗАГРУЗКА ДАННЫХ...</option>
         </select>
       </div>
     </div>
@@ -414,7 +470,7 @@
     </div>
 
     <main id="scheduleContainer" class="schedule-list">
-      <div class="empty-state">ВЫБЕРИТЕ ГРУППУ ДЛЯ ОТОБРАЖЕНИЯ РАСПИСАНИЯ</div>
+      <div class="empty-state">ВЫБЕРИТЕ ГРУППУ ИЗ СПИСКА ВЫШЕ</div>
     </main>
   </div>
 
@@ -442,8 +498,8 @@
       document.querySelectorAll('.day-tab').forEach(tab => {
         tab.addEventListener('click', (e) => {
           document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
-          e.target.classList.add('active');
-          activeDay = e.target.getAttribute('data-day');
+          e.currentTarget.classList.add('active');
+          activeDay = e.currentTarget.getAttribute('data-day');
           renderSchedule();
         });
       });
@@ -653,10 +709,11 @@
       const select = document.getElementById('groupSelect');
       select.innerHTML = '<option value="">-- ВЫБЕРИТЕ ГРУППУ --</option>';
 
-      groups.sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })).forEach(group => {
+      groups.sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })).forEach((group, index) => {
         const option = document.createElement('option');
         option.value = group;
-        option.textContent = `ГРУППА ${group}`;
+        const numFormatted = String(index + 1).padStart(2, '0');
+        option.textContent = `${numFormatted} ГРУППА ${group}`;
         select.appendChild(option);
       });
 
@@ -681,41 +738,43 @@
         return;
       }
 
-      container.innerHTML = dayLessons.map((lesson, idx) => `
-        <div class="lesson-block-container">
-          <div class="block-header-strip">
-            <span class="block-num">
-              <svg class="pixel-label-graphic" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
-              МОДУЛЬ // 0${idx + 1}
-            </span>
-            <span class="block-time">${lesson.time || '--:--'}</span>
+      container.innerHTML = dayLessons.map((lesson, idx) => {
+        const numFormatted = String(idx + 1).padStart(2, '0');
+        return `
+          <div class="lesson-block-container">
+            <div class="block-header-strip">
+              <span class="block-num">
+                <span class="pixel-label-graphic">МОДУЛЬ ${numFormatted}</span>
+              </span>
+              <span class="block-time">${lesson.time || '--:--'}</span>
+            </div>
+
+            <div class="block-main-content">
+              <div class="block-title">${lesson.subject}</div>
+            </div>
+
+            <div class="block-meta-grid">
+              ${lesson.teacher ? `
+                <div class="meta-cell">
+                  <svg class="pixel-icon"><use href="#icon-user"></use></svg>
+                  <span>${lesson.teacher}</span>
+                </div>` : ''}
+
+              ${lesson.room ? `
+                <div class="meta-cell">
+                  <svg class="pixel-icon"><use href="#icon-room"></use></svg>
+                  <span>${lesson.room}</span>
+                </div>` : ''}
+
+              ${lesson.breakNote ? `
+                <div class="meta-cell break-cell">
+                  <svg class="pixel-icon"><use href="#icon-clock"></use></svg>
+                  <span>${lesson.breakNote}</span>
+                </div>` : ''}
+            </div>
           </div>
-
-          <div class="block-main-content">
-            <div class="block-title">${lesson.subject}</div>
-          </div>
-
-          <div class="block-meta-grid">
-            ${lesson.teacher ? `
-              <div class="meta-cell">
-                <svg class="pixel-icon"><use href="#icon-user"></use></svg>
-                <span>${lesson.teacher}</span>
-              </div>` : ''}
-
-            ${lesson.room ? `
-              <div class="meta-cell">
-                <svg class="pixel-icon"><use href="#icon-room"></use></svg>
-                <span>${lesson.room}</span>
-              </div>` : ''}
-
-            ${lesson.breakNote ? `
-              <div class="meta-cell break-cell">
-                <svg class="pixel-icon"><use href="#icon-clock"></use></svg>
-                <span>${lesson.breakNote}</span>
-              </div>` : ''}
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
   </script>
 </body>
