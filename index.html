@@ -3,35 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Расписание занятий</title>
+  <title>Расписание — Nothing Style</title>
   <!-- Библиотека SheetJS для чтения Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <!-- Подключение шрифтов Noto Sans Mono, ND Dot и Inter -->
+  <!-- Подключение шрифтов ND Dot / Silkscreen, JetBrains Mono и Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg-color: #030508;
-      --card-bg: #090d14;
-      --card-border: #161e2e;
-      --card-hover-border: #0066ff;
-      
-      /* Насыщенный неоново-синий (Deep Electric Neon Blue) */
-      --accent-blue: #0066ff;
-      --accent-blue-bright: #3385ff;
-      --accent-blue-glow: rgba(0, 102, 255, 0.4);
-      --accent-blue-subtle: rgba(0, 102, 255, 0.1);
-      
-      --text-main: #ffffff;
-      --text-muted: #5c6b84;
-      --text-sub: #94a3b8;
+    @font-face {
+      font-family: 'ND Dot';
+      src: url('https://cdn.jsdelivr.net/gh/nothingtech/nothing-design-system@main/fonts/NDDot-80.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
 
-      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    :root {
+      --bg-color: #050505;
+      --card-bg: #0d0d0d;
+      --card-border: #1e1e1e;
+      --card-border-active: #333333;
+      
+      /* Nothing Red Accent */
+      --nothing-red: #e10000;
+      --nothing-red-glow: rgba(225, 0, 0, 0.4);
+      --nothing-red-subtle: rgba(225, 0, 0, 0.12);
+
+      --text-main: #ffffff;
+      --text-sub: #a0a0a0;
+      --text-muted: #555555;
+
+      --font-pixel: 'ND Dot', 'Silkscreen', monospace;
       --font-mono: 'JetBrains Mono', monospace;
-      --font-dot: 'Silkscreen', 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', system-ui, sans-serif;
     }
 
     * {
@@ -44,111 +51,128 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       font-family: var(--font-sans);
-      padding: 32px 16px;
+      padding: 40px 16px;
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      background-image: 
-        radial-gradient(circle at 50% 0%, var(--accent-blue-subtle) 0%, transparent 70%),
-        radial-gradient(circle at 50% 100%, var(--accent-blue-subtle) 0%, transparent 50%);
+      /* Точечная сетка в стиле Nothing OS */
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-position: center;
     }
 
     .container {
       width: 100%;
-      max-width: 640px;
+      max-width: 600px;
     }
 
     header {
-      margin-bottom: 32px;
+      margin-bottom: 36px;
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
     }
 
-    /* Увеличенный логотип */
-    .app-logo {
-      height: 120px;
-      width: auto;
+    /* Анимированная матрица точек логотипа */
+    .glyph-logo-container {
       margin-bottom: 24px;
-      filter: drop-shadow(0 0 20px var(--accent-blue-glow));
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app-logo {
+      height: 90px;
+      width: auto;
+      filter: invert(1) brightness(2);
+      transition: transform 0.3s ease;
     }
 
     .app-logo:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 30px rgba(0, 102, 255, 0.6));
+      transform: scale(1.03);
     }
 
-    /* Заголовок во всю ширину с отступом 20px */
+    /* Пиксельный заголовок строго по центру */
     h1 {
-      width: calc(100% - 40px);
-      margin: 0 20px 8px 20px;
-      font-size: clamp(2rem, 8vw, 3.8rem);
-      font-weight: 700;
-      letter-spacing: -0.04em;
+      width: 100%;
+      margin: 0 0 10px 0;
+      font-family: var(--font-pixel);
+      font-size: clamp(2rem, 7vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: 0.12em;
       color: #ffffff;
       text-transform: uppercase;
-      line-height: 1;
-      text-align: justify;
-      text-align-last: justify;
-      text-shadow: 0 0 25px rgba(0, 102, 255, 0.35);
+      line-height: 1.1;
+      text-align: center;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
     }
 
     .subtitle {
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-family: var(--font-mono);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.18em;
       text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    /* Селектор семестра */
+    .dot-indicator {
+      width: 6px;
+      height: 6px;
+      background-color: var(--nothing-red);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--nothing-red-glow);
+      display: inline-block;
+    }
+
+    /* Переключатель семестра (дизайн Nothing OS) */
     .semester-switch {
       display: flex;
       width: 100%;
-      background: #04060a;
+      background: #0a0a0a;
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 4px;
-      margin-top: 24px;
+      border-radius: 20px;
+      padding: 5px;
+      margin-top: 28px;
     }
 
     .semester-btn {
       flex: 1;
-      padding: 12px 14px;
+      padding: 12px;
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-family: var(--font-mono);
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-radius: 12px;
+      letter-spacing: 0.08em;
+      border-radius: 15px;
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .semester-btn.active {
-      background: var(--accent-blue);
-      color: #ffffff;
-      box-shadow: 0 0 20px var(--accent-blue-glow);
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
     }
 
-    /* Панель управления */
+    /* Элементы управления */
     .controls-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 24px;
+      border-radius: 28px;
+      padding: 22px;
+      margin-bottom: 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
-      position: relative;
     }
 
     .select-group {
@@ -158,39 +182,38 @@
     }
 
     label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
     }
 
     select {
       width: 100%;
-      padding: 14px 16px;
-      background: #04060a;
+      padding: 14px 18px;
+      background: #000000;
       color: var(--text-main);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      font-family: var(--font-sans);
-      font-size: 0.95rem;
+      border-radius: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
       outline: none;
       cursor: pointer;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230066ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='square'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 16px center;
+      background-position: right 18px center;
     }
 
     select:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 12px var(--accent-blue-subtle);
+      border-color: #ffffff;
     }
 
     select:disabled {
-      opacity: 0.3;
+      opacity: 0.25;
       cursor: not-allowed;
     }
 
@@ -203,15 +226,14 @@
     }
 
     .day-tab {
-      padding: 12px 0;
+      padding: 14px 0;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
+      border-radius: 18px;
       color: var(--text-muted);
       text-align: center;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 0.85rem;
+      font-family: var(--font-pixel);
+      font-size: 0.8rem;
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       user-select: none;
@@ -219,76 +241,84 @@
 
     .day-tab:hover {
       color: var(--text-main);
-      border-color: #1e293b;
+      border-color: var(--card-border-active);
     }
 
     .day-tab.active {
-      background: #04060a;
-      color: var(--accent-blue-bright);
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 20px var(--accent-blue-glow);
+      background: var(--nothing-red);
+      color: #ffffff;
+      border-color: var(--nothing-red);
+      box-shadow: 0 0 16px var(--nothing-red-glow);
     }
 
-    /* Карточки пар */
+    /* Карточки расписания */
     .schedule-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
 
     .lesson-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 24px;
+      padding: 20px 22px;
       display: flex;
-      gap: 18px;
+      gap: 20px;
       align-items: flex-start;
       transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .lesson-card::before {
+    /* Glyph LED индикатор в углу каждой карточки */
+    .lesson-card::after {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: var(--accent-blue);
-      box-shadow: 0 0 12px var(--accent-blue);
+      top: 18px;
+      right: 18px;
+      width: 5px;
+      height: 5px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      opacity: 0.3;
+      box-shadow: 0 0 6px #ffffff;
     }
 
     .lesson-card:hover {
-      border-color: rgba(0, 102, 255, 0.5);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px -10px rgba(0, 102, 255, 0.2);
+      border-color: var(--card-border-active);
+      transform: translateY(-1px);
+    }
+
+    .lesson-card:hover::after {
+      background-color: var(--nothing-red);
+      opacity: 1;
+      box-shadow: 0 0 8px var(--nothing-red);
     }
 
     .lesson-meta {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      min-width: 105px;
-      padding-right: 14px;
-      border-right: 1px solid var(--card-border);
+      min-width: 95px;
+      padding-right: 16px;
+      border-right: 1px dashed var(--card-border);
       font-family: var(--font-mono);
     }
 
     .lesson-num {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
       text-transform: uppercase;
       color: var(--text-muted);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       margin-bottom: 6px;
     }
 
     .lesson-time {
       font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--accent-blue-bright);
+      font-size: 0.85rem;
+      color: #ffffff;
       letter-spacing: -0.02em;
     }
 
@@ -300,10 +330,11 @@
     }
 
     .lesson-title {
-      font-weight: 600;
-      font-size: 1.05rem;
-      line-height: 1.35;
+      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1.4;
       color: #ffffff;
+      padding-right: 12px;
     }
 
     .lesson-details-row {
@@ -312,49 +343,54 @@
       gap: 8px;
     }
 
+    /* Элементы с пиксельными SVG-иконками */
     .chip {
-      background: #04060a;
+      background: #000000;
       padding: 6px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid var(--card-border);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
+      gap: 8px;
+      font-size: 0.78rem;
       color: var(--text-sub);
-    }
-
-    .chip-mono {
       font-family: var(--font-mono);
-      font-weight: 500;
     }
 
     .chip-break {
-      background: var(--accent-blue-subtle);
-      color: var(--accent-blue-bright);
-      border-color: rgba(0, 102, 255, 0.3);
+      background: var(--nothing-red-subtle);
+      color: #ff6666;
+      border-color: rgba(225, 0, 0, 0.3);
+    }
+
+    .pixel-icon {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
+      image-rendering: pixelated;
+      flex-shrink: 0;
     }
 
     .empty-state {
       text-align: center;
       color: var(--text-muted);
       font-family: var(--font-mono);
-      padding: 56px 20px;
+      padding: 60px 20px;
       background: var(--card-bg);
       border: 1px dashed var(--card-border);
-      border-radius: 20px;
-      font-size: 0.85rem;
-      line-height: 1.6;
+      border-radius: 28px;
+      font-size: 0.8rem;
+      line-height: 1.8;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .empty-state code {
       font-family: var(--font-mono);
-      color: var(--accent-blue-bright);
-      background: var(--accent-blue-subtle);
-      padding: 2px 6px;
-      border-radius: 4px;
+      color: var(--text-main);
+      background: #1a1a1a;
+      padding: 2px 8px;
+      border-radius: 6px;
     }
 
     .hidden {
@@ -363,10 +399,10 @@
 
     @media (max-width: 480px) {
       body {
-        padding: 20px 12px;
+        padding: 24px 12px;
       }
       .app-logo {
-        height: 90px;
+        height: 70px;
       }
       .lesson-card {
         flex-direction: column;
@@ -377,9 +413,9 @@
         justify-content: space-between;
         width: 100%;
         padding-right: 0;
-        padding-bottom: 10px;
+        padding-bottom: 12px;
         border-right: none;
-        border-bottom: 1px solid var(--card-border);
+        border-bottom: 1px dashed var(--card-border);
       }
       .lesson-num {
         margin-bottom: 0;
@@ -389,39 +425,64 @@
 </head>
 <body>
 
+  <!-- Набор SVG-спрайтов с пиксельными иконками Nothing -->
+  <svg style="display: none;">
+    <!-- Преподаватель (Пиксельный человечек) -->
+    <symbol id="icon-user" viewBox="0 0 16 16">
+      <path d="M6 1h4v2H6zM4 3h8v3H4zM6 6h4v2H6zM2 10h12v2H2zM1 12h14v3H1z"/>
+    </symbol>
+    <!-- Аудитория (Пиксельная дверь) -->
+    <symbol id="icon-room" viewBox="0 0 16 16">
+      <path d="M2 1h12v14H2zm2 2v10h8V3zm5 5h2v2H9z"/>
+    </symbol>
+    <!-- Перерыв (Пиксельные часы) -->
+    <symbol id="icon-clock" viewBox="0 0 16 16">
+      <path d="M5 1h6v2H5zM3 3h10v2H3zM1 5h14v6H1zM3 11h10v2H3zM5 13h6v2H5zM7 5h2v3h3v2H7z"/>
+    </symbol>
+  </svg>
+
   <div class="container">
     <header>
-      <!-- Логотип SVG из той же папки -->
-      <img src="logo.svg" alt="Логотип" class="app-logo">
-      <h1>Расписание</h1>
+      <div class="glyph-logo-container">
+        <!-- Логотип SVG из той же папки -->
+        <img src="logo.svg" alt="Логотип" class="app-logo">
+      </div>
+      
+      <!-- Заголовок выровнен по центру -->
+      <h1>РАСПИСАНИЕ</h1>
+      
+      <p class="subtitle">
+        <span class="dot-indicator"></span>
+        NOTHING OS SYSTEM // V2.0
+      </p>
       
       <!-- Переключатель семестра -->
       <div class="semester-switch">
-        <button class="semester-btn active" id="sem1Btn" onclick="switchSemester(1)">1 Семестр</button>
-        <button class="semester-btn" id="sem2Btn" onclick="switchSemester(2)">2 Семестр</button>
+        <button class="semester-btn active" id="sem1Btn" onclick="switchSemester(1)">1 СЕМЕСТР</button>
+        <button class="semester-btn" id="sem2Btn" onclick="switchSemester(2)">2 СЕМЕСТР</button>
       </div>
     </header>
 
     <div class="controls-card">
       <div class="select-group">
-        <label for="courseSelect">Курс</label>
+        <label for="courseSelect">КУРС</label>
         <select id="courseSelect" onchange="loadScheduleForSelectedCourse()">
-          <option value="1">1 курс</option>
-          <option value="2">2 курс</option>
-          <option value="3">3 курс</option>
-          <option value="4">4 курс</option>
+          <option value="1">1 КУРС</option>
+          <option value="2">2 КУРС</option>
+          <option value="3">3 КУРС</option>
+          <option value="4">4 КУРС</option>
         </select>
       </div>
 
       <div class="select-group">
-        <label for="groupSelect">Группа</label>
+        <label for="groupSelect">ГРУППА</label>
         <select id="groupSelect" disabled>
-          <option value="">-- Загрузка расписания... --</option>
+          <option value="">-- ЗАГРУЗКА ДАННЫХ... --</option>
         </select>
       </div>
     </div>
 
-    <!-- Табы дней недели -->
+    <!-- Пиксельные табы дней недели -->
     <div id="dayTabs" class="day-tabs hidden">
       <div class="day-tab active" data-day="пн">ПН</div>
       <div class="day-tab" data-day="вт">ВТ</div>
@@ -431,16 +492,15 @@
     </div>
 
     <main id="scheduleContainer" class="schedule-list">
-      <div class="empty-state">Выберите группу для отображения расписания</div>
+      <div class="empty-state">ВЫБЕРИТЕ ГРУППУ ДЛЯ ОТОБРАЖЕНИЯ РАСПИСАНИЯ</div>
     </main>
   </div>
 
   <script>
     let parsedSchedule = {};
     let activeDay = 'пн';
-    let currentSemester = 1; // По умолчанию 1 семестр
+    let currentSemester = 1;
 
-    // Маппинг файлов в папке schedule/
     const fileMap = {
       1: {
         1: 'schedule/1сем_1курс-1.xlsx',
@@ -456,7 +516,6 @@
       }
     };
 
-    // При открытии приложения подгружаем 1 курс 1 семестра
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.day-tab').forEach(tab => {
         tab.addEventListener('click', (e) => {
@@ -468,7 +527,6 @@
       });
 
       document.getElementById('groupSelect').addEventListener('change', () => renderSchedule());
-
       loadScheduleForSelectedCourse();
     });
 
@@ -476,7 +534,6 @@
       currentSemester = sem;
       document.getElementById('sem1Btn').classList.toggle('active', currentSemester === 1);
       document.getElementById('sem2Btn').classList.toggle('active', currentSemester === 2);
-      
       loadScheduleForSelectedCourse();
     }
 
@@ -488,7 +545,7 @@
       if (!filePath) return;
 
       select.disabled = true;
-      select.innerHTML = '<option value="">Загрузка файла расписания...</option>';
+      select.innerHTML = '<option value="">СЧИТЫВАНИЕ ФАЙЛА...</option>';
 
       try {
         const response = await fetch(filePath);
@@ -503,11 +560,11 @@
         parseScheduleStructure(rawRows);
       } catch (err) {
         console.error(err);
-        select.innerHTML = `<option value="">Ошибка загрузки (${filePath})</option>`;
+        select.innerHTML = `<option value="">ОШИБКА ЗАГРУЗКИ</option>`;
         document.getElementById('scheduleContainer').innerHTML = `
           <div class="empty-state">
-            Не удалось загрузить файл <b>${filePath}</b>.<br>
-            Убедитесь, что файлы лежат в папке <code>schedule/</code> и вы запускаете сайт через локальный сервер (например, Live Server).
+            НЕ УДАЛОСЬ ЗАГРУЗИТЬ <b>${filePath}</b><br>
+            ПРОВЕРЬТЕ НАЛИЧИЕ ФАЙЛА В ПАПКЕ <code>schedule/</code>
           </div>`;
       }
     }
@@ -516,7 +573,6 @@
       parsedSchedule = {};
       if (!rows || rows.length === 0) return;
 
-      // Динамический поиск строки с группами (сканируем первые 12 строк)
       let groupRowIndex = -1;
       for (let r = 0; r < Math.min(12, rows.length); r++) {
         const row = rows[r] || [];
@@ -604,7 +660,6 @@
           .join(', ');
       }
 
-      // Объединение 45-минутных часов в пары
       for (const group in rawSchedule) {
         for (const day in rawSchedule[group]) {
           const lessons = rawSchedule[group][day];
@@ -618,7 +673,6 @@
             const sameSubject = next && curr.subject.trim().toLowerCase() === next.subject.trim().toLowerCase();
 
             if (sameSubject) {
-              // Аудитории
               const r1 = curr.room.trim();
               const r2 = next.room.trim();
               let formattedRoom = "";
@@ -627,17 +681,16 @@
 
               if (!r1Invalid && !r2Invalid) {
                 if (r1.toLowerCase() === r2.toLowerCase()) {
-                  formattedRoom = `Каб. ${r1}`;
+                  formattedRoom = `КАБ. ${r1}`;
                 } else {
-                  formattedRoom = `Каб. ${r1} - ${r2}`;
+                  formattedRoom = `КАБ. ${r1} - ${r2}`;
                 }
               } else if (!r1Invalid) {
-                formattedRoom = `Каб. ${r1}`;
+                formattedRoom = `КАБ. ${r1}`;
               } else if (!r2Invalid) {
-                formattedRoom = `Каб. ${r2}`;
+                formattedRoom = `КАБ. ${r2}`;
               }
 
-              // Преподаватели
               const t1Norm = normalizeTeacherStr(curr.teacher);
               const t2Norm = normalizeTeacherStr(next.teacher);
               let formattedTeacher = t1Norm;
@@ -650,7 +703,7 @@
                 subject: curr.subject,
                 teacher: formattedTeacher,
                 time: `${curr.startTime} - ${next.endTime}`,
-                breakNote: `Перерыв: ${curr.endTime} - ${next.startTime}`,
+                breakNote: `ПЕРЕРЫВ: ${curr.endTime} - ${next.startTime}`,
                 room: formattedRoom
               });
               i += 2;
@@ -661,7 +714,7 @@
                 teacher: normalizeTeacherStr(curr.teacher),
                 time: `${curr.startTime} - ${curr.endTime}`,
                 breakNote: null,
-                room: !rSingleInvalid ? `Каб. ${curr.room}` : ''
+                room: !rSingleInvalid ? `КАБ. ${curr.room}` : ''
               });
               i += 1;
             }
@@ -676,12 +729,12 @@
 
     function populateGroupDropdown(groups) {
       const select = document.getElementById('groupSelect');
-      select.innerHTML = '<option value="">-- Выберите группу --</option>';
+      select.innerHTML = '<option value="">-- ВЫБЕРИТЕ ГРУППУ --</option>';
 
       groups.sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })).forEach(group => {
         const option = document.createElement('option');
         option.value = group;
-        option.textContent = `Группа ${group}`;
+        option.textContent = `ГРУППА ${group}`;
         select.appendChild(option);
       });
 
@@ -695,14 +748,14 @@
       const container = document.getElementById('scheduleContainer');
 
       if (!selectedGroup) {
-        container.innerHTML = '<div class="empty-state">Выберите группу из списка выше</div>';
+        container.innerHTML = '<div class="empty-state">ВЫБЕРИТЕ ГРУППУ ИЗ СПИСКА ВЫШЕ</div>';
         return;
       }
 
       const dayLessons = parsedSchedule[selectedGroup]?.[activeDay] || [];
 
       if (dayLessons.length === 0) {
-        container.innerHTML = `<div class="empty-state">В этот день (${activeDay.toUpperCase()}) пар нет // Выходной</div>`;
+        container.innerHTML = `<div class="empty-state">В ЭТОТ ДЕНЬ (${activeDay.toUpperCase()}) ПАР НЕТ // ВЫХОДНОЙ</div>`;
         return;
       }
 
@@ -716,13 +769,24 @@
             <div class="lesson-title">${lesson.subject}</div>
             
             <div class="lesson-details-row">
-              ${lesson.teacher ? `<span class="chip">👨‍🏫 ${lesson.teacher}</span>` : ''}
-              ${lesson.room ? `<span class="chip chip-mono">🚪 ${lesson.room}</span>` : ''}
+              ${lesson.teacher ? `
+                <span class="chip">
+                  <svg class="pixel-icon"><use href="#icon-user"></use></svg>
+                  ${lesson.teacher}
+                </span>` : ''}
+              ${lesson.room ? `
+                <span class="chip">
+                  <svg class="pixel-icon"><use href="#icon-room"></use></svg>
+                  ${lesson.room}
+                </span>` : ''}
             </div>
 
             ${lesson.breakNote ? `
               <div class="lesson-details-row">
-                <span class="chip chip-mono chip-break">☕ ${lesson.breakNote}</span>
+                <span class="chip chip-break">
+                  <svg class="pixel-icon"><use href="#icon-clock"></use></svg>
+                  ${lesson.breakNote}
+                </span>
               </div>
             ` : ''}
           </div>
