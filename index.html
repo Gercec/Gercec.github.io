@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Расписание — Nothing Style</title>
-  <!-- Библиотека SheetJS для чтения Excel -->
+  <title>Расписание — True Pixel Grid</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <!-- Подключение шрифтов ND Dot / Silkscreen, JetBrains Mono и Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     @font-face {
@@ -22,48 +20,47 @@
     }
 
     :root {
-      --bg-color: #000000;
-      --card-bg: #0a0a0a;
-      --card-bg-secondary: #121212;
-      --card-border: #222222;
-      --card-border-active: #ffffff;
+      --bg-color: #050505;
+      --module-bg: #0e0e10;
+      --module-sub-bg: #161618;
+      --border-color: #26262a;
+      --border-accent: #3a3a40;
       
-      /* Nothing Red Accent */
       --nothing-red: #d71921;
-      --nothing-red-glow: rgba(215, 25, 33, 0.5);
-      --nothing-red-subtle: rgba(215, 25, 33, 0.15);
+      --nothing-red-glow: rgba(215, 25, 33, 0.4);
 
       --text-main: #ffffff;
-      --text-sub: #b0b0b0;
+      --text-sub: #a0a0a0;
       --text-muted: #666666;
 
+      /* Жесткая установка только пиксельных шрифтов */
       --font-pixel: 'ND Dot', 'Silkscreen', monospace;
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Inter', system-ui, sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: var(--font-pixel) !important;
+      -webkit-font-smoothing: none;
+      -moz-osx-font-smoothing: unset;
+      text-rendering: optimizeSpeed;
     }
 
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      font-family: var(--font-sans);
       padding: 40px 16px;
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-      background-position: center;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
 
     .container {
       width: 100%;
-      max-width: 620px;
+      max-width: 640px;
     }
 
     header {
@@ -71,49 +68,37 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100%;
-    }
-
-    .glyph-logo-container {
-      margin-bottom: 20px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .app-logo {
-      height: 85px;
+      height: 80px;
       width: auto;
       filter: invert(1) brightness(2);
-      transition: transform 0.3s ease;
-    }
-
-    .app-logo:hover {
-      transform: scale(1.04);
+      margin-bottom: 16px;
+      image-rendering: pixelated;
     }
 
     h1 {
-      width: 100%;
-      margin: 0 0 8px 0;
-      font-family: var(--font-pixel);
-      font-size: clamp(2rem, 7vw, 3.2rem);
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      color: #ffffff;
-      text-transform: uppercase;
-      line-height: 1.1;
+      font-size: clamp(1.8rem, 5.5vw, 2.8rem);
+      letter-spacing: 0.12em;
       text-align: center;
-      text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .pixel-label-graphic {
+      display: inline-block;
+      height: 14px;
+      vertical-align: middle;
+      image-rendering: pixelated;
+      margin-right: 6px;
     }
 
     .subtitle {
       color: var(--text-muted);
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      text-align: center;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -125,54 +110,48 @@
       background-color: var(--nothing-red);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--nothing-red-glow);
-      display: inline-block;
     }
 
-    /* Семестры — Блок в стиле тумблера */
     .semester-switch {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      background: var(--module-bg);
+      border: 1px solid var(--border-color);
       padding: 6px;
+      border-radius: 16px;
       margin-top: 24px;
     }
 
     .semester-btn {
-      flex: 1;
       padding: 12px;
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-weight: 700;
       font-size: 0.75rem;
-      text-transform: uppercase;
       letter-spacing: 0.1em;
-      border-radius: 14px;
+      border-radius: 12px;
       cursor: pointer;
       transition: all 0.2s ease;
+      text-transform: uppercase;
     }
 
     .semester-btn.active {
-      background: #ffffff;
+      background: var(--text-main);
       color: #000000;
-      border-color: #ffffff;
-      font-weight: 700;
+      border-color: var(--text-main);
     }
 
-    /* Блок селекторов */
-    .controls-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 20px;
+    .controls-module {
+      background: var(--module-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      position: relative;
+      gap: 12px;
     }
 
     .select-group {
@@ -182,207 +161,167 @@
     }
 
     label {
-      font-size: 0.62rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 0.15em;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 6px;
     }
 
-    label::before {
-      content: '//';
-      color: var(--nothing-red);
-    }
-
-    select {
+    select, option {
       width: 100%;
-      padding: 14px 16px;
-      background: var(--card-bg-secondary);
+      padding: 12px 14px;
+      background: var(--module-sub-bg);
       color: var(--text-main);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      font-family: var(--font-mono);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
       font-size: 0.85rem;
       outline: none;
       cursor: pointer;
-      transition: all 0.2s;
       appearance: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 16px center;
+      background-position: right 14px center;
     }
 
     select:focus {
-      border-color: var(--card-border-active);
+      border-color: var(--border-accent);
     }
 
-    select:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-
-    /* Табы дней — Новая блочная геометрия */
     .day-tabs {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 24px;
     }
 
     .day-tab {
-      padding: 14px 0;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
+      padding: 12px 0;
+      background: var(--module-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
       color: var(--text-muted);
       text-align: center;
-      font-family: var(--font-pixel);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: all 0.15s ease;
-      user-select: none;
-    }
-
-    .day-tab:hover {
-      color: var(--text-main);
-      border-color: #444;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
     }
 
     .day-tab.active {
       background: var(--nothing-red);
       color: #ffffff;
       border-color: var(--nothing-red);
-      box-shadow: 0 0 14px var(--nothing-red-glow);
+      box-shadow: 0 0 12px var(--nothing-red-glow);
     }
 
-    /* Новая архитектура Блоков Карточки Расписания */
     .schedule-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .lesson-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 18px;
+    .lesson-block-container {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      position: relative;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      gap: 2px;
+      background: var(--border-color);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      overflow: hidden;
     }
 
-    .lesson-card:hover {
-      border-color: #333333;
-      transform: translateY(-2px);
-    }
-
-    /* Верхняя секция блока: номер и время */
-    .lesson-header-block {
+    .block-header-strip {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px dashed var(--card-border);
-      padding-bottom: 12px;
+      background: var(--module-bg);
+      padding: 12px 16px;
     }
 
-    .lesson-num-badge {
-      font-family: var(--font-pixel);
-      font-size: 0.75rem;
+    .block-num {
+      font-size: 0.8rem;
       color: var(--text-sub);
-      background: var(--card-bg-secondary);
-      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .block-time {
+      font-size: 0.8rem;
+      background: #ffffff;
+      color: #000000;
       padding: 4px 10px;
-      border-radius: 8px;
+      border-radius: 6px;
       letter-spacing: 0.05em;
     }
 
-    .lesson-time-badge {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: #000000;
-      background: #ffffff;
-      padding: 4px 12px;
-      border-radius: 8px;
-      letter-spacing: -0.02em;
+    .block-main-content {
+      background: var(--module-sub-bg);
+      padding: 18px 16px;
+      border-left: 4px solid var(--nothing-red);
     }
 
-    /* Основная информация блока */
-    .lesson-body-block {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .lesson-title {
-      font-weight: 600;
-      font-size: 1.05rem;
-      line-height: 1.4;
+    .block-title {
+      font-size: 1rem;
+      line-height: 1.5;
       color: #ffffff;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    /* Мета-информация в виде технологических чипов */
-    .lesson-meta-grid {
+    .block-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2px;
+      background: var(--border-color);
+    }
+
+    .meta-cell {
+      background: var(--module-bg);
+      padding: 10px 14px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .info-chip {
-      background: var(--card-bg-secondary);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 8px 12px;
-      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.78rem;
+      gap: 10px;
+      font-size: 0.75rem;
       color: var(--text-sub);
-      font-family: var(--font-mono);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
     }
 
-    .info-chip.break-chip {
-      background: var(--nothing-red-subtle);
-      border-color: rgba(215, 25, 33, 0.4);
-      color: #ff5555;
+    .meta-cell.break-cell {
+      background: rgba(215, 25, 33, 0.08);
+      color: #ff6b6b;
+      grid-column: 1 / -1;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        rgba(215, 25, 33, 0.05) 8px,
+        rgba(215, 25, 33, 0.05) 16px
+      );
     }
 
     .pixel-icon {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       fill: currentColor;
-      image-rendering: pixelated;
       flex-shrink: 0;
-    }
-
-    /* Красный Glyph-индикатор в углу каждого блока */
-    .glyph-corner-dot {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      width: 4px;
-      height: 4px;
-      background-color: var(--nothing-red);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--nothing-red-glow);
+      image-rendering: pixelated;
     }
 
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      font-family: var(--font-mono);
-      padding: 50px 20px;
-      background: var(--card-bg);
-      border: 1px dashed var(--card-border);
-      border-radius: 24px;
+      padding: 48px 20px;
+      background: var(--module-bg);
+      border: 1px dashed var(--border-color);
+      border-radius: 20px;
       font-size: 0.8rem;
       line-height: 1.8;
       text-transform: uppercase;
@@ -390,7 +329,6 @@
     }
 
     .empty-state code {
-      font-family: var(--font-mono);
       color: var(--text-main);
       background: #1a1a1a;
       padding: 2px 8px;
@@ -402,22 +340,19 @@
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 20px 12px;
-      }
-      .app-logo {
-        height: 65px;
-      }
-      .lesson-header-block {
-        align-items: flex-start;
+      .block-meta-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Набор SVG-спрайтов с пиксельными иконками Nothing -->
   <svg style="display: none;">
+    <symbol id="pixel-slash-slash" viewBox="0 0 16 12">
+      <path fill="#d71921" d="M2 0h2v2H2zm0 2h2v2H2zM1 4h2v2H1zm0 2h2v2H1zM0 8h2v2H0zm0 2h2v2H0zM8 0h2v2H8zm0 2h2v2H8zM7 4h2v2H7zm0 2h2v2H7zM6 8h2v2H6zm0 2h2v2H6z"/>
+    </symbol>
+    
     <symbol id="icon-user" viewBox="0 0 16 16">
       <path d="M6 1h4v2H6zM4 3h8v3H4zM6 6h4v2H6zM2 10h12v2H2zM1 12h14v3H1z"/>
     </symbol>
@@ -431,29 +366,26 @@
 
   <div class="container">
     <header>
-      <div class="glyph-logo-container">
-        <!-- Логотип SVG из той же папки -->
-        <img src="logo.svg" alt="Логотип" class="app-logo">
-      </div>
-      
-      <!-- Заголовок выровнен по центру -->
+      <img src="logo.svg" alt="Логотип" class="app-logo">
       <h1>РАСПИСАНИЕ</h1>
-      
       <p class="subtitle">
         <span class="dot-indicator"></span>
-        creator Михаил Фуркулицэ 1 курс
+        <svg class="pixel-label-graphic" style="width: 22px;" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
+            creator - Михаил Фуркулицэ - РУП-121/26
       </p>
       
-      <!-- Переключатель семестра -->
       <div class="semester-switch">
         <button class="semester-btn active" id="sem1Btn" onclick="switchSemester(1)">1 СЕМЕСТР</button>
         <button class="semester-btn" id="sem2Btn" onclick="switchSemester(2)">2 СЕМЕСТР</button>
       </div>
     </header>
 
-    <div class="controls-card">
+    <div class="controls-module">
       <div class="select-group">
-        <label for="courseSelect">КУРС</label>
+        <label for="courseSelect">
+          <svg class="pixel-label-graphic" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
+          КУРС
+        </label>
         <select id="courseSelect" onchange="loadScheduleForSelectedCourse()">
           <option value="1">1 КУРС</option>
           <option value="2">2 КУРС</option>
@@ -463,14 +395,16 @@
       </div>
 
       <div class="select-group">
-        <label for="groupSelect">ГРУППА</label>
+        <label for="groupSelect">
+          <svg class="pixel-label-graphic" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
+          ГРУППА
+        </label>
         <select id="groupSelect" disabled>
           <option value="">-- ЗАГРУЗКА ДАННЫХ... --</option>
         </select>
       </div>
     </div>
 
-    <!-- Табы дней недели -->
     <div id="dayTabs" class="day-tabs hidden">
       <div class="day-tab active" data-day="пн">ПН</div>
       <div class="day-tab" data-day="вт">ВТ</div>
@@ -622,7 +556,7 @@
               const [startTime, endTime] = timeRange.split('-').map(t => t.trim());
 
               rawSchedule[map.group][map.day].push({
-                subject: lines[0] || 'Предмет не указан',
+                subject: lines[0] || 'ПРЕДМЕТ НЕ УКАЗАН',
                 teacher: lines[1] || '',
                 startTime: startTime || '',
                 endTime: endTime || '',
@@ -748,34 +682,37 @@
       }
 
       container.innerHTML = dayLessons.map((lesson, idx) => `
-        <div class="lesson-card">
-          <!-- Верхний блок с номером и временем -->
-          <div class="lesson-header-block">
-            <span class="lesson-num-badge">${idx + 1}-Я ПАРА</span>
-            <span class="lesson-time-badge">${lesson.time || '--:--'}</span>
+        <div class="lesson-block-container">
+          <div class="block-header-strip">
+            <span class="block-num">
+              <svg class="pixel-label-graphic" viewBox="0 0 16 12"><use href="#pixel-slash-slash"></use></svg>
+              МОДУЛЬ // 0${idx + 1}
+            </span>
+            <span class="block-time">${lesson.time || '--:--'}</span>
           </div>
-          
-          <!-- Основной блок с предметом и чипами -->
-          <div class="lesson-body-block">
-            <div class="lesson-title">${lesson.subject}</div>
-            
-            <div class="lesson-meta-grid">
-              ${lesson.teacher ? `
-                <div class="info-chip">
-                  <svg class="pixel-icon"><use href="#icon-user"></use></svg>
-                  <span>${lesson.teacher}</span>
-                </div>` : ''}
-              ${lesson.room ? `
-                <div class="info-chip">
-                  <svg class="pixel-icon"><use href="#icon-room"></use></svg>
-                  <span>${lesson.room}</span>
-                </div>` : ''}
-              ${lesson.breakNote ? `
-                <div class="info-chip break-chip">
-                  <svg class="pixel-icon"><use href="#icon-clock"></use></svg>
-                  <span>${lesson.breakNote}</span>
-                </div>` : ''}
-            </div>
+
+          <div class="block-main-content">
+            <div class="block-title">${lesson.subject}</div>
+          </div>
+
+          <div class="block-meta-grid">
+            ${lesson.teacher ? `
+              <div class="meta-cell">
+                <svg class="pixel-icon"><use href="#icon-user"></use></svg>
+                <span>${lesson.teacher}</span>
+              </div>` : ''}
+
+            ${lesson.room ? `
+              <div class="meta-cell">
+                <svg class="pixel-icon"><use href="#icon-room"></use></svg>
+                <span>${lesson.room}</span>
+              </div>` : ''}
+
+            ${lesson.breakNote ? `
+              <div class="meta-cell break-cell">
+                <svg class="pixel-icon"><use href="#icon-clock"></use></svg>
+                <span>${lesson.breakNote}</span>
+              </div>` : ''}
           </div>
         </div>
       `).join('');
