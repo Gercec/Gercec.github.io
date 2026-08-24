@@ -49,8 +49,7 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      /* Увеличили верхний отступ, чтобы контент не прятался за бегущей строкой */
-      padding: 65px 16px 50px 16px;
+      padding: 50px 16px 40px 16px; /* Увеличен отступ сверху, чтобы контент не перекрывался бегущей строкой */
       display: flex;
       justify-content: center;
       min-height: 100vh;
@@ -58,7 +57,7 @@
       background-size: 24px 24px;
     }
 
-    /* Непрерывная бегущая строка сверху */
+    /* Бесшовная бегущая строка сверху */
     .marquee-container {
       width: 100vw;
       background: rgba(215, 25, 33, 0.15);
@@ -70,14 +69,14 @@
       top: 0;
       left: 0;
       z-index: 1000;
-      padding: 8px 0;
+      padding: 6px 0;
       box-shadow: 0 0 10px var(--nothing-red-glow);
     }
 
     .marquee-track {
       display: inline-flex;
       white-space: nowrap;
-      animation: marquee 15s linear infinite;
+      animation: marquee 20s linear infinite;
       will-change: transform;
     }
 
@@ -85,7 +84,7 @@
       display: inline-flex;
       align-items: center;
       color: #ff2a36;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
       text-shadow: 0 0 6px rgba(255, 42, 54, 0.8);
@@ -101,35 +100,35 @@
     .container {
       width: 100%;
       max-width: 640px;
-      margin-top: 10px;
+      margin-top: 16px;
     }
 
     header {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .app-logo {
-      height: 64px;
+      height: 60px;
       width: auto;
       filter: invert(1) brightness(2);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       image-rendering: pixelated;
     }
 
     h1 {
-      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
       letter-spacing: 0.12em;
       text-align: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       text-transform: uppercase;
     }
 
     .pixel-label-graphic {
       display: inline-block;
-      height: 13px;
+      height: 12px;
       vertical-align: middle;
       image-rendering: pixelated;
       margin-right: 6px;
@@ -137,17 +136,17 @@
 
     .subtitle {
       color: var(--text-muted);
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .dot-indicator {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       background-color: var(--nothing-red);
       border-radius: 50%;
       box-shadow: 0 0 6px var(--nothing-red-glow);
@@ -156,23 +155,23 @@
     .semester-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       width: 100%;
       background: var(--module-bg);
       border: 1px solid var(--border-color);
-      padding: 6px;
-      border-radius: 14px;
-      margin-top: 18px;
+      padding: 4px;
+      border-radius: 12px;
+      margin-top: 16px;
     }
 
     .semester-btn {
-      padding: 12px;
+      padding: 8px;
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       letter-spacing: 0.1em;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
       text-transform: uppercase;
@@ -187,22 +186,22 @@
     .controls-module {
       background: var(--module-bg);
       border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 18px;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
 
     .select-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
     label {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -212,20 +211,20 @@
 
     select, option {
       width: 100%;
-      padding: 14px;
+      padding: 10px 12px;
       background: var(--module-sub-bg);
       color: var(--text-main);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      font-size: 0.95rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
       outline: none;
       cursor: pointer;
       appearance: none;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 14px center;
+      background-position: right 12px center;
     }
 
     select:focus {
@@ -235,18 +234,18 @@
     .day-tabs {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 6px;
+      margin-bottom: 16px;
     }
 
     .day-tab {
-      padding: 14px 0;
+      padding: 10px 0;
       background: var(--module-bg);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 10px;
       color: var(--text-muted);
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
       cursor: pointer;
       transition: all 0.2s ease;
       text-transform: uppercase;
@@ -263,7 +262,7 @@
     .schedule-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
 
     .lesson-block-container {
@@ -272,7 +271,7 @@
       gap: 2px;
       background: var(--border-color);
       border: 1px solid var(--border-color);
-      border-radius: 18px;
+      border-radius: 16px;
       overflow: hidden;
     }
 
@@ -281,11 +280,11 @@
       justify-content: space-between;
       align-items: center;
       background: var(--module-bg);
-      padding: 12px 16px;
+      padding: 10px 14px;
     }
 
     .block-num {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--text-sub);
       display: flex;
       align-items: center;
@@ -295,24 +294,23 @@
     }
 
     .block-time {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       background: #ffffff;
       color: #000000;
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 3px 8px;
+      border-radius: 4px;
       letter-spacing: 0.05em;
-      font-weight: bold;
     }
 
     .block-main-content {
       background: var(--module-sub-bg);
-      padding: 16px;
+      padding: 14px;
       border-left: 4px solid var(--nothing-red);
     }
 
     .block-title {
-      font-size: 1.05rem;
-      line-height: 1.45;
+      font-size: 0.9rem;
+      line-height: 1.4;
       color: #ffffff;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -327,11 +325,11 @@
 
     .meta-cell {
       background: var(--module-bg);
-      padding: 12px 16px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
+      gap: 8px;
+      font-size: 0.7rem;
       color: var(--text-sub);
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -351,8 +349,8 @@
     }
 
     .pixel-icon {
-      width: 15px;
-      height: 15px;
+      width: 12px;
+      height: 12px;
       fill: currentColor;
       flex-shrink: 0;
       image-rendering: pixelated;
@@ -361,11 +359,11 @@
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      padding: 40px 20px;
+      padding: 32px 16px;
       background: var(--module-bg);
       border: 1px dashed var(--border-color);
-      border-radius: 18px;
-      font-size: 0.85rem;
+      border-radius: 16px;
+      font-size: 0.75rem;
       line-height: 1.6;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -374,7 +372,7 @@
     .empty-state code {
       color: var(--text-main);
       background: #1a1a1a;
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: 4px;
     }
 
@@ -386,9 +384,6 @@
       .block-meta-grid {
         grid-template-columns: 1fr;
       }
-      body {
-        padding: 65px 12px 40px 12px;
-      }
     }
   </style>
 </head>
@@ -398,16 +393,16 @@
   <div class="marquee-container">
     <div class="marquee-track">
       <div class="marquee-item">
-        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; НЕОФИЦИАЛЬНЫЙ ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
       <div class="marquee-item">
-        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; НЕОФИЦИАЛЬНЫЙ ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
       <div class="marquee-item">
-        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; НЕОФИЦИАЛЬНЫЙ ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
       <div class="marquee-item">
-        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; НЕОФИЦИАЛЬНЫЙ ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
+        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
     </div>
   </div>
@@ -435,10 +430,10 @@
       
       <div class="semester-switch">
         <button class="semester-btn active" id="sem1Btn" onclick="switchSemester(1)">
-          <span class="pixel-label-graphic">СЕМ 01</span>
+          <span class="pixel-label-graphic">СЕМЕСТР 01</span>
         </button>
         <button class="semester-btn" id="sem2Btn" onclick="switchSemester(2)">
-          <span class="pixel-label-graphic">СЕМ 02</span>
+          <span class="pixel-label-graphic">СЕМЕСТР 02</span>
         </button>
       </div>
     </header>
@@ -449,10 +444,10 @@
           <span class="pixel-label-graphic">КУРС</span>
         </label>
         <select id="courseSelect" onchange="loadScheduleForSelectedCourse()">
-          <option value="1">01 КУРС</option>
-          <option value="2">02 КУРС</option>
-          <option value="3">03 КУРС</option>
-          <option value="4">04 КУРС</option>
+          <option value="1">-- 01 КУРС --</option>
+          <option value="2">-- 02 КУРС --</option>
+          <option value="3">-- 03 КУРС --</option>
+          <option value="4">-- 04 КУРС --</option>
         </select>
       </div>
 
@@ -712,7 +707,7 @@
 
     function populateGroupDropdown(groups) {
       const select = document.getElementById('groupSelect');
-      select.innerHTML = '<option value="">ВЫБЕРИТЕ ГРУППУ</option>';
+      select.innerHTML = '<option value="">-- ВЫБЕРИТЕ ГРУППУ --</option>';
 
       groups.sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })).forEach((group, index) => {
         const option = document.createElement('option');
