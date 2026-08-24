@@ -60,7 +60,6 @@
       background-size: 24px 24px;
     }
 
-    /* Бесшовная бегущая строка сверху на всю ширину экрана */
     .marquee-container {
       position: fixed;
       top: 0;
@@ -466,7 +465,6 @@
 </head>
 <body>
 
-  <!-- Непрерывная бегущая строка сверху -->
   <div class="marquee-container">
     <div class="marquee-track">
       <div class="marquee-item">
@@ -516,7 +514,6 @@
     </header>
 
     <div class="controls-module">
-      <!-- Кастомный селект для Курса -->
       <div class="select-group">
         <label>
           <span class="pixel-label-graphic">КУРС</span>
@@ -533,7 +530,6 @@
         <input type="hidden" id="courseSelect" value="1">
       </div>
 
-      <!-- Кастомный селект для Группы -->
       <div class="select-group">
         <label>
           <span class="pixel-label-graphic">ГРУППА</span>
@@ -564,7 +560,6 @@
     let activeDay = 'пн';
     let currentSemester = 1;
 
-    // Восстанавливаем сохраненные данные из localStorage при запуске
     if (localStorage.getItem('saved_semester')) {
       currentSemester = parseInt(localStorage.getItem('saved_semester'), 10);
     }
@@ -626,7 +621,8 @@
       const courseTrigger = document.getElementById('courseTrigger');
       const courseInput = document.getElementById('courseSelect');
 
-      courseTrigger.addEventListener('click', () => {
+      courseTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
         document.querySelectorAll('.custom-select').forEach(s => {
           if (s !== courseSelectEl) s.classList.remove('open');
         });
@@ -651,12 +647,23 @@
     }
 
     function setupGroupCustomSelect(groups) {
+      const selectGroupContainer = document.querySelector('#groupCustomSelect').parentElement;
+
+      selectGroupContainer.innerHTML = `
+        <label>
+          <span class="pixel-label-graphic">ГРУППА</span>
+        </label>
+        <div class="custom-select" id="groupCustomSelect">
+          <div class="custom-select-trigger" id="groupTrigger">ЗАГРУЗКА ДАННЫХ...</div>
+          <div class="custom-options" id="groupOptions"></div>
+        </div>
+        <input type="hidden" id="groupSelect" value="">
+      `;
+
       const groupSelectEl = document.getElementById('groupCustomSelect');
       const groupTrigger = document.getElementById('groupTrigger');
       const groupOptions = document.getElementById('groupOptions');
       const groupInput = document.getElementById('groupSelect');
-
-      groupOptions.innerHTML = '';
 
       if (groups.length === 0) {
         groupTrigger.textContent = 'НЕТ ДОСТУПНЫХ ГРУПП';
@@ -698,17 +705,14 @@
         groupOptions.appendChild(optionDiv);
       });
 
-      const newTrigger = groupTrigger.cloneNode(true);
-      groupTrigger.parentNode.replaceChild(newTrigger, groupTrigger);
-
-      document.getElementById('groupTrigger').addEventListener('click', () => {
+      groupTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
         document.querySelectorAll('.custom-select').forEach(s => {
           if (s !== groupSelectEl) s.classList.remove('open');
         });
         groupSelectEl.classList.toggle('open');
       });
 
-      groupSelectEl.classList.remove('open');
       document.getElementById('dayTabs').classList.remove('hidden');
       renderSchedule();
     }
@@ -729,7 +733,9 @@
 
       if (!filePath) return;
 
-      groupTrigger.textContent = 'СЧИТЫВАНИЕ ФАЙЛА...';
+      if (groupTrigger) {
+        groupTrigger.textContent = 'СЧИТЫВАНИЕ ФАЙЛА...';
+      }
       document.getElementById('groupSelect').value = '';
 
       try {
@@ -745,7 +751,9 @@
         parseScheduleStructure(rawRows);
       } catch (err) {
         console.error(err);
-        groupTrigger.textContent = 'ОШИБКА ЗАГРУЗКИ';
+        if (document.getElementById('groupTrigger')) {
+          document.getElementById('groupTrigger').textContent = 'ОШИБКА ЗАГРУЗКИ';
+        }
         document.getElementById('scheduleContainer').innerHTML = `
           <div class="empty-state">
             НЕ УДАЛОСЬ ЗАГРУЗИТЬ <b>${filePath}</b><br>
