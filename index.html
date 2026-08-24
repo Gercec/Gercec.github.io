@@ -52,7 +52,7 @@
       padding: 55px 16px 40px 16px;
       display: flex;
       flex-direction: column;
-      align-items: center; /* Полное центрирование всего содержимого по горизонтали */
+      align-items: center;
       min-height: 100vh;
       width: 100%;
       overflow-x: hidden;
@@ -107,7 +107,7 @@
       margin-top: 16px;
       display: flex;
       flex-direction: column;
-      align-items: center; /* Центрируем внутренние блоки контейнера */
+      align-items: center;
     }
 
     header {
@@ -211,6 +211,7 @@
       flex-direction: column;
       gap: 4px;
       width: 100%;
+      position: relative;
     }
 
     label {
@@ -222,7 +223,13 @@
       align-items: center;
     }
 
-    select, option {
+    /* Кастомный селект вместо стандартного браузерного */
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select-trigger {
       width: 100%;
       padding: 10px 12px;
       background: var(--module-sub-bg);
@@ -232,16 +239,70 @@
       font-size: 0.8rem;
       outline: none;
       cursor: pointer;
-      appearance: none;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s ease;
     }
 
-    select:focus {
+    .custom-select-trigger:hover, .custom-select.open .custom-select-trigger {
       border-color: var(--border-accent);
+    }
+
+    .custom-select-trigger::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.2s ease;
+    }
+
+    .custom-select.open .custom-select-trigger::after {
+      transform: rotate(180deg);
+    }
+
+    .custom-options {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--module-sub-bg);
+      border: 1px solid var(--border-accent);
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .custom-select.open .custom-options {
+      display: block;
+    }
+
+    .custom-option {
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-color);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .custom-option:last-child {
+      border-bottom: none;
+    }
+
+    .custom-option:hover, .custom-option.selected {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
     }
 
     .day-tabs {
@@ -456,25 +517,33 @@
     </header>
 
     <div class="controls-module">
+      <!-- Кастомный селект для Курса -->
       <div class="select-group">
-        <label for="courseSelect">
+        <label>
           <span class="pixel-label-graphic">КУРС</span>
         </label>
-        <select id="courseSelect" onchange="loadScheduleForSelectedCourse()">
-          <option value="1">-- 01 КУРС --</option>
-          <option value="2">-- 02 КУРС --</option>
-          <option value="3">-- 03 КУРС --</option>
-          <option value="4">-- 04 КУРС --</option>
-        </select>
+        <div class="custom-select" id="courseCustomSelect">
+          <div class="custom-select-trigger" id="courseTrigger">-- 01 КУРС --</div>
+          <div class="custom-options" id="courseOptions">
+            <div class="custom-option selected" data-value="1">-- 01 КУРС --</div>
+            <div class="custom-option" data-value="2">-- 02 КУРС --</div>
+            <div class="custom-option" data-value="3">-- 03 КУРС --</div>
+            <div class="custom-option" data-value="4">-- 04 КУРС --</div>
+          </div>
+        </div>
+        <input type="hidden" id="courseSelect" value="1">
       </div>
 
+      <!-- Кастомный селект для Группы -->
       <div class="select-group">
-        <label for="groupSelect">
+        <label>
           <span class="pixel-label-graphic">ГРУППА</span>
         </label>
-        <select id="groupSelect" disabled>
-          <option value="">ЗАГРУЗКА ДАННЫХ...</option>
-        </select>
+        <div class="custom-select" id="groupCustomSelect">
+          <div class="custom-select-trigger" id="groupTrigger">ЗАГРУЗКА ДАННЫХ...</div>
+          <div class="custom-options" id="groupOptions"></div>
+        </div>
+        <input type="hidden" id="groupSelect" value="">
       </div>
     </div>
 
@@ -512,6 +581,9 @@
     };
 
     window.addEventListener('DOMContentLoaded', () => {
+      // Инициализация кастомных селектов
+      setupCustomSelects();
+
       document.querySelectorAll('.day-tab').forEach(tab => {
         tab.addEventListener('click', (e) => {
           document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
@@ -521,9 +593,96 @@
         });
       });
 
-      document.getElementById('groupSelect').addEventListener('change', () => renderSchedule());
       loadScheduleForSelectedCourse();
     });
+
+    // Логика работы кастомных выпадающих списков
+    function setupCustomSelects() {
+      // Закрытие при клике вне селекта
+      window.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-select')) {
+          document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
+        }
+      });
+
+      // Курс селект
+      const courseSelectEl = document.getElementById('courseCustomSelect');
+      const courseTrigger = document.getElementById('courseTrigger');
+      const courseInput = document.getElementById('courseSelect');
+
+      courseTrigger.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select').forEach(s => {
+          if (s !== courseSelectEl) s.classList.remove('open');
+        });
+        courseSelectEl.classList.toggle('open');
+      });
+
+      courseSelectEl.querySelectorAll('.custom-option').forEach(option => {
+        option.addEventListener('click', () => {
+          courseSelectEl.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+          courseTrigger.textContent = option.textContent;
+          courseInput.value = option.getAttribute('data-value');
+          courseSelectEl.classList.remove('open');
+          
+          loadScheduleForSelectedCourse();
+        });
+      });
+    }
+
+    function setupGroupCustomSelect(groups) {
+      const groupSelectEl = document.getElementById('groupCustomSelect');
+      const groupTrigger = document.getElementById('groupTrigger');
+      const groupOptions = document.getElementById('groupOptions');
+      const groupInput = document.getElementById('groupSelect');
+
+      groupOptions.innerHTML = '';
+
+      if (groups.length === 0) {
+        groupTrigger.textContent = 'НЕТ ДОСТУПНЫХ ГРУПП';
+        groupInput.value = '';
+        return;
+      }
+
+      // Выбираем первую группу по умолчанию
+      groupTrigger.textContent = `01 ГРУППА ${groups[0]}`;
+      groupInput.value = groups[0];
+
+      groups.forEach((group, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = `custom-option ${index === 0 ? 'selected' : ''}`;
+        const numFormatted = String(index + 1).padStart(2, '0');
+        optionDiv.textContent = `${numFormatted} ГРУППА ${group}`;
+        optionDiv.setAttribute('data-value', group);
+
+        optionDiv.addEventListener('click', () => {
+          groupOptions.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+          optionDiv.classList.add('selected');
+          groupTrigger.textContent = optionDiv.textContent;
+          groupInput.value = group;
+          groupSelectEl.classList.remove('open');
+
+          renderSchedule();
+        });
+
+        groupOptions.appendChild(optionDiv);
+      });
+
+      // Перепривязываем клик для открытия/закрытия
+      const newTrigger = groupTrigger.cloneNode(true);
+      groupTrigger.parentNode.replaceChild(newTrigger, groupTrigger);
+
+      newTrigger.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select').forEach(s => {
+          if (s !== groupSelectEl) s.classList.remove('open');
+        });
+        groupSelectEl.classList.toggle('open');
+      });
+
+      groupSelectEl.classList.remove('open');
+      document.getElementById('dayTabs').classList.remove('hidden');
+      renderSchedule();
+    }
 
     function switchSemester(sem) {
       currentSemester = sem;
@@ -535,12 +694,12 @@
     async function loadScheduleForSelectedCourse() {
       const course = document.getElementById('courseSelect').value;
       const filePath = fileMap[currentSemester]?.[course];
-      const select = document.getElementById('groupSelect');
+      const groupTrigger = document.getElementById('groupTrigger');
 
       if (!filePath) return;
 
-      select.disabled = true;
-      select.innerHTML = '<option value="">СЧИТЫВАНИЕ ФАЙЛА...</option>';
+      groupTrigger.textContent = 'СЧИТЫВАНИЕ ФАЙЛА...';
+      document.getElementById('groupSelect').value = '';
 
       try {
         const response = await fetch(filePath);
@@ -555,7 +714,7 @@
         parseScheduleStructure(rawRows);
       } catch (err) {
         console.error(err);
-        select.innerHTML = `<option value="">ОШИБКА ЗАГРУЗКИ</option>`;
+        groupTrigger.textContent = 'ОШИБКА ЗАГРУЗКИ';
         document.getElementById('scheduleContainer').innerHTML = `
           <div class="empty-state">
             НЕ УДАЛОСЬ ЗАГРУЗИТЬ <b>${filePath}</b><br>
@@ -719,24 +878,8 @@
         }
       }
 
-      populateGroupDropdown(Object.keys(parsedSchedule));
-    }
-
-    function populateGroupDropdown(groups) {
-      const select = document.getElementById('groupSelect');
-      select.innerHTML = '<option value="">-- ВЫБЕРИТЕ ГРУППУ --</option>';
-
-      groups.sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })).forEach((group, index) => {
-        const option = document.createElement('option');
-        option.value = group;
-        const numFormatted = String(index + 1).padStart(2, '0');
-        option.textContent = `${numFormatted} ГРУППА ${group}`;
-        select.appendChild(option);
-      });
-
-      select.disabled = false;
-      document.getElementById('dayTabs').classList.remove('hidden');
-      renderSchedule();
+      const groupNames = Object.keys(parsedSchedule).sort((a, b) => a.localeCompare(b, 'ru', { numeric: true }));
+      setupGroupCustomSelect(groupNames);
     }
 
     function renderSchedule() {
