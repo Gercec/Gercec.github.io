@@ -598,7 +598,6 @@
     };
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Инициализация кастомных селектов
       setupCustomSelects();
 
       document.querySelectorAll('.day-tab').forEach(tab => {
@@ -610,14 +609,12 @@
         });
       });
 
-      // Переключаем активную кнопку семестра визуально
       document.getElementById('sem1Btn').classList.toggle('active', currentSemester === 1);
       document.getElementById('sem2Btn').classList.toggle('active', currentSemester === 2);
 
       loadScheduleForSelectedCourse();
     });
 
-    // Логика работы кастомных выпадающих списков
     function setupCustomSelects() {
       window.addEventListener('click', (e) => {
         if (!e.target.closest('.custom-select')) {
@@ -625,7 +622,6 @@
         }
       });
 
-      // Курс селект
       const courseSelectEl = document.getElementById('courseCustomSelect');
       const courseTrigger = document.getElementById('courseTrigger');
       const courseInput = document.getElementById('courseSelect');
@@ -646,9 +642,7 @@
           courseInput.value = courseVal;
           courseSelectEl.classList.remove('open');
           
-          // Сохраняем курс в localStorage
           localStorage.setItem('saved_course', courseVal);
-          // При смене курса сбрасываем сохраненную группу, так как в новом курсе другие группы
           localStorage.removeItem('saved_group');
 
           loadScheduleForSelectedCourse();
@@ -670,16 +664,14 @@
         return;
       }
 
-      // Проверяем, есть ли сохраненная группа в localStorage и существует ли она в списке групп текущего файла
       let savedGroup = localStorage.getItem('saved_group');
       if (!savedGroup || !groups.includes(savedGroup)) {
-        savedGroup = groups[0]; // Если нет, берем первую по умолчанию
+        savedGroup = groups[0];
         localStorage.setItem('saved_group', savedGroup);
       }
 
       groupInput.value = savedGroup;
       
-      // Находим индекс сохраненной группы для красивого отображения номера
       const savedIndex = groups.indexOf(savedGroup);
       const formattedSavedIndex = String(savedIndex + 1).padStart(2, '0');
       groupTrigger.textContent = `${formattedSavedIndex} ГРУППА ${savedGroup}`;
@@ -699,9 +691,7 @@
           groupInput.value = group;
           groupSelectEl.classList.remove('open');
 
-          // Сохраняем выбор группы в localStorage
           localStorage.setItem('saved_group', group);
-
           renderSchedule();
         });
 
@@ -711,7 +701,7 @@
       const newTrigger = groupTrigger.cloneNode(true);
       groupTrigger.parentNode.replaceChild(newTrigger, groupTrigger);
 
-      newTrigger.addEventListener('click', () => {
+      document.getElementById('groupTrigger').addEventListener('click', () => {
         document.querySelectorAll('.custom-select').forEach(s => {
           if (s !== groupSelectEl) s.classList.remove('open');
         });
@@ -728,9 +718,7 @@
       document.getElementById('sem1Btn').classList.toggle('active', currentSemester === 1);
       document.getElementById('sem2Btn').classList.toggle('active', currentSemester === 2);
       
-      // Сохраняем семестр
       localStorage.setItem('saved_semester', sem);
-
       loadScheduleForSelectedCourse();
     }
 
