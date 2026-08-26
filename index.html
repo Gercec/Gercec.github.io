@@ -733,10 +733,13 @@
 
     async function loadScheduleForSelectedCourse() {
       const course = document.getElementById('courseSelect').value;
-      const filePath = fileMap[currentSemester]?.[course];
+      const baseFilePath = fileMap[currentSemester]?.[course];
       const groupTrigger = document.getElementById('groupTrigger');
 
-      if (!filePath) return;
+      if (!baseFilePath) return;
+
+      // Добавляем параметр времени для обхода кэширования браузера в Capacitor
+      const filePath = `${baseFilePath}?t=${new Date().getTime()}`;
 
       if (groupTrigger) {
         groupTrigger.textContent = 'СЧИТЫВАНИЕ ФАЙЛА...';
@@ -745,7 +748,7 @@
 
       try {
         const response = await fetch(filePath);
-        if (!response.ok) throw new Error(`Файл не найден: ${filePath}`);
+        if (!response.ok) throw new Error(`Файл не найден: ${baseFilePath}`);
 
         const arrayBuffer = await response.arrayBuffer();
         const data = new Uint8Array(arrayBuffer);
@@ -761,7 +764,7 @@
         }
         document.getElementById('scheduleContainer').innerHTML = `
           <div class="empty-state">
-            НЕ УДАЛОСЬ ЗАГРУЗИТЬ <b>${filePath}</b><br>
+            НЕ УДАЛОСЬ ЗАГРУЗИТЬ <b>${baseFilePath}</b><br>
             ПРОВЕРЬТЕ НАЛИЧИЕ ФАЙЛА В ПАПКЕ <code>schedule/</code>
           </div>`;
       }
