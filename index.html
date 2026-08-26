@@ -57,7 +57,7 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      padding: 55px 16px 40px 16px;
+      padding: 70px 16px 40px 16px; /* Увеличен отступ сверху, чтобы бегущая строка не перекрывала контент */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -612,14 +612,13 @@
       font-size: 0.7rem;
       color: var(--text-sub);
       line-height: 1.5;
-      /* Делаем блок прокручиваемым на мобильных устройствах */
       width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
     .session-content-inner table {
       width: 100%;
-      min-width: 450px; /* Фиксируем минимальную ширину, чтобы ячейки не сжимались насмерть */
+      min-width: 450px;
       border-collapse: collapse;
       margin-top: 8px;
     }
