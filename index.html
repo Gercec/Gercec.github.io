@@ -47,7 +47,6 @@
     }
 
     html {
-      /* Всегда показываем вертикальный скроллбар, чтобы страница не дергалась при загрузке данных */
       overflow-y: scroll;
     }
 
@@ -342,6 +341,7 @@
       flex-direction: column;
       gap: 12px;
       width: 100%;
+      margin-bottom: 20px;
     }
 
     .lesson-block-container {
@@ -386,6 +386,9 @@
       background: var(--module-sub-bg);
       padding: 14px;
       border-left: 4px solid var(--nothing-red);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .block-title {
@@ -394,6 +397,37 @@
       color: #ffffff;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+    }
+
+    /* Компактные лампочки с мерцанием для красного */
+    .status-lamp {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--border-color);
+      flex-shrink: 0;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .lamp-red {
+      background: var(--nothing-red);
+      box-shadow: 0 0 8px var(--nothing-red-glow);
+      animation: blink-lamp 1s infinite alternate;
+    }
+
+    @keyframes blink-lamp {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    .lamp-yellow {
+      background: #f1c40f;
+      box-shadow: 0 0 8px rgba(241, 196, 15, 0.5);
+    }
+
+    .lamp-green {
+      background: #2ecc71;
+      box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
     }
 
     .block-meta-grid {
@@ -434,6 +468,36 @@
       fill: currentColor;
       flex-shrink: 0;
       image-rendering: pixelated;
+    }
+
+    .status-legend {
+      background: var(--module-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .legend-title {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     .empty-state {
@@ -548,7 +612,7 @@
     </div>
 
     <div id="dayTabs" class="day-tabs hidden">
-      <div class="day-tab active" data-day="пн">ПН</div>
+      <div class="day-tab" data-day="пн">ПН</div>
       <div class="day-tab" data-day="вт">ВТ</div>
       <div class="day-tab" data-day="ср">СР</div>
       <div class="day-tab" data-day="чт">ЧТ</div>
@@ -558,12 +622,51 @@
     <main id="scheduleContainer" class="schedule-list">
       <div class="empty-state">ВЫБЕРИТЕ ГРУППУ ИЗ СПИСКА ВЫШЕ</div>
     </main>
+
+    <div class="status-legend">
+      <div class="legend-title"><span class="pixel-label-graphic">ИНДИКАЦИЯ СТАТУСОВ</span></div>
+      <div class="legend-item">
+        <div class="status-lamp lamp-red"></div>
+        <span>Урок идет прямо сейчас</span>
+      </div>
+      <div class="legend-item">
+        <div class="status-lamp lamp-yellow"></div>
+        <span>Сейчас перерыв / обед</span>
+      </div>
+      <div class="legend-item">
+        <div class="status-lamp lamp-green"></div>
+        <span>Урок уже прошел</span>
+      </div>
+      <div class="legend-item">
+        <div class="status-lamp"></div>
+        <span>Урок предстоит / другой день</span>
+      </div>
+    </div>
   </div>
 
   <script>
     let parsedSchedule = {};
-    let activeDay = 'пн';
+    let activeDay = getInitialDay();
     let currentSemester = 1;
+
+    function getInitialDay() {
+      const now = new Date();
+      const currentHour = now.getHours();
+      let dayIndex = now.getDay();
+
+      if (currentHour >= 20) {
+        dayIndex = (dayIndex + 1) % 7;
+      }
+
+      switch (dayIndex) {
+        case 1: return 'пн';
+        case 2: return 'вт';
+        case 3: return 'ср';
+        case 4: return 'чт';
+        case 5: return 'пт';
+        default: return 'пн';
+      }
+    }
 
     if (localStorage.getItem('saved_semester')) {
       currentSemester = parseInt(localStorage.getItem('saved_semester'), 10);
@@ -601,6 +704,13 @@
       setupCustomSelects();
 
       document.querySelectorAll('.day-tab').forEach(tab => {
+        const tabDay = tab.getAttribute('data-day');
+        if (tabDay === activeDay) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+
         tab.addEventListener('click', (e) => {
           document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
           e.currentTarget.classList.add('active');
@@ -613,6 +723,10 @@
       document.getElementById('sem2Btn').classList.toggle('active', currentSemester === 2);
 
       loadScheduleForSelectedCourse();
+
+      setInterval(() => {
+        renderSchedule();
+      }, 10000);
     });
 
     function setupCustomSelects() {
@@ -738,7 +852,6 @@
 
       if (!baseFilePath) return;
 
-      // Добавляем параметр времени для обхода кэширования браузера в Capacitor
       const filePath = `${baseFilePath}?t=${new Date().getTime()}`;
 
       if (groupTrigger) {
@@ -902,6 +1015,10 @@
               combined.push({
                 subject: curr.subject,
                 teacher: formattedTeacher,
+                startTime: curr.startTime,
+                endTime: next.endTime,
+                breakStart: curr.endTime,
+                breakEnd: next.startTime,
                 time: `${curr.startTime} - ${next.endTime}`,
                 breakNote: `ПЕРЕРЫВ: ${curr.endTime} - ${next.startTime}`,
                 room: formattedRoom
@@ -912,6 +1029,10 @@
               combined.push({
                 subject: curr.subject,
                 teacher: normalizeTeacherStr(curr.teacher),
+                startTime: curr.startTime,
+                endTime: curr.endTime,
+                breakStart: null,
+                breakEnd: null,
                 time: `${curr.startTime} - ${curr.endTime}`,
                 breakNote: null,
                 room: !rSingleInvalid ? `КАБ. ${curr.room}` : ''
@@ -926,6 +1047,12 @@
 
       const groupNames = Object.keys(parsedSchedule).sort((a, b) => a.localeCompare(b, 'ru', { numeric: true }));
       setupGroupCustomSelect(groupNames);
+    }
+
+    function timeToMinutes(timeStr) {
+      if (!timeStr) return 0;
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return (hours || 0) * 60 + (minutes || 0);
     }
 
     function renderSchedule() {
@@ -944,8 +1071,42 @@
         return;
       }
 
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      
+      const jsDay = now.getDay();
+      const daysMap = { 1: 'пн', 2: 'вт', 3: 'ср', 4: 'чт', 5: 'пт' };
+      const todayKey = daysMap[jsDay];
+      const isToday = (activeDay === todayKey);
+
       container.innerHTML = dayLessons.map((lesson, idx) => {
         const numFormatted = String(idx + 1).padStart(2, '0');
+        let lampClass = '';
+        
+        if (isToday) {
+          const startMin = timeToMinutes(lesson.startTime);
+          const endMin = timeToMinutes(lesson.endTime);
+          
+          let inBreak = false;
+          if (lesson.breakStart && lesson.breakEnd) {
+            const bStartMin = timeToMinutes(lesson.breakStart);
+            const bEndMin = timeToMinutes(lesson.breakEnd);
+            if (currentMinutes >= bStartMin && currentMinutes < bEndMin) {
+              inBreak = true;
+            }
+          }
+
+          if (inBreak) {
+            lampClass = 'lamp-yellow';
+          } else if (currentMinutes >= startMin && currentMinutes <= endMin) {
+            lampClass = 'lamp-red';
+          } else if (currentMinutes > endMin) {
+            lampClass = 'lamp-green';
+          } else {
+            lampClass = ''; 
+          }
+        }
+
         return `
           <div class="lesson-block-container">
             <div class="block-header-strip">
@@ -957,6 +1118,7 @@
 
             <div class="block-main-content">
               <div class="block-title">${lesson.subject}</div>
+              <div class="status-lamp ${lampClass}" title="Статус урока"></div>
             </div>
 
             <div class="block-meta-grid">
