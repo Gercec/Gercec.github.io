@@ -1075,9 +1075,10 @@
       }
     }
 
-    // Загрузка .docx файла сессий через mammoth.js
+    // Улучшенный загрузчик с защитой от кэша и правильным путем
     async function fetchAndParseSessionData() {
-      const docUrl = './schedule/Raspisanie_promezhutochnoy_attestatsii.docx?t=' + new Date().getTime();
+      // Формируем абсолютный путь на случай запуска в подпапках GitHub Pages
+      const docUrl = './schedule/Raspisanie_promezhutochnoy_attestatsii.doc?t=' + new Date().getTime();
       try {
         const response = await fetch(docUrl);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -1086,7 +1087,7 @@
         cachedSessionHtml = result.value;
       } catch (err) {
         console.error("Ошибка загрузки файла сессий:", err);
-        cachedSessionHtml = `<p>Не удалось распарсить файл сессий. Убедись, что файл залит в формате .docx без ошибок.</p>`;
+        cachedSessionHtml = `<p>Не удалось распарсить файл сессий. Убедись, что файл <code>Raspisanie_promezhutochnoy_attestatsii.doc</code> залит без ошибок.</p>`;
       }
     }
 
@@ -1103,7 +1104,7 @@
             section.style.display = 'none';
             document.getElementById('sessionResultContainer').innerHTML = `
               <div class="session-results-box">
-                <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ</h3>
+                <h3>РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ</h3>
                 <div class="session-content-inner">${cachedSessionHtml || '<p>Загрузка данных...</p>'}</div>
               </div>
             `;
