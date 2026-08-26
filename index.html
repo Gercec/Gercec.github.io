@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Расписание-ФизТех</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +29,9 @@
       
       --nothing-red: #d71921;
       --nothing-red-glow: rgba(215, 25, 33, 0.4);
+
+      --warning-yellow: #facc15;
+      --warning-yellow-glow: rgba(250, 204, 21, 0.5);
 
       --text-main: #ffffff;
       --text-sub: #a0a0a0;
@@ -63,6 +67,104 @@
       overflow-x: hidden;
       background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
       background-size: 24px 24px;
+    }
+
+    .welcome-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .welcome-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .welcome-modal {
+      background: var(--module-bg);
+      border: 1px solid var(--border-accent);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px var(--nothing-red-glow);
+      transform: translateY(10px);
+      transition: transform 0.3s ease;
+    }
+
+    .welcome-modal-overlay.active .welcome-modal {
+      transform: translateY(0);
+    }
+
+    .welcome-modal-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .welcome-modal-text {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      line-height: 1.6;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .welcome-legend-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--module-sub-bg);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .welcome-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--nothing-red);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--nothing-red-glow);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      text-align: center;
+    }
+
+    .welcome-btn:hover {
+      background: #ff2a36;
+      box-shadow: 0 0 15px rgba(255, 42, 54, 0.6);
     }
 
     .marquee-container {
@@ -399,7 +501,6 @@
       text-transform: uppercase;
     }
 
-    /* Компактные лампочки с мерцанием для красного */
     .status-lamp {
       width: 12px;
       height: 12px;
@@ -470,36 +571,6 @@
       image-rendering: pixelated;
     }
 
-    .status-legend {
-      background: var(--module-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 16px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .legend-title {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.75rem;
-      color: var(--text-sub);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
     .empty-state {
       text-align: center;
       color: var(--text-muted);
@@ -521,6 +592,252 @@
       border-radius: 4px;
     }
 
+    .session-results-box {
+      background: var(--module-bg);
+      border: 1px solid var(--warning-yellow);
+      border-radius: 16px;
+      padding: 16px;
+      width: 100%;
+      margin-top: 16px;
+      box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
+    }
+    .session-results-box h3 {
+      color: var(--warning-yellow);
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .session-content-inner {
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+    .session-content-inner table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    .session-content-inner th, .session-content-inner td {
+      border: 1px solid var(--border-accent);
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 0.7rem;
+    }
+    .session-content-inner th {
+      background: var(--module-sub-bg);
+      color: var(--warning-yellow);
+      letter-spacing: 0.05em;
+    }
+    .session-content-inner tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .warning-section {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      height: 170px;
+      background: var(--module-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: height 0.4s ease, border-color 0.4s ease;
+    }
+
+    .cross-marquee-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .cross-track {
+      position: absolute;
+      white-space: nowrap;
+      display: inline-flex;
+      will-change: transform;
+      background: var(--nothing-red);
+      padding: 8px 0;
+      box-shadow: 0 0 15px var(--nothing-red-glow);
+      border-top: 2px solid rgba(255, 255, 255, 0.4);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.6);
+      pointer-events: auto;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .cross-item {
+      color: #ffffff;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-weight: bold;
+      padding-right: 50px;
+      text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .cross-track.diag-1 {
+      --rot: 15deg;
+      top: 50%;
+      left: -60%;
+      width: 220%;
+      animation: marquee-rot-ltr 14s linear infinite;
+    }
+
+    .cross-track.diag-2 {
+      --rot: -15deg;
+      top: 50%;
+      left: -60%;
+      width: 220%;
+      animation: marquee-rot-rtl 16s linear infinite;
+    }
+
+    .cross-track.horiz {
+      --rot: 0deg;
+      top: 50%;
+      left: -60%;
+      width: 220%;
+      animation: marquee-rot-ltr 12s linear infinite;
+    }
+
+    .cross-track.diag-1.collapsing,
+    .cross-track.diag-2.collapsing,
+    .cross-track.horiz.collapsing {
+      animation: collapseLtr 0.5s ease-in forwards !important;
+      pointer-events: none;
+    }
+
+    @keyframes collapseLtr {
+      0% { transform: translateY(-50%) rotate(var(--rot)) translateX(0); opacity: 1; }
+      100% { transform: translateY(-50%) rotate(var(--rot)) translateX(-50%); opacity: 0; filter: blur(4px); }
+    }
+
+    @keyframes marquee-rot-ltr {
+      0% { transform: translateY(-50%) rotate(var(--rot)) translateX(0); }
+      100% { transform: translateY(-50%) rotate(var(--rot)) translateX(-25%); }
+    }
+
+    @keyframes marquee-rot-rtl {
+      0% { transform: translateY(-50%) rotate(var(--rot)) translateX(-25%); }
+      100% { transform: translateY(-50%) rotate(var(--rot)) translateX(0); }
+    }
+
+    .warning-badge {
+      position: absolute;
+      inset: 0;
+      z-index: 1; 
+      background: #000000;
+      color: var(--warning-yellow);
+      border-radius: 16px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border: 2px dashed var(--warning-yellow);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      width: 100%;
+      height: 100%;
+      line-height: 1.4;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(250, 204, 21, 0.15);
+    }
+
+    .warning-badge.unlocked {
+      border-color: var(--warning-yellow);
+      box-shadow: 0 0 25px rgba(250, 204, 21, 0.2), inset 0 0 15px rgba(250, 204, 21, 0.15);
+      animation: badgeYellowPulse 3s infinite steps(1);
+    }
+
+    .warning-badge::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(250, 204, 21, 0.15) 50%
+      );
+      background-size: 100% 4px;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .warning-badge span {
+      position: relative;
+      z-index: 2;
+    }
+
+    .warning-badge:hover {
+      background: var(--warning-yellow);
+      color: #000000;
+      border-style: solid;
+      border-color: #ffffff;
+      box-shadow: 0 0 35px rgba(250, 204, 21, 0.8), 0 0 15px rgba(250, 204, 21, 0.5);
+    }
+
+    .warning-badge.glitch-disintegrate {
+      animation: supernovaExplosion 0.7s cubic-bezier(0.11, 0, 0.5, 1) forwards !important;
+      pointer-events: none;
+    }
+
+    .warning-section.shake {
+      animation: violentScreenShake 1.0s linear both;
+    }
+
+    @keyframes badgeYellowPulse {
+      0% { text-shadow: 0 0 4px rgba(250, 204, 21, 0.6); }
+      50% { text-shadow: 0 0 10px rgba(250, 204, 21, 0.9); }
+      100% { text-shadow: 0 0 4px rgba(250, 204, 21, 0.6); }
+    }
+
+    @keyframes supernovaExplosion {
+      0% { transform: scale(1) translateY(0); filter: blur(0); opacity: 1; }
+      25% { transform: scale(0.15, 0.15); background: var(--warning-yellow); color: var(--warning-yellow); border-color: #ffffff; box-shadow: 0 0 10px rgba(250, 204, 21, 0.8); border-radius: 50%; filter: blur(1px); opacity: 1; }
+      45% { transform: scale(0.9, 0.9); background: #ffffff; color: #ffffff; border-color: #ffffff; box-shadow: 0 0 140px 50px #ffffff, 0 0 250px 90px rgba(250, 204, 21, 0.9); border-radius: 50%; filter: blur(0px); opacity: 1; }
+      100% { transform: scale(2.2, 2.2); background: #ffffff; color: transparent; border-color: transparent; opacity: 0; filter: blur(16px); box-shadow: 0 0 200px 100px rgba(250, 204, 21, 0); }
+    }
+
+    @keyframes violentScreenShake {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      5%  { transform: translate(-14px, 10px) rotate(-3deg); }
+      10% { transform: translate(14px, -12px) rotate(3.5deg); }
+      15% { transform: translate(-16px, -8px) rotate(-4deg); }
+      20% { transform: translate(15px, 12px) rotate(3deg); }
+      25% { transform: translate(-12px, 10px) rotate(-3deg); }
+      30% { transform: translate(14px, -10px) rotate(3.5deg); }
+      35% { transform: translate(-15px, -9px) rotate(-4deg); }
+      40% { transform: translate(13px, 11px) rotate(3deg); }
+      45% { transform: translate(-14px, 8px) rotate(-3deg); }
+      50% { transform: translate(15px, -11px) rotate(3.5deg); }
+      55% { transform: translate(-16px, -10px) rotate(-4deg); }
+      60% { transform: translate(14px, 12px) rotate(3deg); }
+      65% { transform: translate(-13px, 9px) rotate(-3deg); }
+      70% { transform: translate(15px, -10px) rotate(3.5deg); }
+      75% { transform: translate(-14px, -9px) rotate(-4deg); }
+      80% { transform: translate(14px, 11px) rotate(3deg); }
+      85% { transform: translate(-12px, 7px) rotate(-2.5deg); }
+      90% { transform: translate(10px, -6px) rotate(2deg); }
+      95% { transform: translate(-6px, 4px) rotate(-1deg); }
+    }
+
     .hidden {
       display: none !important;
     }
@@ -529,19 +846,48 @@
       .block-meta-grid {
         grid-template-columns: 1fr;
       }
+      .warning-badge {
+        font-size: 0.7rem;
+        padding: 0 12px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <div class="welcome-modal-overlay" id="welcomeModalOverlay">
+    <div class="welcome-modal">
+      <div class="welcome-modal-title">
+        <span class="dot-indicator"></span>
+        <span>ДОБРО ПОЖАЛОВАТЬ НА ФИЗТЕХ-РАСПИСАНИЕ</span>
+      </div>
+      <div class="welcome-modal-text">
+        Система автоматически определяет текущий день недели и статус пар в реальном времени. Вот что означают индикаторы:
+      </div>
+      <div class="welcome-legend-list">
+        <div class="legend-item">
+          <div class="status-lamp lamp-red"></div>
+          <span>Урок идет прямо сейчас</span>
+        </div>
+        <div class="legend-item">
+          <div class="status-lamp lamp-yellow"></div>
+          <span>Сейчас перерыв / обед</span>
+        </div>
+        <div class="legend-item">
+          <div class="status-lamp lamp-green"></div>
+          <span>Урок уже прошел</span>
+        </div>
+        <div class="legend-item">
+          <div class="status-lamp"></div>
+          <span>Урок предстоит</span>
+        </div>
+      </div>
+      <button class="welcome-btn" onclick="closeWelcomeModal()">ПРИНЯТЬ</button>
+    </div>
+  </div>
+
   <div class="marquee-container">
     <div class="marquee-track">
-      <div class="marquee-item">
-        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
-      </div>
-      <div class="marquee-item">
-        ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
-      </div>
       <div class="marquee-item">
         ЭТО НЕ ОФИЦИАЛЬНЫЙ САЙТ ФИЗТЕХ-КОЛЛЕДЖА &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp; ПРОЕКТ СТУДЕНТА РУП121/26 МИХАИЛА ФУРКУЛИЦЭ &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
@@ -584,9 +930,7 @@
 
     <div class="controls-module">
       <div class="select-group">
-        <label>
-          <span class="pixel-label-graphic">КУРС</span>
-        </label>
+        <label><span class="pixel-label-graphic">КУРС</span></label>
         <div class="custom-select" id="courseCustomSelect">
           <div class="custom-select-trigger" id="courseTrigger">-- 01 КУРС --</div>
           <div class="custom-options" id="courseOptions">
@@ -600,9 +944,7 @@
       </div>
 
       <div class="select-group">
-        <label>
-          <span class="pixel-label-graphic">ГРУППА</span>
-        </label>
+        <label><span class="pixel-label-graphic">ГРУППА</span></label>
         <div class="custom-select" id="groupCustomSelect">
           <div class="custom-select-trigger" id="groupTrigger">ЗАГРУЗКА ДАННЫХ...</div>
           <div class="custom-options" id="groupOptions"></div>
@@ -623,41 +965,41 @@
       <div class="empty-state">ВЫБЕРИТЕ ГРУППУ ИЗ СПИСКА ВЫШЕ</div>
     </main>
 
-    <div class="status-legend">
-      <div class="legend-title"><span class="pixel-label-graphic">ИНДИКАЦИЯ СТАТУСОВ</span></div>
-      <div class="legend-item">
-        <div class="status-lamp lamp-red"></div>
-        <span>Урок идет прямо сейчас</span>
+    <div class="warning-section" id="warningSection">
+      <div class="warning-badge" id="warningBadge" onclick="triggerSupernova(this)">
+        <span id="warningBadgeText">WARNING: Предупреждение для тех, кто планирует спать на лекциях<br>или прогуливать: сессия приближается незаметно,<br>а парами по расписанию никого не испугаешь... пока что <b>WARNING</b></span>
       </div>
-      <div class="legend-item">
-        <div class="status-lamp lamp-yellow"></div>
-        <span>Сейчас перерыв / обед</span>
-      </div>
-      <div class="legend-item">
-        <div class="status-lamp lamp-green"></div>
-        <span>Урок уже прошел</span>
-      </div>
-      <div class="legend-item">
-        <div class="status-lamp"></div>
-        <span>Урок предстоит / другой день</span>
+
+      <div class="cross-marquee-container" id="crossContainer">
+        <div class="cross-track diag-1" onclick="collapseTrack(this)">
+          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+        </div>
+        <div class="cross-track diag-2" onclick="collapseTrack(this)">
+          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+        </div>
+        <div class="cross-track horiz" onclick="collapseTrack(this)">
+          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+        </div>
       </div>
     </div>
+
+    <div id="sessionResultContainer"></div>
   </div>
 
   <script>
     let parsedSchedule = {};
     let activeDay = getInitialDay();
     let currentSemester = 1;
+    let cachedSessionHtml = null;
 
     function getInitialDay() {
       const now = new Date();
       const currentHour = now.getHours();
       let dayIndex = now.getDay();
-
-      if (currentHour >= 20) {
-        dayIndex = (dayIndex + 1) % 7;
-      }
-
+      if (currentHour >= 20) dayIndex = (dayIndex + 1) % 7;
       switch (dayIndex) {
         case 1: return 'пн';
         case 2: return 'вт';
@@ -673,44 +1015,27 @@
     }
     if (localStorage.getItem('saved_course')) {
       document.getElementById('courseSelect').value = localStorage.getItem('saved_course');
-      const courseText = `-- 0${localStorage.getItem('saved_course')} КУРС --`;
-      document.getElementById('courseTrigger').textContent = courseText;
-      
+      document.getElementById('courseTrigger').textContent = `-- 0${localStorage.getItem('saved_course')} КУРС --`;
       document.querySelectorAll('#courseOptions .custom-option').forEach(opt => {
-        if (opt.getAttribute('data-value') === localStorage.getItem('saved_course')) {
-          opt.classList.add('selected');
-        } else {
-          opt.classList.remove('selected');
-        }
+        opt.classList.toggle('selected', opt.getAttribute('data-value') === localStorage.getItem('saved_course'));
       });
     }
 
     const fileMap = {
-      1: {
-        1: 'schedule/1сем_1курс-1.xlsx',
-        2: 'schedule/1сем_2курс.xlsx',
-        3: 'schedule/1сем_3курс.xlsx',
-        4: 'schedule/1сем_4курс.xlsx'
-      },
-      2: {
-        1: 'schedule/2сем_1курс.xlsx',
-        2: 'schedule/2сем_2курс.xlsx',
-        3: 'schedule/2сем_3курс.xlsx',
-        4: 'schedule/2сем_4курс.xlsx'
-      }
+      1: { 1: 'schedule/1сем_1курс-1.xlsx', 2: 'schedule/1сем_2курс.xlsx', 3: 'schedule/1сем_3курс.xlsx', 4: 'schedule/1сем_4курс.xlsx' },
+      2: { 1: 'schedule/2сем_1курс.xlsx', 2: 'schedule/2сем_2курс.xlsx', 3: 'schedule/2сем_3курс.xlsx', 4: 'schedule/2сем_4курс.xlsx' }
     };
 
     window.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('welcomed_status_shown')) {
+        document.getElementById('welcomeModalOverlay').classList.add('active');
+      }
+
       setupCustomSelects();
 
       document.querySelectorAll('.day-tab').forEach(tab => {
         const tabDay = tab.getAttribute('data-day');
-        if (tabDay === activeDay) {
-          tab.classList.add('active');
-        } else {
-          tab.classList.remove('active');
-        }
-
+        tab.classList.toggle('active', tabDay === activeDay);
         tab.addEventListener('click', (e) => {
           document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
           e.currentTarget.classList.add('active');
@@ -723,11 +1048,69 @@
       document.getElementById('sem2Btn').classList.toggle('active', currentSemester === 2);
 
       loadScheduleForSelectedCourse();
+      fetchAndParseSessionData();
 
-      setInterval(() => {
-        renderSchedule();
-      }, 10000);
+      setInterval(renderSchedule, 10000);
     });
+
+    function closeWelcomeModal() {
+      document.getElementById('welcomeModalOverlay').classList.remove('active');
+      localStorage.setItem('welcomed_status_shown', 'true');
+    }
+
+    function collapseTrack(trackElement) {
+      if (!trackElement.classList.contains('collapsing') && !trackElement.classList.contains('hidden')) {
+        trackElement.classList.add('collapsing');
+        setTimeout(() => {
+          trackElement.classList.add('hidden');
+          checkAllTracksCollapsed();
+        }, 500); 
+      }
+    }
+
+    function checkAllTracksCollapsed() {
+      const tracks = document.querySelectorAll('.cross-track');
+      if (Array.from(tracks).every(t => t.classList.contains('hidden'))) {
+        document.getElementById('warningBadge').classList.add('unlocked');
+      }
+    }
+
+    // Загрузка .docx файла сессий через mammoth.js
+    async function fetchAndParseSessionData() {
+      const docUrl = './schedule/Raspisanie_promezhutochnoy_attestatsii.docx?t=' + new Date().getTime();
+      try {
+        const response = await fetch(docUrl);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const arrayBuffer = await response.arrayBuffer();
+        const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+        cachedSessionHtml = result.value;
+      } catch (err) {
+        console.error("Ошибка загрузки файла сессий:", err);
+        cachedSessionHtml = `<p>Не удалось распарсить файл сессий. Убедись, что файл залит в формате .docx без ошибок.</p>`;
+      }
+    }
+
+    function triggerSupernova(element) {
+      if (!element.classList.contains('unlocked')) return;
+
+      if (!element.classList.contains('glitch-disintegrate')) {
+        element.classList.add('glitch-disintegrate');
+        setTimeout(() => {
+          const section = document.getElementById('warningSection');
+          section.classList.add('shake');
+          setTimeout(() => {
+            section.classList.remove('shake');
+            section.style.display = 'none';
+            document.getElementById('sessionResultContainer').innerHTML = `
+              <div class="session-results-box">
+                <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ</h3>
+                <div class="session-content-inner">${cachedSessionHtml || '<p>Загрузка данных...</p>'}</div>
+              </div>
+            `;
+          }, 1000);
+        }, 450);
+      }
+    }
 
     function setupCustomSelects() {
       window.addEventListener('click', (e) => {
@@ -759,7 +1142,6 @@
           
           localStorage.setItem('saved_course', courseVal);
           localStorage.removeItem('saved_group');
-
           loadScheduleForSelectedCourse();
         });
       });
@@ -767,11 +1149,8 @@
 
     function setupGroupCustomSelect(groups) {
       const selectGroupContainer = document.querySelector('#groupCustomSelect').parentElement;
-
       selectGroupContainer.innerHTML = `
-        <label>
-          <span class="pixel-label-graphic">ГРУППА</span>
-        </label>
+        <label><span class="pixel-label-graphic">ГРУППА</span></label>
         <div class="custom-select" id="groupCustomSelect">
           <div class="custom-select-trigger" id="groupTrigger">ЗАГРУЗКА ДАННЫХ...</div>
           <div class="custom-options" id="groupOptions"></div>
@@ -797,17 +1176,13 @@
       }
 
       groupInput.value = savedGroup;
-      
       const savedIndex = groups.indexOf(savedGroup);
-      const formattedSavedIndex = String(savedIndex + 1).padStart(2, '0');
-      groupTrigger.textContent = `${formattedSavedIndex} ГРУППА ${savedGroup}`;
+      groupTrigger.textContent = `${String(savedIndex + 1).padStart(2, '0')} ГРУППА ${savedGroup}`;
 
       groups.forEach((group, index) => {
         const optionDiv = document.createElement('div');
-        const isSelected = (group === savedGroup);
-        optionDiv.className = `custom-option ${isSelected ? 'selected' : ''}`;
-        const numFormatted = String(index + 1).padStart(2, '0');
-        optionDiv.textContent = `${numFormatted} ГРУППА ${group}`;
+        optionDiv.className = `custom-option ${group === savedGroup ? 'selected' : ''}`;
+        optionDiv.textContent = `${String(index + 1).padStart(2, '0')} ГРУППА ${group}`;
         optionDiv.setAttribute('data-value', group);
 
         optionDiv.addEventListener('click', () => {
@@ -827,7 +1202,7 @@
       groupTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         document.querySelectorAll('.custom-select').forEach(s => {
-          if (s !== groupSelectEl) s.classList.remove('open');
+          if (s !== groupCustomSelect) s.classList.remove('open');
         });
         groupSelectEl.classList.toggle('open');
       });
@@ -840,7 +1215,6 @@
       currentSemester = sem;
       document.getElementById('sem1Btn').classList.toggle('active', currentSemester === 1);
       document.getElementById('sem2Btn').classList.toggle('active', currentSemester === 2);
-      
       localStorage.setItem('saved_semester', sem);
       loadScheduleForSelectedCourse();
     }
@@ -851,34 +1225,21 @@
       const groupTrigger = document.getElementById('groupTrigger');
 
       if (!baseFilePath) return;
-
       const filePath = `${baseFilePath}?t=${new Date().getTime()}`;
-
-      if (groupTrigger) {
-        groupTrigger.textContent = 'СЧИТЫВАНИЕ ФАЙЛА...';
-      }
+      if (groupTrigger) groupTrigger.textContent = 'СЧИТЫВАНИЕ ФАЙЛА...';
       document.getElementById('groupSelect').value = '';
 
       try {
         const response = await fetch(filePath);
         if (!response.ok) throw new Error(`Файл не найден: ${baseFilePath}`);
-
         const arrayBuffer = await response.arrayBuffer();
-        const data = new Uint8Array(arrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-        parseScheduleStructure(rawRows);
+        parseScheduleStructure(XLSX.utils.sheet_to_json(worksheet, { header: 1 }));
       } catch (err) {
         console.error(err);
-        if (document.getElementById('groupTrigger')) {
-          document.getElementById('groupTrigger').textContent = 'ОШИБКА ЗАГРУЗКИ';
-        }
-        document.getElementById('scheduleContainer').innerHTML = `
-          <div class="empty-state">
-            <code>РАСПИСАНИИЕ ОТСУСТВУЕТ ОБРАТИТЕСЬ к разработчику TG @ulakh</code>
-          </div>`;
+        if (document.getElementById('groupTrigger')) document.getElementById('groupTrigger').textContent = 'ОШИБКА ЗАГРУЗКИ';
+        document.getElementById('scheduleContainer').innerHTML = `<div class="empty-state"><code>РАСПИСАНИЕ ОТСУТСТВУЕТ ОБРАТИТЕСЬ К РАЗРАБОТЧИКУ TG @ulakh</code></div>`;
       }
     }
 
@@ -888,9 +1249,7 @@
 
       let groupRowIndex = -1;
       for (let r = 0; r < Math.min(12, rows.length); r++) {
-        const row = rows[r] || [];
-        const hasGroup = row.some(cell => cell && String(cell).toLowerCase().includes('группа'));
-        if (hasGroup) {
+        if ((rows[r] || []).some(cell => cell && String(cell).toLowerCase().includes('группа'))) {
           groupRowIndex = r;
           break;
         }
@@ -905,25 +1264,15 @@
 
       for (let col = 0; col < groupRow.length; col++) {
         const groupCell = groupRow[col] ? String(groupRow[col]).trim() : "";
-        
         if (groupCell && groupCell.toLowerCase().includes('группа')) {
           const groupName = groupCell.replace(/группа/gi, "").trim();
-
           if (groupName) {
-            if (!parsedSchedule[groupName]) {
-              parsedSchedule[groupName] = { 'пн': [], 'вт': [], 'ср': [], 'чт': [], 'пт': [] };
-            }
-
+            if (!parsedSchedule[groupName]) parsedSchedule[groupName] = { 'пн': [], 'вт': [], 'ср': [], 'чт': [], 'пт': [] };
             for (let dayOffset = 0; dayOffset < 5; dayOffset++) {
               const currentCol = col + dayOffset;
               const dayCell = dayRow[currentCol] ? String(dayRow[currentCol]).trim().toLowerCase() : "";
-
               if (['пн', 'вт', 'ср', 'чт', 'пт'].includes(dayCell)) {
-                colMapping.push({
-                  group: groupName,
-                  day: dayCell,
-                  colIndex: currentCol
-                });
+                colMapping.push({ group: groupName, day: dayCell, colIndex: currentCol });
               }
             }
           }
@@ -931,21 +1280,17 @@
       }
 
       const rawSchedule = {};
-
       for (let r = dayRowIndex + 1; r < rows.length; r++) {
         const row = rows[r];
-        if (!row || row.length === 0) continue;
-
+        if (!row) continue;
         colMapping.forEach(map => {
           const cellContent = row[map.colIndex];
           if (cellContent) {
             const lines = String(cellContent).split('\n').map(l => l.trim()).filter(l => l.length > 0);
             if (lines.length > 0) {
               if (!rawSchedule[map.group]) rawSchedule[map.group] = { 'пн': [], 'вт': [], 'ср': [], 'чт': [], 'пт': [] };
-
               const timeRange = lines[2] || '';
               const [startTime, endTime] = timeRange.split('-').map(t => t.trim());
-
               rawSchedule[map.group][map.day].push({
                 subject: lines[0] || 'ПРЕДМЕТ НЕ УКАЗАН',
                 teacher: lines[1] || '',
@@ -958,31 +1303,25 @@
         });
       }
 
-      function isInvalidRoom(roomStr) {
-        if (!roomStr) return true;
-        const normalized = roomStr.trim().toLowerCase();
-        return normalized === "" || normalized === "нет аудитории" || normalized === "нет" || normalized === "-";
+      function isInvalidRoom(r) {
+        if (!r) return true;
+        const n = r.trim().toLowerCase();
+        return n === "" || n === "нет аудитории" || n === "нет" || n === "-";
       }
 
-      function normalizeTeacherStr(teacherStr) {
-        if (!teacherStr) return "";
-        return teacherStr
-          .split(',')
-          .map(t => t.trim())
-          .filter(t => t.length > 0)
-          .join(', ');
+      function normalizeTeacherStr(t) {
+        if (!t) return "";
+        return t.split(',').map(x => x.trim()).filter(x => x.length > 0).join(', ');
       }
 
       for (const group in rawSchedule) {
         for (const day in rawSchedule[group]) {
           const lessons = rawSchedule[group][day];
           const combined = [];
-
           let i = 0;
           while (i < lessons.length) {
             const curr = lessons[i];
             const next = lessons[i + 1];
-
             const sameSubject = next && curr.subject.trim().toLowerCase() === next.subject.trim().toLowerCase();
 
             if (sameSubject) {
@@ -993,11 +1332,7 @@
               const r2Invalid = isInvalidRoom(r2);
 
               if (!r1Invalid && !r2Invalid) {
-                if (r1.toLowerCase() === r2.toLowerCase()) {
-                  formattedRoom = `КАБ. ${r1}`;
-                } else {
-                  formattedRoom = `КАБ. ${r1} - ${r2}`;
-                }
+                formattedRoom = r1.toLowerCase() === r2.toLowerCase() ? `КАБ. ${r1}` : `КАБ. ${r1} - ${r2}`;
               } else if (!r1Invalid) {
                 formattedRoom = `КАБ. ${r1}`;
               } else if (!r2Invalid) {
@@ -1007,7 +1342,6 @@
               const t1Norm = normalizeTeacherStr(curr.teacher);
               const t2Norm = normalizeTeacherStr(next.teacher);
               let formattedTeacher = t1Norm;
-
               if (t2Norm && t1Norm.toLowerCase() !== t2Norm.toLowerCase()) {
                 formattedTeacher = `${t1Norm} / ${t2Norm}`;
               }
@@ -1025,7 +1359,6 @@
               });
               i += 2;
             } else {
-              const rSingleInvalid = isInvalidRoom(curr.room);
               combined.push({
                 subject: curr.subject,
                 teacher: normalizeTeacherStr(curr.teacher),
@@ -1035,24 +1368,22 @@
                 breakEnd: null,
                 time: `${curr.startTime} - ${curr.endTime}`,
                 breakNote: null,
-                room: !rSingleInvalid ? `КАБ. ${curr.room}` : ''
+                room: !isInvalidRoom(curr.room) ? `КАБ. ${curr.room}` : ''
               });
               i += 1;
             }
           }
-
           parsedSchedule[group][day] = combined;
         }
       }
 
-      const groupNames = Object.keys(parsedSchedule).sort((a, b) => a.localeCompare(b, 'ru', { numeric: true }));
-      setupGroupCustomSelect(groupNames);
+      setupGroupCustomSelect(Object.keys(parsedSchedule).sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })));
     }
 
     function timeToMinutes(timeStr) {
       if (!timeStr) return 0;
-      const [hours, minutes] = timeStr.split(':').map(Number);
-      return (hours || 0) * 60 + (minutes || 0);
+      const [h, m] = timeStr.split(':').map(Number);
+      return (h || 0) * 60 + (m || 0);
     }
 
     function renderSchedule() {
@@ -1065,7 +1396,6 @@
       }
 
       const dayLessons = parsedSchedule[selectedGroup]?.[activeDay] || [];
-
       if (dayLessons.length === 0) {
         container.innerHTML = `<div class="empty-state">В ЭТОТ ДЕНЬ (${activeDay.toUpperCase()}) ПАР НЕТ // ВЫХОДНОЙ</div>`;
         return;
@@ -1073,72 +1403,47 @@
 
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      
-      const jsDay = now.getDay();
       const daysMap = { 1: 'пн', 2: 'вт', 3: 'ср', 4: 'чт', 5: 'пт' };
-      const todayKey = daysMap[jsDay];
-      const isToday = (activeDay === todayKey);
+      const todayKey = daysMap[now.getDay()];
+      const weekOrder = ['пн', 'вт', 'ср', 'чт', 'пт'];
+      const todayIndex = weekOrder.indexOf(todayKey);
+      const activeIndex = weekOrder.indexOf(activeDay);
 
       container.innerHTML = dayLessons.map((lesson, idx) => {
-        const numFormatted = String(idx + 1).padStart(2, '0');
         let lampClass = '';
+        const startMin = timeToMinutes(lesson.startTime);
+        const endMin = timeToMinutes(lesson.endTime);
         
-        if (isToday) {
-          const startMin = timeToMinutes(lesson.startTime);
-          const endMin = timeToMinutes(lesson.endTime);
-          
+        if (activeIndex !== -1 && todayIndex !== -1 && activeIndex < todayIndex) {
+          lampClass = 'lamp-green';
+        } else if (activeDay === todayKey) {
           let inBreak = false;
           if (lesson.breakStart && lesson.breakEnd) {
-            const bStartMin = timeToMinutes(lesson.breakStart);
-            const bEndMin = timeToMinutes(lesson.breakEnd);
-            if (currentMinutes >= bStartMin && currentMinutes < bEndMin) {
+            if (currentMinutes >= timeToMinutes(lesson.breakStart) && currentMinutes < timeToMinutes(lesson.breakEnd)) {
               inBreak = true;
             }
           }
-
-          if (inBreak) {
-            lampClass = 'lamp-yellow';
-          } else if (currentMinutes >= startMin && currentMinutes <= endMin) {
-            lampClass = 'lamp-red';
-          } else if (currentMinutes > endMin) {
-            lampClass = 'lamp-green';
-          } else {
-            lampClass = ''; 
-          }
+          if (inBreak) lampClass = 'lamp-yellow';
+          else if (currentMinutes >= startMin && currentMinutes <= endMin) lampClass = 'lamp-red';
+          else if (currentMinutes > endMin) lampClass = 'lamp-green';
+        } else if (activeIndex !== -1 && todayIndex !== -1 && activeIndex > todayIndex) {
+          lampClass = '';
         }
 
         return `
           <div class="lesson-block-container">
             <div class="block-header-strip">
-              <span class="block-num">
-                <span class="pixel-label-graphic">МОДУЛЬ ${numFormatted}</span>
-              </span>
+              <span class="block-num"><span class="pixel-label-graphic">МОДУЛЬ ${String(idx + 1).padStart(2, '0')}</span></span>
               <span class="block-time">${lesson.time || '--:--'}</span>
             </div>
-
             <div class="block-main-content">
               <div class="block-title">${lesson.subject}</div>
               <div class="status-lamp ${lampClass}" title="Статус урока"></div>
             </div>
-
             <div class="block-meta-grid">
-              ${lesson.teacher ? `
-                <div class="meta-cell">
-                  <svg class="pixel-icon"><use href="#icon-user"></use></svg>
-                  <span>${lesson.teacher}</span>
-                </div>` : ''}
-
-              ${lesson.room ? `
-                <div class="meta-cell">
-                  <svg class="pixel-icon"><use href="#icon-room"></use></svg>
-                  <span>${lesson.room}</span>
-                </div>` : ''}
-
-              ${lesson.breakNote ? `
-                <div class="meta-cell break-cell">
-                  <svg class="pixel-icon"><use href="#icon-clock"></use></svg>
-                  <span>${lesson.breakNote}</span>
-                </div>` : ''}
+              ${lesson.teacher ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-user"></use></svg><span>${lesson.teacher}</span></div>` : ''}
+              ${lesson.room ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-room"></use></svg><span>${lesson.room}</span></div>` : ''}
+              ${lesson.breakNote ? `<div class="meta-cell break-cell"><svg class="pixel-icon"><use href="#icon-clock"></use></svg><span>${lesson.breakNote}</span></div>` : ''}
             </div>
           </div>
         `;
