@@ -987,6 +987,12 @@
     </div>
 
     <div id="sessionResultContainer"></div>
+
+    <footer style="width: 100%; margin: 30px 0 10px 0; text-align: center; padding: 16px; background: var(--module-bg); border: 1px solid var(--border-color); border-radius: 16px;">
+      <p style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.6;">
+        Предложения, проблемы, жалобы, сотрудничество <a href="https://t.me/ulakh" target="_blank" style="color: var(--nothing-red); text-decoration: none; font-weight: bold;">TG @ulakh</a>
+      </p>
+    </footer>
   </div>
 
   <script>
@@ -994,6 +1000,7 @@
     let activeDay = getInitialDay();
     let currentSemester = 1;
     let cachedSessionHtml = null;
+    let sessionRawTables = [];
 
     function getInitialDay() {
       const now = new Date();
@@ -1075,7 +1082,6 @@
       }
     }
 
-    // Загрузка .docx файла сессий через mammoth.js
     async function fetchAndParseSessionData() {
       const docUrl = './schedule/Raspisanie_promezhutochnoy_attestatsii.docx?t=' + new Date().getTime();
       try {
@@ -1084,10 +1090,52 @@
         const arrayBuffer = await response.arrayBuffer();
         const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
         cachedSessionHtml = result.value;
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(cachedSessionHtml, 'text/html');
+        sessionRawTables = Array.from(doc.querySelectorAll('table'));
       } catch (err) {
         console.error("Ошибка загрузки файла сессий:", err);
         cachedSessionHtml = `<p>Не удалось распарсить файл сессий. Убедись, что файл залит в формате .docx без ошибок.</p>`;
       }
+    }
+
+    function renderSessionForCurrentGroup() {
+      const selectedGroup = document.getElementById('groupSelect').value;
+      const container = document.getElementById('sessionResultContainer');
+      if (!selectedGroup) {
+        container.innerHTML = '';
+        return;
+      }
+
+      if (sessionRawTables.length === 0) {
+        container.innerHTML = `
+          <div class="session-results-box">
+            <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ (${selectedGroup})</h3>
+            <div class="session-content-inner">${cachedSessionHtml || '<p>Данные отсутствуют</p>'}</div>
+          </div>
+        `;
+        return;
+      }
+
+      let matchedHtml = '';
+      sessionRawTables.forEach(table => {
+        const text = table.textContent.toUpperCase();
+        if (text.includes(selectedGroup.toUpperCase())) {
+          matchedHtml += table.outerHTML;
+        }
+      });
+
+      if (!matchedHtml) {
+        matchedHtml = `<p>Для группы <b>${selectedGroup}</b> персональных записей в документе аттестации не найдено.</p>`;
+      }
+
+      container.innerHTML = `
+        <div class="session-results-box">
+          <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ — ГРУППА ${selectedGroup}</h3>
+          <div class="session-content-inner">${matchedHtml}</div>
+        </div>
+      `;
     }
 
     function triggerSupernova(element) {
@@ -1101,12 +1149,7 @@
           setTimeout(() => {
             section.classList.remove('shake');
             section.style.display = 'none';
-            document.getElementById('sessionResultContainer').innerHTML = `
-              <div class="session-results-box">
-                <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ</h3>
-                <div class="session-content-inner">${cachedSessionHtml || '<p>Загрузка данных...</p>'}</div>
-              </div>
-            `;
+            renderSessionForCurrentGroup();
           }, 1000);
         }, 450);
       }
@@ -1194,6 +1237,9 @@
 
           localStorage.setItem('saved_group', group);
           renderSchedule();
+          if (document.getElementById('warningSection').style.display === 'none') {
+            renderSessionForCurrentGroup();
+          }
         });
 
         groupOptions.appendChild(optionDiv);
@@ -1209,6 +1255,9 @@
 
       document.getElementById('dayTabs').classList.remove('hidden');
       renderSchedule();
+      if (document.getElementById('warningSection').style.display === 'none') {
+        renderSessionForCurrentGroup();
+      }
     }
 
     function switchSemester(sem) {
