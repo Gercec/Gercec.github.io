@@ -30,8 +30,11 @@
       --nothing-red: #d71921;
       --nothing-red-glow: rgba(215, 25, 33, 0.4);
 
-      --warning-yellow: #facc15;
-      --warning-yellow-glow: rgba(250, 204, 21, 0.5);
+      /* Стальной индустриальный стиль треугольных ворот */
+      --steel-base: #2a2c31;
+      --steel-border: #4a4e58;
+      --steel-highlight: #8c92a4;
+      --steel-dark: #121316;
 
       --text-main: #ffffff;
       --text-sub: #a0a0a0;
@@ -592,251 +595,137 @@
       border-radius: 4px;
     }
 
-    .session-results-box {
-      background: var(--module-bg);
-      border: 1px solid var(--warning-yellow);
-      border-radius: 16px;
-      padding: 16px;
-      width: 100%;
-      margin-top: 16px;
-      box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
-    }
-    .session-results-box h3 {
-      color: var(--warning-yellow);
-      font-size: 0.8rem;
-      margin-bottom: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .session-content-inner {
-      font-size: 0.7rem;
-      color: var(--text-sub);
-      line-height: 1.5;
-      overflow-x: auto;
-    }
-    .session-content-inner table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-    }
-    .session-content-inner th, .session-content-inner td {
-      border: 1px solid var(--border-accent);
-      padding: 8px 10px;
-      text-align: left;
-      font-size: 0.7rem;
-    }
-    .session-content-inner th {
-      background: var(--module-sub-bg);
-      color: var(--warning-yellow);
-      letter-spacing: 0.05em;
-    }
-    .session-content-inner tr:nth-child(even) {
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .warning-section {
-      position: relative;
+    /* === ТРЕУГОЛЬНЫЕ МНОГОСЕГМЕНТНЫЕ ВОРОТА С НАХЛЁСТОМ ВВЕРХ === */
+    .cyber-gate-wrapper {
       width: 100%;
       max-width: 640px;
-      margin: 0 auto;
-      height: 170px;
-      background: var(--module-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      overflow: hidden;
+      margin-top: 16px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      transition: height 0.4s ease, border-color 0.4s ease;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .cross-marquee-container {
+    .cyber-gate-terminal {
+      background: var(--steel-dark);
+      border: 2px solid var(--steel-border);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+
+    .cyber-gate-trigger {
+      padding: 14px 16px;
+      background: var(--steel-base);
+      color: var(--accent);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+      border-bottom: 2px solid var(--steel-border);
+    }
+
+    .cyber-gate-trigger:hover {
+      background: var(--steel-border);
+    }
+
+    .cyber-gate-container {
+      position: relative;
+      width: 100%;
+      min-height: 220px;
+      background: #090a0c;
+      overflow: hidden;
+    }
+
+    .gate-triangles-assembly {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .cross-track {
-      position: absolute;
-      white-space: nowrap;
-      display: inline-flex;
-      will-change: transform;
-      background: var(--nothing-red);
-      padding: 8px 0;
-      box-shadow: 0 0 15px var(--nothing-red-glow);
-      border-top: 2px solid rgba(255, 255, 255, 0.4);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.6);
-      pointer-events: auto;
-      cursor: pointer;
-      transition: opacity 0.3s ease;
-    }
-
-    .cross-item {
-      color: #ffffff;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.3em;
-      font-weight: bold;
-      padding-right: 50px;
-      text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
-    }
-
-    .cross-track.diag-1 {
-      --rot: 15deg;
-      top: 50%;
-      left: -60%;
-      width: 220%;
-      animation: marquee-rot-ltr 14s linear infinite;
-    }
-
-    .cross-track.diag-2 {
-      --rot: -15deg;
-      top: 50%;
-      left: -60%;
-      width: 220%;
-      animation: marquee-rot-rtl 16s linear infinite;
-    }
-
-    .cross-track.horiz {
-      --rot: 0deg;
-      top: 50%;
-      left: -60%;
-      width: 220%;
-      animation: marquee-rot-ltr 12s linear infinite;
-    }
-
-    .cross-track.diag-1.collapsing,
-    .cross-track.diag-2.collapsing,
-    .cross-track.horiz.collapsing {
-      animation: collapseLtr 0.5s ease-in forwards !important;
-      pointer-events: none;
-    }
-
-    @keyframes collapseLtr {
-      0% { transform: translateY(-50%) rotate(var(--rot)) translateX(0); opacity: 1; }
-      100% { transform: translateY(-50%) rotate(var(--rot)) translateX(-50%); opacity: 0; filter: blur(4px); }
-    }
-
-    @keyframes marquee-rot-ltr {
-      0% { transform: translateY(-50%) rotate(var(--rot)) translateX(0); }
-      100% { transform: translateY(-50%) rotate(var(--rot)) translateX(-25%); }
-    }
-
-    @keyframes marquee-rot-rtl {
-      0% { transform: translateY(-50%) rotate(var(--rot)) translateX(-25%); }
-      100% { transform: translateY(-50%) rotate(var(--rot)) translateX(0); }
-    }
-
-    .warning-badge {
-      position: absolute;
-      inset: 0;
-      z-index: 1; 
-      background: #000000;
-      color: var(--warning-yellow);
-      border-radius: 16px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      border: 2px dashed var(--warning-yellow);
-      text-align: center;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      user-select: none;
+      flex-direction: column;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .triangle-leaf {
+      flex: 1;
       width: 100%;
-      height: 100%;
-      line-height: 1.4;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(250, 204, 21, 0.15);
-    }
-
-    .warning-badge.unlocked {
-      border-color: var(--warning-yellow);
-      box-shadow: 0 0 25px rgba(250, 204, 21, 0.2), inset 0 0 15px rgba(250, 204, 21, 0.15);
-      animation: badgeYellowPulse 3s infinite steps(1);
-    }
-
-    .warning-badge::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        rgba(18, 16, 16, 0) 50%, 
-        rgba(250, 204, 21, 0.15) 50%
-      );
-      background-size: 100% 4px;
-      z-index: 1;
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    .warning-badge span {
+      background: linear-gradient(135deg, var(--steel-base) 0%, #1a1b1f 100%);
+      border-bottom: 2px solid var(--steel-border);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
       position: relative;
-      z-index: 2;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+      clip-path: polygon(0 0, 50% 100%, 100% 0, 100% 100%, 0 100%);
+      margin-bottom: -15px;
     }
 
-    .warning-badge:hover {
-      background: var(--warning-yellow);
-      color: #000000;
-      border-style: solid;
-      border-color: #ffffff;
-      box-shadow: 0 0 35px rgba(250, 204, 21, 0.8), 0 0 15px rgba(250, 204, 21, 0.5);
+    .triangle-leaf::after {
+      content: attr(data-id);
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      background: #111;
+      padding: 1px 4px;
+      border: 1px solid var(--steel-border);
+      color: var(--steel-highlight);
     }
 
-    .warning-badge.glitch-disintegrate {
-      animation: supernovaExplosion 0.7s cubic-bezier(0.11, 0, 0.5, 1) forwards !important;
-      pointer-events: none;
+    .cyber-gate-container.open .triangle-leaf {
+      transform: translateY(-110%);
     }
 
-    .warning-section.shake {
-      animation: violentScreenShake 1.0s linear both;
+    .cyber-gate-container.open .triangle-leaf:nth-child(5) { transition-delay: 0.0s; }
+    .cyber-gate-container.open .triangle-leaf:nth-child(4) { transition-delay: 0.08s; }
+    .cyber-gate-container.open .triangle-leaf:nth-child(3) { transition-delay: 0.16s; }
+    .cyber-gate-container.open .triangle-leaf:nth-child(2) { transition-delay: 0.24s; }
+    .cyber-gate-container.open .triangle-leaf:nth-child(1) { transition-delay: 0.32s; }
+
+    .cyber-gate-content {
+      padding: 16px;
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+      background: var(--module-sub-bg);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
-    @keyframes badgeYellowPulse {
-      0% { text-shadow: 0 0 4px rgba(250, 204, 21, 0.6); }
-      50% { text-shadow: 0 0 10px rgba(250, 204, 21, 0.9); }
-      100% { text-shadow: 0 0 4px rgba(250, 204, 21, 0.6); }
+    .cyber-gate-content table {
+      width: 100%;
+      min-width: 450px;
+      border-collapse: collapse;
+      margin-top: 8px;
     }
 
-    @keyframes supernovaExplosion {
-      0% { transform: scale(1) translateY(0); filter: blur(0); opacity: 1; }
-      25% { transform: scale(0.15, 0.15); background: var(--warning-yellow); color: var(--warning-yellow); border-color: #ffffff; box-shadow: 0 0 10px rgba(250, 204, 21, 0.8); border-radius: 50%; filter: blur(1px); opacity: 1; }
-      45% { transform: scale(0.9, 0.9); background: #ffffff; color: #ffffff; border-color: #ffffff; box-shadow: 0 0 140px 50px #ffffff, 0 0 250px 90px rgba(250, 204, 21, 0.9); border-radius: 50%; filter: blur(0px); opacity: 1; }
-      100% { transform: scale(2.2, 2.2); background: #ffffff; color: transparent; border-color: transparent; opacity: 0; filter: blur(16px); box-shadow: 0 0 200px 100px rgba(250, 204, 21, 0); }
+    .cyber-gate-content th, .cyber-gate-content td {
+      border: 1px solid var(--border-accent);
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 0.7rem;
     }
 
-    @keyframes violentScreenShake {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      5%  { transform: translate(-14px, 10px) rotate(-3deg); }
-      10% { transform: translate(14px, -12px) rotate(3.5deg); }
-      15% { transform: translate(-16px, -8px) rotate(-4deg); }
-      20% { transform: translate(15px, 12px) rotate(3deg); }
-      25% { transform: translate(-12px, 10px) rotate(-3deg); }
-      30% { transform: translate(14px, -10px) rotate(3.5deg); }
-      35% { transform: translate(-15px, -9px) rotate(-4deg); }
-      40% { transform: translate(13px, 11px) rotate(3deg); }
-      45% { transform: translate(-14px, 8px) rotate(-3deg); }
-      50% { transform: translate(15px, -11px) rotate(3.5deg); }
-      55% { transform: translate(-16px, -10px) rotate(-4deg); }
-      60% { transform: translate(14px, 12px) rotate(3deg); }
-      65% { transform: translate(-13px, 9px) rotate(-3deg); }
-      70% { transform: translate(15px, -10px) rotate(3.5deg); }
-      75% { transform: translate(-14px, -9px) rotate(-4deg); }
-      80% { transform: translate(14px, 11px) rotate(3deg); }
-      85% { transform: translate(-12px, 7px) rotate(-2.5deg); }
-      90% { transform: translate(10px, -6px) rotate(2deg); }
-      95% { transform: translate(-6px, 4px) rotate(-1deg); }
+    .cyber-gate-content th {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      letter-spacing: 0.05em;
     }
+
+    .cyber-gate-content tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    /* ========================================================= */
 
     .hidden {
       display: none !important;
@@ -845,10 +734,6 @@
     @media (max-width: 480px) {
       .block-meta-grid {
         grid-template-columns: 1fr;
-      }
-      .warning-badge {
-        font-size: 0.7rem;
-        padding: 0 12px;
       }
     }
   </style>
@@ -965,28 +850,29 @@
       <div class="empty-state">ВЫБЕРИТЕ ГРУППУ ИЗ СПИСКА ВЫШЕ</div>
     </main>
 
-    <div class="warning-section" id="warningSection">
-      <div class="warning-badge" id="warningBadge" onclick="triggerSupernova(this)">
-        <span id="warningBadgeText">WARNING: Предупреждение для тех, кто планирует спать на лекциях<br>или прогуливать: сессия приближается незаметно,<br>а парами по расписанию никого не испугаешь... пока что <b>WARNING</b></span>
-      </div>
-
-      <div class="cross-marquee-container" id="crossContainer">
-        <div class="cross-track diag-1" onclick="collapseTrack(this)">
-          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
-          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+    <!-- ТРЕУГОЛЬНЫЕ МНОГОСЕГМЕНТНЫЕ ВОРОТА С НАХЛЁСТОМ -->
+    <div class="cyber-gate-wrapper" id="cyberGateWrapper">
+      <div class="cyber-gate-terminal">
+        <div class="cyber-gate-trigger" onclick="toggleCyberGate()">
+          <span>[INDUSTRIAL GATE]: АТТЕСТАЦИЯ / ШЛЮЗ</span>
+          <span id="gateActionLabel">[ ОТКРЫТЬ ]</span>
         </div>
-        <div class="cross-track diag-2" onclick="collapseTrack(this)">
-          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
-          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
-        </div>
-        <div class="cross-track horiz" onclick="collapseTrack(this)">
-          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
-          <div class="cross-item">DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp; DANGER &nbsp;&nbsp;//&nbsp;&nbsp;</div>
+        <div class="cyber-gate-container" id="cyberGateContainer">
+          <!-- Набор треугольных панелей с нахлёстом -->
+          <div class="gate-triangles-assembly">
+            <div class="triangle-leaf" data-id="T-01"></div>
+            <div class="triangle-leaf" data-id="T-02"></div>
+            <div class="triangle-leaf" data-id="T-03"></div>
+            <div class="triangle-leaf" data-id="T-04"></div>
+            <div class="triangle-leaf" data-id="T-05"></div>
+          </div>
+          <!-- Контент внутри шлюза -->
+          <div class="cyber-gate-content" id="sessionResultContainer">
+            <p>ОЖИДАНИЕ СИНХРОНИЗАЦИИ ДАННЫХ АТТЕСТАЦИИ...</p>
+          </div>
         </div>
       </div>
     </div>
-
-    <div id="sessionResultContainer"></div>
 
     <footer style="width: 100%; margin: 30px 0 10px 0; text-align: center; padding: 16px; background: var(--module-bg); border: 1px solid var(--border-color); border-radius: 16px;">
       <p style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.6;">
@@ -1065,20 +951,15 @@
       localStorage.setItem('welcomed_status_shown', 'true');
     }
 
-    function collapseTrack(trackElement) {
-      if (!trackElement.classList.contains('collapsing') && !trackElement.classList.contains('hidden')) {
-        trackElement.classList.add('collapsing');
-        setTimeout(() => {
-          trackElement.classList.add('hidden');
-          checkAllTracksCollapsed();
-        }, 500); 
-      }
-    }
-
-    function checkAllTracksCollapsed() {
-      const tracks = document.querySelectorAll('.cross-track');
-      if (Array.from(tracks).every(t => t.classList.contains('hidden'))) {
-        document.getElementById('warningBadge').classList.add('unlocked');
+    function toggleCyberGate() {
+      const container = document.getElementById('cyberGateContainer');
+      const label = document.getElementById('gateActionLabel');
+      container.classList.toggle('open');
+      
+      if (container.classList.contains('open')) {
+        label.textContent = '[ ЗАКРЫТЬ ]';
+      } else {
+        label.textContent = '[ ОТКРЫТЬ ]';
       }
     }
 
@@ -1094,9 +975,11 @@
         const parser = new DOMParser();
         const doc = parser.parseFromString(cachedSessionHtml, 'text/html');
         sessionRawTables = Array.from(doc.querySelectorAll('table'));
+        renderSessionForCurrentGroup();
       } catch (err) {
         console.error("Ошибка загрузки файла сессий:", err);
-        cachedSessionHtml = `<p>Не удалось распарсить файл сессий. Убедись, что файл залит в формате .docx без ошибок.</p>`;
+        cachedSessionHtml = `<p>Не удалось распарсить файл сессий. Убедись, что файл залит в формате .docx.</p>`;
+        renderSessionForCurrentGroup();
       }
     }
 
@@ -1104,17 +987,12 @@
       const selectedGroup = document.getElementById('groupSelect').value;
       const container = document.getElementById('sessionResultContainer');
       if (!selectedGroup) {
-        container.innerHTML = '';
+        container.innerHTML = '<p>ОЖИДАНИЕ СИНХРОНИЗАЦИИ ДАННЫХ АТТЕСТАЦИИ...</p>';
         return;
       }
 
       if (sessionRawTables.length === 0) {
-        container.innerHTML = `
-          <div class="session-results-box">
-            <h3>РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ (${selectedGroup})</h3>
-            <div class="session-content-inner">${cachedSessionHtml || '<p>Данные отсутствуют</p>'}</div>
-          </div>
-        `;
+        container.innerHTML = cachedSessionHtml || '<p>Данные отсутствуют</p>';
         return;
       }
 
@@ -1131,28 +1009,9 @@
       }
 
       container.innerHTML = `
-        <div class="session-results-box">
-          <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ — ГРУППА ${selectedGroup}</h3>
-          <div class="session-content-inner">${matchedHtml}</div>
-        </div>
+        <div style="margin-bottom: 6px; color: var(--text-main); font-weight: bold; letter-spacing: 0.05em;">ГРУППА: ${selectedGroup}</div>
+        ${matchedHtml}
       `;
-    }
-
-    function triggerSupernova(element) {
-      if (!element.classList.contains('unlocked')) return;
-
-      if (!element.classList.contains('glitch-disintegrate')) {
-        element.classList.add('glitch-disintegrate');
-        setTimeout(() => {
-          const section = document.getElementById('warningSection');
-          section.classList.add('shake');
-          setTimeout(() => {
-            section.classList.remove('shake');
-            section.style.display = 'none';
-            renderSessionForCurrentGroup();
-          }, 1000);
-        }, 450);
-      }
     }
 
     function setupCustomSelects() {
@@ -1237,9 +1096,7 @@
 
           localStorage.setItem('saved_group', group);
           renderSchedule();
-          if (document.getElementById('warningSection').style.display === 'none') {
-            renderSessionForCurrentGroup();
-          }
+          renderSessionForCurrentGroup();
         });
 
         groupOptions.appendChild(optionDiv);
@@ -1255,9 +1112,7 @@
 
       document.getElementById('dayTabs').classList.remove('hidden');
       renderSchedule();
-      if (document.getElementById('warningSection').style.display === 'none') {
-        renderSessionForCurrentGroup();
-      }
+      renderSessionForCurrentGroup();
     }
 
     function switchSemester(sem) {
