@@ -57,7 +57,7 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      padding: 70px 16px 40px 16px; /* Увеличен отступ сверху, чтобы бегущая строка не перекрывала контент */
+      padding: 70px 16px 40px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -626,7 +626,8 @@
       border: 1px solid var(--border-accent);
       padding: 8px 10px;
       text-align: left;
-      font-size: 0.7rem;
+      /* Уменьшили шрифт в таблице сессий для мобильных */
+      font-size: 0.55rem;
     }
     .session-content-inner th {
       background: var(--module-sub-bg);
@@ -635,6 +636,14 @@
     }
     .session-content-inner tr:nth-child(even) {
       background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* СКРЫВАЕМ 1-Й И 2-Й СТОЛБЦЫ В ТАБЛИЦЕ СЕССИЙ */
+    .session-content-inner table tr th:nth-child(1),
+    .session-content-inner table tr td:nth-child(1),
+    .session-content-inner table tr th:nth-child(2),
+    .session-content-inner table tr td:nth-child(2) {
+      display: none !important;
     }
 
     .warning-section {
