@@ -592,7 +592,7 @@
       border-radius: 4px;
     }
 
-    /* СТИЛИ ДЛЯ МИНИ-БЛОКОВ СЕССИИ */
+    /* СТИЛИ ДЛЯ БЛОКОВ СЕССИИ (КАК ОБЫЧНЫЕ ПАРЫ) */
     .session-results-box {
       background: var(--module-bg);
       border: 1px solid var(--warning-yellow);
@@ -613,65 +613,72 @@
     .session-cards-container {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       width: 100%;
       margin-top: 8px;
     }
 
     .session-card {
-      background: var(--module-sub-bg);
-      border: 1px solid var(--border-accent);
-      border-radius: 12px;
-      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      border-left: 4px solid var(--warning-yellow);
+      gap: 2px;
+      background: var(--border-color);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      width: 100%;
     }
 
-    .session-card-header {
+    .session-card-header-strip {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      background: var(--module-bg);
+      padding: 10px 14px;
     }
 
-    .session-card-date-time {
-      background: rgba(250, 204, 21, 0.1);
+    .session-card-num {
+      font-size: 0.75rem;
       color: var(--warning-yellow);
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: bold;
-    }
-
-    .session-card-subject {
-      font-size: 0.85rem;
-      color: var(--text-main);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      line-height: 1.4;
-    }
-
-    .session-card-footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 0.7rem;
-      color: var(--text-sub);
-      border-top: 1px solid var(--border-color);
-      padding-top: 8px;
-      margin-top: 2px;
-    }
-
-    .session-card-footer span {
       display: flex;
       align-items: center;
       gap: 6px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .session-card-time {
+      font-size: 0.75rem;
+      background: var(--warning-yellow);
+      color: #000000;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+      font-weight: bold;
+    }
+
+    .session-card-main-content {
+      background: var(--module-sub-bg);
+      padding: 14px;
+      border-left: 4px solid var(--warning-yellow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .session-card-title {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .session-card-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2px;
+      background: var(--border-color);
     }
 
     .warning-section {
@@ -883,7 +890,7 @@
     }
 
     @media (max-width: 480px) {
-      .block-meta-grid {
+      .block-meta-grid, .session-card-meta-grid {
         grid-template-columns: 1fr;
       }
       .warning-badge {
@@ -1194,14 +1201,16 @@
 
             cardsHtml += `
               <div class="session-card">
-                <div class="session-card-header">
-                  <span>АТТЕСТАЦИЯ</span>
-                  ${dateVal || timeVal ? `<span class="session-card-date-time">${dateVal} ${timeVal ? 'В ' + timeVal : ''}</span>` : ''}
+                <div class="session-card-header-strip">
+                  <span class="session-card-num"><span class="pixel-label-graphic">АТТЕСТАЦИЯ</span></span>
+                  ${dateVal || timeVal ? `<span class="session-card-time">${dateVal} ${timeVal ? 'В ' + timeVal : ''}</span>` : ''}
                 </div>
-                <div class="session-card-subject">${subjectVal || 'Экзамен / Зачет'}</div>
-                <div class="session-card-footer">
-                  ${teacherVal ? `<span><svg class="pixel-icon"><use href="#icon-user"></use></svg>${teacherVal}</span>` : ''}
-                  ${roomVal ? `<span><svg class="pixel-icon"><use href="#icon-room"></use></svg>${roomVal}</span>` : ''}
+                <div class="session-card-main-content">
+                  <div class="session-card-title">${subjectVal || 'Экзамен / Зачет'}</div>
+                </div>
+                <div class="session-card-meta-grid">
+                  ${teacherVal ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-user"></use></svg><span>${teacherVal}</span></div>` : ''}
+                  ${roomVal ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-room"></use></svg><span>${roomVal}</span></div>` : ''}
                 </div>
               </div>
             `;
