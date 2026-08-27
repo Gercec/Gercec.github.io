@@ -592,6 +592,7 @@
       border-radius: 4px;
     }
 
+    /* СТИЛИ ДЛЯ МИНИ-БЛОКОВ СЕССИИ */
     .session-results-box {
       background: var(--module-bg);
       border: 1px solid var(--warning-yellow);
@@ -608,42 +609,69 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
-    .session-content-inner {
-      font-size: 0.7rem;
-      color: var(--text-sub);
-      line-height: 1.5;
+    
+    .session-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .session-content-inner table {
-      width: 100%;
-      min-width: 450px;
-      border-collapse: collapse;
       margin-top: 8px;
     }
-    .session-content-inner th, .session-content-inner td {
-      border: 1px solid var(--border-accent);
-      padding: 6px 8px;
-      text-align: left;
-      /* Максимально компактный размер шрифта для мобильных устройств */
-      font-size: 0.45rem;
-    }
-    .session-content-inner th {
+
+    .session-card {
       background: var(--module-sub-bg);
-      color: var(--warning-yellow);
-      letter-spacing: 0.05em;
-    }
-    .session-content-inner tr:nth-child(even) {
-      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-accent);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-left: 4px solid var(--warning-yellow);
     }
 
-    /* СКРЫВАЕМ 1-Й И 2-Й СТОЛБЦЫ В ТАБЛИЦЕ СЕССИЙ */
-    .session-content-inner table tr th:nth-child(1),
-    .session-content-inner table tr td:nth-child(1),
-    .session-content-inner table tr th:nth-child(2),
-    .session-content-inner table tr td:nth-child(2) {
-      display: none !important;
+    .session-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .session-card-date-time {
+      background: rgba(250, 204, 21, 0.1);
+      color: var(--warning-yellow);
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+
+    .session-card-subject {
+      font-size: 0.85rem;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+    }
+
+    .session-card-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      border-top: 1px solid var(--border-color);
+      padding-top: 8px;
+      margin-top: 2px;
+    }
+
+    .session-card-footer span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
     }
 
     .warning-section {
@@ -1124,28 +1152,86 @@
         container.innerHTML = `
           <div class="session-results-box">
             <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ (${selectedGroup})</h3>
-            <div class="session-content-inner">${cachedSessionHtml || '<p>Данные отсутствуют</p>'}</div>
+            <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 8px;">${cachedSessionHtml || '<p>Данные отсутствуют</p>'}</div>
           </div>
         `;
         return;
       }
 
-      let matchedHtml = '';
+      let cardsHtml = '';
       sessionRawTables.forEach(table => {
-        const text = table.textContent.toUpperCase();
-        if (text.includes(selectedGroup.toUpperCase())) {
-          matchedHtml += table.outerHTML;
-        }
+        const rows = Array.from(table.querySelectorAll('tr'));
+        rows.forEach((row, rowIndex) => {
+          // Пропускаем шапку таблицы, если она есть
+          if (rowIndex === 0 && row.textContent.toUpperCase().includes('ПРЕДМЕТ')) return;
+          
+          const cols = Array.from(row.querySelectorAll('th, td'));
+          // Проверяем, содержит ли строка нужную группу (ищем во всех ячейках)
+          const rowText = row.textContent;
+          const hasGroup = cols.some(col => col.textContent.trim().toUpperCase() === selectedGroup.toUpperCase()) || 
+                           rowText.toUpperCase().includes(selectedGroup.toUpperCase());
+
+          if (hasGroup && cols.length >= 3) {
+            // Извлекаем данные (пропуская первые столбцы с индексами/группами если они есть)
+            const cleanCols = cols.map(c => c.textContent.trim()).filter(text => text.length > 0);
+            
+            // Пытаемся найти дату, время, предмет и преподавателя
+            let dateVal = cleanCols.find(c => /\d{2}\.\d{2}/.test(c)) || cleanCols[0] || '';
+            let timeVal = cleanCols.find(c => /\d{2}:\d{2}/.test(c)) || '';
+            let subjectVal = cleanCols.reverse().find(c => c.length > 3 && c.toUpperCase() !== selectedGroup.toUpperCase()) || 'Экзамен / Зачет';
+            // Вернем порядок обратно для поиска аудитории/преподавателя
+            cleanCols.reverse();
+            let teacherVal = cleanCols.find(c => c.split(' ').length >= 2 && !c.includes(selectedGroup) && !/\d{2}\.\d{2}/.test(c)) || '';
+
+            cardsHtml += `
+              <div class="session-card">
+                <div class="session-card-header">
+                  <span>АТТЕСТАЦИЯ</span>
+                  ${dateVal || timeVal ? `<span class="session-card-date-time">${dateVal} ${timeVal}</span>` : ''}
+                </div>
+                <div class="session-card-subject">${subjectVal}</div>
+                <div class="session-card-footer">
+                  ${teacherVal ? `<span><svg class="pixel-icon"><use href="#icon-user"></use></svg>${teacherVal}</span>` : ''}
+                  <span><svg class="pixel-icon"><use href="#icon-room"></use></svg>ГРУППА ${selectedGroup}</span>
+                </div>
+              </div>
+            `;
+          }
+        });
       });
 
-      if (!matchedHtml) {
-        matchedHtml = `<p>Для группы <b>${selectedGroup}</b> персональных записей в документе аттестации не найдено.</p>`;
+      // Если парсер строчек не нашел точечных совпадений через поиск по ячейкам, выводим сырые строки в виде карточек или фолбэк
+      if (!cardsHtml) {
+        // Запасной вариант: ищем блоки текста по группе
+        sessionRawTables.forEach(table => {
+          if (table.textContent.toUpperCase().includes(selectedGroup.toUpperCase())) {
+            Array.from(table.querySelectorAll('tr')).forEach(tr => {
+              if (tr.textContent.toUpperCase().includes(selectedGroup.toUpperCase())) {
+                cardsHtml += `
+                  <div class="session-card">
+                    <div class="session-card-header">
+                      <span>ЗАПИСЬ АТТЕСТАЦИИ</span>
+                    </div>
+                    <div class="session-card-subject">${tr.textContent.replace(selectedGroup, '').trim()}</div>
+                    <div class="session-card-footer">
+                      <span><svg class="pixel-icon"><use href="#icon-room"></use></svg>ГРУППА ${selectedGroup}</span>
+                    </div>
+                  </div>
+                `;
+              }
+            });
+          }
+        });
+      }
+
+      if (!cardsHtml) {
+        cardsHtml = `<div style="font-size: 0.75rem; color: var(--text-sub); padding: 8px;">Для группы <b>${selectedGroup}</b> персональных записей в документе аттестации не найдено.</div>`;
       }
 
       container.innerHTML = `
         <div class="session-results-box">
           <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ — ГРУППА ${selectedGroup}</h3>
-          <div class="session-content-inner">${matchedHtml}</div>
+          <div class="session-cards-container">${cardsHtml}</div>
         </div>
       `;
     }
