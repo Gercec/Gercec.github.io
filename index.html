@@ -592,7 +592,7 @@
       border-radius: 4px;
     }
 
-    /* СТИЛИ ДЛЯ БЛОКОВ СЕССИИ (КАК ОБЫЧНЫЕ ПАРЫ) */
+    /* СТИЛИ ДЛЯ БЛОКОВ СЕССИИ */
     .session-results-box {
       background: var(--module-bg);
       border: 1px solid var(--warning-yellow);
@@ -1171,46 +1171,57 @@
         rows.forEach((row) => {
           const rowText = row.textContent;
           if (rowText.toUpperCase().includes(selectedGroup.toUpperCase())) {
-            const lines = rowText.split('\n')
-              .map(l => l.trim())
-              .filter(l => l.length > 0 && !l.toUpperCase().includes('ГРУППА') && !l.toUpperCase().includes('АТТЕСТАЦИЯ'));
+            let cleanText = rowText.replace(/\s+/g, ' ').trim();
+            
+            // Удаляем название группы и слово «аттестация» из начала строки для чистоты
+            cleanText = cleanText.replace(new RegExp(`${selectedGroup}`, 'gi'), '').replace(/аттестация/gi, '').trim();
 
-            let dateVal = '';
-            let timeVal = '';
-            let teacherVal = '';
-            let roomVal = '';
-            let subjectVal = '';
+            // Интеллектуальный разбор слитного текста с помощью регулярных выражений
+            const dateMatches = cleanText.match(/\d{2}\.\d{2}\.\d{4}/g) || [];
+            const timeMatches = cleanText.match(/(?:в\s*)?\d{1,2}[-:]\d{2}/gi) || [];
+            const roomMatch = cleanText.match(/каб\.?\s*\d+/i);
+            const teacherMatch = cleanText.match(/[А-ЯЁ][а-яё]+\s+[А-ЯЁ]\.[А-ЯЁ]\./);
 
-            lines.forEach(line => {
-              if (/\d{2}\.\d{2}\.\d{4}/.test(line)) {
-                dateVal = line;
-              } 
-              else if (/(В\s*)?\d{1,2}[-:]\d{2}/i.test(line)) {
-                timeVal = line.replace(/^[Вв]\s*/, '');
-              } 
-              else if (/КАБ\.?\s*\d+/i.test(line)) {
-                roomVal = line;
-              } 
-              else if (/^[А-ЯЁ]+\s+[А-ЯЁ]\.[А-ЯЁ]\./i.test(line) || (/^[А-ЯЁ\s]+$/.test(line) && line.length < 25 && !line.includes('ЯЗЫК'))) {
-                teacherVal = line;
-              } 
-              else if (line.length > 2) {
-                subjectVal = line;
-              }
-            });
+            let subject = cleanText;
+            
+            // Вырезаем найденные сущности, чтобы остался чистый предмет
+            dateMatches.forEach(d => { subject = subject.replace(d, ''); });
+            timeMatches.forEach(t => { subject = subject.replace(t, ''); });
+            if (roomMatch) subject = subject.replace(roomMatch[0], '');
+            if (teacherMatch) subject = subject.replace(teacherMatch[0], '');
+            
+            subject = subject.replace(/в\s*\d{1,2}[-:]\d{2}/gi, '').replace(/[Вв]\s*/g, '').trim();
+            // Убираем код группы если он остался частью строки слиттно
+            subject = subject.replace(new RegExp(`^${selectedGroup}[ОД]*\.?\\d*`, 'i'), '').trim();
+
+            const startDate = dateMatches[0] || '';
+            const startTime = timeMatches[0] ? timeMatches[0].replace(/^[Вв]\s*/, '') : '';
+            const endDate = dateMatches[1] || '';
+            const endTime = timeMatches[1] ? timeMatches[1].replace(/^[Вв]\s*/, '') : '';
+            const room = roomMatch ? roomMatch[0].toUpperCase() : '';
+            const teacher = teacherMatch ? teacherMatch[0] : '';
+
+            let dateTimeStr = '';
+            if (startDate) {
+              dateTimeStr += `${startDate}${startTime ? ' В ' + startTime : ''}`;
+            }
+            if (endDate) {
+              dateTimeStr += ` — ${endDate}${endTime ? ' В ' + endTime : ''}`;
+            }
 
             cardsHtml += `
               <div class="session-card">
                 <div class="session-card-header-strip">
-                  <span class="session-card-num"><span class="pixel-label-graphic">АТТЕСТАЦИЯ</span></span>
-                  ${dateVal || timeVal ? `<span class="session-card-time">${dateVal} ${timeVal ? 'В ' + timeVal : ''}</span>` : ''}
+                  <span class="session-card-num"><span class="pixel-label-graphic">АТТЕСТАЦИЯ</span> ${selectedGroup}</span>
+                  <span class="session-card-time">${subject ? subject.toUpperCase() : 'ЭКЗАМЕН / ЗАЧЕТ'}</span>
                 </div>
                 <div class="session-card-main-content">
-                  <div class="session-card-title">${subjectVal || 'Экзамен / Зачет'}</div>
+                  <div class="session-card-title">ЭКЗАМЕН / ЗАЧЕТ</div>
                 </div>
                 <div class="session-card-meta-grid">
-                  ${teacherVal ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-user"></use></svg><span>${teacherVal}</span></div>` : ''}
-                  ${roomVal ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-room"></use></svg><span>${roomVal}</span></div>` : ''}
+                  ${dateTimeStr ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-clock"></use></svg><span>${dateTimeStr}</span></div>` : ''}
+                  ${room ? `<div class="meta-cell"><svg class="pixel-icon"><use href="#icon-room"></use></svg><span>${room}</span></div>` : ''}
+                  ${teacher ? `<div class="meta-cell" style="grid-column: 1 / -1;"><svg class="pixel-icon"><use href="#icon-user"></use></svg><span>${teacher}</span></div>` : ''}
                 </div>
               </div>
             `;
