@@ -1151,7 +1151,7 @@
       if (sessionRawTables.length === 0) {
         container.innerHTML = `
           <div class="session-results-box">
-            <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ (${selectedGroup})</h3>
+            <h3>РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ (${selectedGroup})</h3>
             <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 8px;">${cachedSessionHtml || '<p>Данные отсутствуют</p>'}</div>
           </div>
         `;
@@ -1161,38 +1161,47 @@
       let cardsHtml = '';
       sessionRawTables.forEach(table => {
         const rows = Array.from(table.querySelectorAll('tr'));
-        rows.forEach((row, rowIndex) => {
-          // Пропускаем шапку таблицы, если она есть
-          if (rowIndex === 0 && row.textContent.toUpperCase().includes('ПРЕДМЕТ')) return;
-          
-          const cols = Array.from(row.querySelectorAll('th, td'));
-          // Проверяем, содержит ли строка нужную группу (ищем во всех ячейках)
+        rows.forEach((row) => {
           const rowText = row.textContent;
-          const hasGroup = cols.some(col => col.textContent.trim().toUpperCase() === selectedGroup.toUpperCase()) || 
-                           rowText.toUpperCase().includes(selectedGroup.toUpperCase());
+          if (rowText.toUpperCase().includes(selectedGroup.toUpperCase())) {
+            const lines = rowText.split('\n')
+              .map(l => l.trim())
+              .filter(l => l.length > 0 && !l.toUpperCase().includes('ГРУППА') && !l.toUpperCase().includes('АТТЕСТАЦИЯ'));
 
-          if (hasGroup && cols.length >= 3) {
-            // Извлекаем данные (пропуская первые столбцы с индексами/группами если они есть)
-            const cleanCols = cols.map(c => c.textContent.trim()).filter(text => text.length > 0);
-            
-            // Пытаемся найти дату, время, предмет и преподавателя
-            let dateVal = cleanCols.find(c => /\d{2}\.\d{2}/.test(c)) || cleanCols[0] || '';
-            let timeVal = cleanCols.find(c => /\d{2}:\d{2}/.test(c)) || '';
-            let subjectVal = cleanCols.reverse().find(c => c.length > 3 && c.toUpperCase() !== selectedGroup.toUpperCase()) || 'Экзамен / Зачет';
-            // Вернем порядок обратно для поиска аудитории/преподавателя
-            cleanCols.reverse();
-            let teacherVal = cleanCols.find(c => c.split(' ').length >= 2 && !c.includes(selectedGroup) && !/\d{2}\.\d{2}/.test(c)) || '';
+            let dateVal = '';
+            let timeVal = '';
+            let teacherVal = '';
+            let roomVal = '';
+            let subjectVal = '';
+
+            lines.forEach(line => {
+              if (/\d{2}\.\d{2}\.\d{4}/.test(line)) {
+                dateVal = line;
+              } 
+              else if (/(В\s*)?\d{1,2}[-:]\d{2}/i.test(line)) {
+                timeVal = line.replace(/^[Вв]\s*/, '');
+              } 
+              else if (/КАБ\.?\s*\d+/i.test(line)) {
+                roomVal = line;
+              } 
+              else if (/^[А-ЯЁ]+\s+[А-ЯЁ]\.[А-ЯЁ]\./i.test(line) || (/^[А-ЯЁ\s]+$/.test(line) && line.length < 25 && !line.includes('ЯЗЫК'))) {
+                teacherVal = line;
+              } 
+              else if (line.length > 2) {
+                subjectVal = line;
+              }
+            });
 
             cardsHtml += `
               <div class="session-card">
                 <div class="session-card-header">
                   <span>АТТЕСТАЦИЯ</span>
-                  ${dateVal || timeVal ? `<span class="session-card-date-time">${dateVal} ${timeVal}</span>` : ''}
+                  ${dateVal || timeVal ? `<span class="session-card-date-time">${dateVal} ${timeVal ? 'В ' + timeVal : ''}</span>` : ''}
                 </div>
-                <div class="session-card-subject">${subjectVal}</div>
+                <div class="session-card-subject">${subjectVal || 'Экзамен / Зачет'}</div>
                 <div class="session-card-footer">
                   ${teacherVal ? `<span><svg class="pixel-icon"><use href="#icon-user"></use></svg>${teacherVal}</span>` : ''}
-                  <span><svg class="pixel-icon"><use href="#icon-room"></use></svg>ГРУППА ${selectedGroup}</span>
+                  ${roomVal ? `<span><svg class="pixel-icon"><use href="#icon-room"></use></svg>${roomVal}</span>` : ''}
                 </div>
               </div>
             `;
@@ -1200,37 +1209,13 @@
         });
       });
 
-      // Если парсер строчек не нашел точечных совпадений через поиск по ячейкам, выводим сырые строки в виде карточек или фолбэк
       if (!cardsHtml) {
-        // Запасной вариант: ищем блоки текста по группе
-        sessionRawTables.forEach(table => {
-          if (table.textContent.toUpperCase().includes(selectedGroup.toUpperCase())) {
-            Array.from(table.querySelectorAll('tr')).forEach(tr => {
-              if (tr.textContent.toUpperCase().includes(selectedGroup.toUpperCase())) {
-                cardsHtml += `
-                  <div class="session-card">
-                    <div class="session-card-header">
-                      <span>ЗАПИСЬ АТТЕСТАЦИИ</span>
-                    </div>
-                    <div class="session-card-subject">${tr.textContent.replace(selectedGroup, '').trim()}</div>
-                    <div class="session-card-footer">
-                      <span><svg class="pixel-icon"><use href="#icon-room"></use></svg>ГРУППА ${selectedGroup}</span>
-                    </div>
-                  </div>
-                `;
-              }
-            });
-          }
-        });
-      }
-
-      if (!cardsHtml) {
-        cardsHtml = `<div style="font-size: 0.75rem; color: var(--text-sub); padding: 8px;">Для группы <b>${selectedGroup}</b> персональных записей в документе аттестации не найдено.</div>`;
+        cardsHtml = `<div style="font-size: 0.75rem; color: var(--text-sub); padding: 8px;">Для группы <b>${selectedGroup}</b> записей не найдено.</div>`;
       }
 
       container.innerHTML = `
         <div class="session-results-box">
-          <h3>⚠️ РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ — ГРУППА ${selectedGroup}</h3>
+          <h3>РАСПИСАНИЕ ПРОМЕЖУТОЧНОЙ АТТЕСТАЦИИ — ГРУППА ${selectedGroup}</h3>
           <div class="session-cards-container">${cardsHtml}</div>
         </div>
       `;
