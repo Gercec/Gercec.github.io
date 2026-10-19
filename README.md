@@ -14,7 +14,7 @@
 2. Проблематика
 Проблема проекта — отсутствие удобного цифрового инструмента, способного автоматически обрабатывать исходные таблицы расписания Физтех-колледжа и наглядно отображать информацию о парах и аттестации в режиме реального времени.
 <p align="center">
-<img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4bb.png" alt="Code" width="60"/>
+<img src="https://yandex.ru/images/touch/search?search_client=unknown&text=%D0%9C%D0%B5%D0%BC+%D0%BF%D0%B5%D0%BF%D0%B5&pos=12&rpt=simage&img_url=https%3A%2F%2Fmiro.medium.com%2Fv2%2Fresize%3Afit%3A1200%2F1*nkajBB_H0mblwRgZH5gCJA%402x.jpeg&lr=119745" alt="Code" width="60"/>
 </p>
 3. Цель и задачи проекта
 Цель: создать одностраничное веб-приложение (index.html) «Расписание-ФизТех», обеспечивающее быструю навигацию по расписанию и сессиям с визуальным мониторингом статуса занятий в реальном времени.
